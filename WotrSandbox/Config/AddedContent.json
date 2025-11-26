@@ -1,0 +1,69 @@
+{
+  "NewSettingsOffByDefault": false,
+  "ExcludeCompanionsFromIsekaiClass": false,
+  "RestrictExceptionalFeats": false,
+  "RestrictMythicOPAbility": false,
+  "RestrictMythicSpecialPower": false,
+  "MultipleMythicOPAbility": false,
+  "MultipleMythicSpecialPower": false,
+  "MergeIsekaiSpellList": false,
+  "IsekaiDefaultClothes": 20,
+  "IsekaiSpellsKnownIncrement": 6,
+  "DisableSpellbookEdgeLord": false,
+  "DisableSpellbookGodEmperor": false,
+  "DisableSpellbookHero": false,
+  "DisableSpellbookMastermind": false,
+  "DisableSpellbookOverlord": false,
+  "Isekai": {
+    "DisableAll": false,
+    "Settings": {
+      "Isekai Protagonist": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds the Isekai Protagonist class."
+      },
+      "Isekai Dialogue": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds extra dialogue for the Isekai Protagonist."
+      },
+      "Isekai Heritages": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds Isekai Heritages."
+      },
+      "Isekai Backgrounds": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds Isekai Backgrounds."
+      },
+      "Isekai Deities": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds Isekai Gods."
+      }
+    },
+    "IsExpanded": true
+  },
+  "Other": {
+    "DisableAll": false,
+    "Settings": {
+      "Exceptional Feats": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds Exceptional feats to feat selection."
+      },
+      "Relax Legacy Choices": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Do not restrict what Legacy choices are available as a second choice by archetype."
+      },
+      "Mythic Class Feature": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "Adds the ability to select mythic traits from other classes to Mythic Overpowered Ability and Mythic Special Power Selection."
+      }
+    },
+    "IsExpanded": true
+  }
+}
