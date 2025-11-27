@@ -1,0 +1,965 @@
+﻿using Kingmaker.Blueprints;
+using Kingmaker.Blueprints.Classes;
+using Kingmaker.Blueprints.Classes.Spells;
+using Kingmaker.Blueprints.Root.Fx;
+using Kingmaker.Designers.Mechanics.Buffs;
+using Kingmaker.Designers.Mechanics.Facts;
+using Kingmaker.ElementsSystem;
+using Kingmaker.EntitySystem.Stats;
+using Kingmaker.Enums;
+using Kingmaker.Enums.Damage;
+using Kingmaker.Localization;
+using Kingmaker.RuleSystem;
+using Kingmaker.RuleSystem.Rules.Damage;
+using Kingmaker.UnitLogic.Abilities;
+using Kingmaker.UnitLogic.Abilities.Blueprints;
+using Kingmaker.UnitLogic.Abilities.Components;
+using Kingmaker.UnitLogic.Abilities.Components.CasterCheckers;
+using Kingmaker.UnitLogic.Buffs;
+using Kingmaker.UnitLogic.Buffs.Blueprints;
+using Kingmaker.UnitLogic.Buffs.Components;
+using Kingmaker.UnitLogic.Commands.Base;
+using Kingmaker.UnitLogic.FactLogic;
+using Kingmaker.UnitLogic.Mechanics;
+using Kingmaker.UnitLogic.Mechanics.Actions;
+using Kingmaker.UnitLogic.Mechanics.Components;
+using Kingmaker.UnitLogic.Parts;
+using Kingmaker.Utility;
+using Kingmaker.Visual.Animation.Kingmaker.Actions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TabletopTweaks.Core.Utilities;
+using static WotrSandbox.Main;
+
+namespace WotrSandbox.Content.Dragon.Bloodlines
+{
+    public abstract class BaseDragonBloodline
+    {
+        protected abstract string BloodlineName { get; }
+        protected abstract DamageEnergyType Element { get; }
+        protected abstract string PrimaryBreathProjectileId { get; }
+        protected abstract string EnergyImmunityBlueprintId { get; }
+        protected abstract string EnergyVulnerabilityBlueprintId { get; }
+        protected abstract string DragonWingsFeatureId { get; }
+        protected abstract string ShifterFormMediumId { get; }
+        protected abstract string ShifterFormLargeId { get; }
+        protected abstract string ShifterFormHugeId { get; }
+        protected abstract List<DragonAge> AgeCategories { get; }
+
+        public void Add()
+        {
+            var dragonWings = BlueprintTools.GetBlueprint<BlueprintFeature>(DragonWingsFeatureId);
+            var energyVulnerability = !string.IsNullOrEmpty(EnergyVulnerabilityBlueprintId) ? BlueprintTools.GetBlueprint<BlueprintFeature>(EnergyVulnerabilityBlueprintId) : null;
+            var energyImmunity = BlueprintTools.GetBlueprint<BlueprintFeature>(EnergyImmunityBlueprintId);
+
+            var breathCooldownBuff = Helpers.CreateBlueprint<BlueprintBuff>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathCooldown", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BreathCooldown.Name", $"{Element:f} Breath Cooldown");
+                bp.m_Flags = BlueprintBuff.Flags.IsFromSpell;
+                bp.Frequency = DurationRate.Rounds;
+                bp.Stacking = StackingType.Replace;
+            });
+
+            var breathFeature = GetPrimaryBreath(breathCooldownBuff);
+            var secondaryBreathFeature = GetSecondaryBreath(breathCooldownBuff);
+
+            var bloodline = Helpers.CreateBlueprint<BlueprintProgression>(IsekaiContext, $"DragonBloodline{BloodlineName}", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}.Name", $"{BloodlineName}");
+                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}.Description", $"{BloodlineName} Dragon");
+                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}.DescriptionShort", "");
+                bp.LevelEntries = new LevelEntry[30]
+                {
+                    Helpers.CreateLevelEntry(1, dragonWings, energyImmunity, breathFeature),
+                    Helpers.CreateLevelEntry(2, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(3, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(4, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(5, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(6, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(7, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(8, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(9, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(10, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(11, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(12, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(13, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(14, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(15, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(16, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(17, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(18, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(19, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(20, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(21, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(22, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(23, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(24, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(25, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(26, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(27, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(28, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(29, new BlueprintFeature[0]),
+                    Helpers.CreateLevelEntry(30, new BlueprintFeature[0])
+                };
+                bp.UIGroups = new UIGroup[]
+                {
+                    Helpers.CreateUIGroup(dragonWings, energyImmunity, energyVulnerability),
+                    Helpers.CreateUIGroup(breathFeature, secondaryBreathFeature),
+                };
+                bp.m_UIDeterminatorsGroup = new BlueprintFeatureBaseReference[]
+                {
+                };
+            });
+
+            if (energyVulnerability != null)
+            {
+                bloodline.LevelEntries.Single(l => l.Level == 1).m_Features.Add(energyVulnerability.ToReference<BlueprintFeatureBaseReference>());
+            }
+            if (secondaryBreathFeature != null)
+            {
+                bloodline.LevelEntries.Single(l => l.Level == 1).m_Features.Add(secondaryBreathFeature.ToReference<BlueprintFeatureBaseReference>());
+            }
+
+            BlueprintFeature previousFormFeature = null;
+            foreach (var age in AgeCategories)
+            {
+                var levelEntry = bloodline.LevelEntries.Single(l => l.Level == age.HitDice);
+
+                var formFeature = GetFormFeature(age, previousFormFeature?.ToReference<BlueprintUnitFactReference>());
+                levelEntry.m_Features.Add(formFeature.ToReference<BlueprintFeatureBaseReference>());
+                previousFormFeature = formFeature;
+                
+                if (age.BonusSpells?.Any() == true)
+                {
+                    var spellsFeature = GetBonusSpellsFeature(age);
+                    levelEntry.m_Features.Add(spellsFeature.ToReference<BlueprintFeatureBaseReference>());
+                }
+
+                if (age.BonusFeatures?.Any() == true)
+                {
+                    foreach (var feature in age.BonusFeatures)
+                    {
+                        levelEntry.m_Features.Add(feature().ToReference<BlueprintFeatureBaseReference>());
+                    }
+                }
+            }
+        }
+        public T GetReference<T>() where T : BlueprintReferenceBase
+        {
+            return BlueprintTools.GetModBlueprintReference<T>(IsekaiContext, $"DragonBloodline{BloodlineName}");
+        }
+
+        private BlueprintFeature GetPrimaryBreath(BlueprintBuff breathCooldownBuff)
+        {
+            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility.Name", $"{Element:F} Breath");
+                bp.CanTargetPoint = true;
+                bp.CanTargetEnemies = true;
+                bp.CanTargetFriends = true;
+                bp.CanTargetSelf = true;
+                bp.EffectOnEnemy = AbilityEffectOnUnit.Harmful;
+                bp.EffectOnAlly = AbilityEffectOnUnit.None;
+                bp.Animation = UnitAnimationActionCastSpell.CastAnimationStyle.BreathWeapon;
+                bp.ActionType = UnitCommand.CommandType.Standard;
+                bp.Type = AbilityType.Supernatural;
+                bp.Range = AbilityRange.Projectile;
+                bp.LocalizedDuration = new LocalizedString(); // todo
+                bp.LocalizedSavingThrow = new LocalizedString(); //todo
+
+                bp.AddComponent<AbilityCasterHasNoFacts>(c =>
+                {
+                    c.m_Facts = new[]
+                    {
+                        breathCooldownBuff.ToReference<BlueprintUnitFactReference>()
+                    };
+                });
+
+                bp.AddComponent<AbilityEffectRunAction>(c =>
+                {
+                    c.Actions = new ActionList
+                    {
+                        Actions = new GameAction[]
+                        {
+
+                            new ContextActionOnContextCaster
+                            {
+                                Actions = new ActionList
+                                {
+                                    Actions = new GameAction[]
+                                    {
+                                        new ContextActionApplyBuff
+                                        {
+                                            m_Buff = breathCooldownBuff.ToReference<BlueprintBuffReference>(),
+                                            DurationValue = new ContextDurationValue
+                                            {
+                                                Rate = DurationRate.Rounds,
+                                                DiceType = DiceType.D4,
+                                                DiceCountValue = 1,
+                                                BonusValue = 1
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                        }
+                    };
+                });
+
+                bp.AddComponent<AbilityEffectRunAction>(c =>
+                {
+                    c.SavingThrowType = SavingThrowType.Reflex;
+                    c.Actions = new ActionList
+                    {
+                        Actions = new GameAction[]
+                        {
+                            new ContextActionDealDamage
+                            {
+                                m_Type = ContextActionDealDamage.Type.Damage,
+                                DamageType = new DamageTypeDescription
+                                {
+                                    Type = DamageType.Energy,
+                                    Energy = Element
+                                },
+                                Value = new ContextDiceValue
+                                {
+                                    DiceType = DiceType.D6,
+                                    DiceCountValue = new ContextValue
+                                    {
+                                        ValueType = ContextValueType.Rank,
+                                        ValueRank = AbilityRankType.DamageDice
+                                    }
+                                },
+                                IsAoE = true,
+                                HalfIfSaved = true
+                            }
+                        }
+                    };
+                });
+                bp.AddComponent<AbilityDeliverProjectile>(c =>
+                {
+                    c.m_Projectiles = new[] { BlueprintTools.GetBlueprintReference<BlueprintProjectileReference>(PrimaryBreathProjectileId) };
+                    c.Type = AbilityProjectileType.Cone;
+                    c.m_Length = new Feet
+                    {
+                        m_Value = 30
+                    };
+                    c.m_LineWidth = new Feet
+                    {
+                        m_Value = 5
+                    };
+                    c.NeedAttackRoll = false;
+                });
+                bp.AddComponent<ContextRankConfig>(c =>
+                {
+                    c.m_Type = Kingmaker.Enums.AbilityRankType.DamageDice;
+                    c.m_BaseValueType = ContextRankBaseValueType.ClassLevel;
+                    c.m_Progression = ContextRankProgression.AsIs;
+                    c.m_Max = 20;
+                    c.m_Class = new BlueprintCharacterClassReference[]
+                    {
+                        DragonClass.GetReference()
+                    };
+                });
+                bp.AddComponent<ContextRankConfig>(c =>
+                {
+                    c.m_Type = Kingmaker.Enums.AbilityRankType.StatBonus;
+                    c.m_BaseValueType = ContextRankBaseValueType.ClassLevel;
+                    c.m_Progression = ContextRankProgression.Div2;
+                    c.m_Max = 20;
+                    c.m_Class = new BlueprintCharacterClassReference[]
+                    {
+                        DragonClass.GetReference()
+                    };
+                });
+                bp.AddComponent<ContextCalculateAbilityParamsBasedOnClass>(c =>
+                {
+                    c.m_CharacterClass = DragonClass.GetReference();
+                    c.StatType = StatType.Constitution;
+                });
+                bp.AddComponent<SpellDescriptorComponent>(c =>
+                {
+                    c.Descriptor = new SpellDescriptorWrapper
+                    {
+                        m_IntValue = 1099511627777
+                    };
+                });
+            });
+            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility");
+            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility");
+
+            return Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathFeature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BreathFeature.Name", $"{Element:F} Breath");
+
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
+                bp.AddComponent<AddFacts>(c =>
+                {
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        breathAbilityReferenceUnit
+                    };
+                });
+                bp.AddComponent<ReplaceAbilitiesStat>(c =>
+                {
+                    c.Stat = StatType.Constitution;
+                    c.m_Ability = new BlueprintAbilityReference[]
+                    {
+                        breathAbilityReference
+                    };
+                });
+                bp.AddComponent<ReplaceCasterLevelOfAbility>(c =>
+                {
+                    c.m_Spell = breathAbilityReference;
+                    c.m_Class = DragonClass.GetReference();
+                });
+                bp.AddComponent<BindAbilitiesToClass>(c =>
+                {
+                    c.LevelStep = 1;
+                    c.Odd = true;
+                    c.FullCasterChecks = true;
+                    c.Stat = StatType.Charisma;
+                    c.m_CharacterClass = DragonClass.GetReference();
+                    c.m_Abilites = new[] { breathAbilityReference };
+                });
+            });
+        }
+
+        protected abstract BlueprintFeature GetSecondaryBreath(BlueprintBuff breathCooldownBuff);
+
+        private BlueprintFeature GetFormFeature(DragonAge age, BlueprintUnitFactReference previousStageFeature)
+        {
+            var sizeName = age.Size.ToString("F").Replace(" ", "");
+            var ageName = age.Name.Replace(" ", "");
+            var mythicDragonFormAbility = BlueprintTools.GetBlueprint<BlueprintAbility>("a0273cfaafe84f0b89a70b3580568ebc");
+
+            var buff = Helpers.CreateBlueprint<BlueprintBuff>(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Name", $"{BloodlineName} Dragon Form ({ageName})");
+                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Description", $"As a {ageName} dragon, you can assume your true form of a {sizeName} dragon, gaining its physical attributes and natural weapons.");
+                bp.Comment = "";
+                bp.m_AllowNonContextActions = false;
+                bp.IsClassFeature = true;
+                bp.m_Flags = 0;
+                bp.Stacking = StackingType.Replace;
+                bp.Ranks = 0;
+                bp.TickEachSecond = false;
+                bp.Frequency = DurationRate.Rounds;
+                bp.FxOnStart = null;
+                bp.FxOnRemove = null;
+                bp.ResourceAssetIds = Array.Empty<string>();
+
+                bp.m_Icon = mythicDragonFormAbility.m_Icon;
+
+                bp.AddComponent<Polymorph>(c =>
+                {
+                    c.m_Race = null;
+                    c.m_SpecialDollType = SpecialDollType.None;
+                    c.m_ReplaceUnitForInspection = null;
+                    //m_PortraitTypeEntry = UnitEntityData.PortraitType.SmallPortrait,
+                    c.m_KeepSlots = false;
+                    c.UseSizeAsBaseForDamage = true;
+
+                    c.StrengthBonus = age.StrengthBonus;
+                    c.DexterityBonus = age.DexterityBonus;
+                    c.ConstitutionBonus = age.ConstitutionBonus;
+                    c.NaturalArmor = age.NaturalArmorBonus;
+
+                    c.m_MainHand = null;
+                    c.m_OffHand = null;
+                    c.AllowDamageTransfer = true;
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        // Turn back ability standard
+                        new BlueprintUnitFactReference
+                        {
+                            deserializedGuid = BlueprintGuid.Parse("bd09b025ee2a82f46afab922c4decca9")
+                        },
+                    };
+                    c.m_SilentCaster = true;
+
+                    c.Size = age.Size;
+
+                    switch (c.Size)
+                    {
+                        case Size.Fine:
+                        case Size.Diminutive:
+                            throw new InvalidOperationException("Unsupported size: " +  c.Size);
+                        case Size.Tiny:
+                            ApplyTinyFormPolymorphSettings(c);
+                            break;
+                        case Size.Small:
+                            ApplySmallFormPolymorphSettings(c);
+                            break;
+                        case Size.Medium:
+                            ApplyMediumFormPolymorphSettings(c);
+                            break;
+                        case Size.Large:
+                            ApplyLargeFormPolymorphSettings(c);
+                            break;
+                        case Size.Huge:
+                            ApplyHugeFormPolymorphSettings(c);
+                            break;
+                        case Size.Gargantuan:
+                            ApplyGargantuanFormPolymorphSettings(c);
+                            break;
+                        case Size.Colossal:
+                            ApplyCollossalFormPolymorphSettings(c);
+                            break;
+                    }
+
+                });
+                bp.AddComponent(new SpellDescriptorComponent
+                {
+                    Descriptor = new SpellDescriptorWrapper
+                    {
+                        m_IntValue = 8589934592L
+                    }
+                });
+                bp.AddComponent(new ReplaceAsksList
+                {
+                    // BlackDragon_Barks
+                    m_Asks = new BlueprintUnitAsksListReference
+                    {
+                        deserializedGuid = BlueprintGuid.Parse("3c0924a80e504f04c94de6ec2a28f9aa")
+                    }
+                });
+                bp.AddComponent(new BuffMovementSpeed
+                {
+                    Descriptor = ModifierDescriptor.None,
+                    Value = 30,
+                    ContextBonus = new ContextValue
+                    {
+                        ValueType = ContextValueType.Simple,
+                        Value = 0,
+                        ValueRank = AbilityRankType.Default,
+                        ValueShared = AbilitySharedValue.Damage
+                    },
+                    CappedOnMultiplier = false,
+                    MultiplierCap = 0f,
+                    CappedMinimum = false,
+                    MinimumCap = 0
+                });
+                bp.AddComponent(new ReplaceSourceBone
+                {
+                    SourceBone = "Locator_HeadCenterFX_00"
+                });
+                bp.AddComponent(new ReplaceCastSource
+                {
+                    CastSource = CastSource.Head
+                });
+                bp.AddComponent(new Blindsense
+                {
+                    Range = 60.Feet(),
+                    Blindsight = false,
+                    Exceptions = null
+                });
+                bp.AddComponent(new AddMechanicsFeature
+                {
+                    m_Feature = AddMechanicsFeature.MechanicsFeatureType.NaturalSpell
+                });
+                bp.AddComponent<NotDispelable>();
+
+
+                if (age.DamageResistance > 0)
+                {
+                    bp.AddComponent<AddDamageResistancePhysical>(c =>
+                    {
+                        c.Value = new ContextValue
+                        {
+                            ValueType = ContextValueType.Simple,
+                            Value = age.DamageResistance
+                        };
+                        c.BypassedByMagic = true;
+                    });
+                }
+                if (age.SpellResistance > 0)
+                {
+                    bp.AddComponent<AddSpellResistance>(c =>
+                    {
+                        c.Value = new ContextValue
+                        {
+                            ValueType = ContextValueType.Simple,
+                            Value = age.SpellResistance
+                        };
+                    });
+                }
+            });
+            var ability = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability.Name", $"Dragon Form ({ageName})");
+
+                bp.m_DefaultAiAction = null;
+                bp.m_AutoUseIsForbidden = true;
+                bp.Type = AbilityType.Supernatural;
+                bp.Range = AbilityRange.Personal;
+                bp.IgnoreMinimalRangeLimit = false;
+                bp.CustomRange = new Feet(0f);
+                bp.ShowNameForVariant = false;
+                bp.OnlyForAllyCaster = false;
+                bp.CanTargetPoint = false;
+                bp.CanTargetEnemies = false;
+                bp.CanTargetFriends = false;
+                bp.CanTargetSelf = true;
+                bp.ShouldTurnToTarget = true;
+                bp.SpellResistance = false;
+                bp.IgnoreSpellResistanceForAlly = false;
+                bp.ActionBarAutoFillIgnored = false;
+                bp.Hidden = false;
+                bp.NeedEquipWeapons = false;
+                bp.NotOffensive = false;
+                bp.EffectOnAlly = AbilityEffectOnUnit.None;
+                bp.EffectOnEnemy = AbilityEffectOnUnit.None;
+                bp.m_Parent = null;
+                bp.Animation = UnitAnimationActionCastSpell.CastAnimationStyle.SelfTouch;
+                bp.HasFastAnimation = false;
+                bp.m_TargetMapObjects = false;
+                bp.ActionType = UnitCommand.CommandType.Standard;
+                bp.AvailableMetamagic = Metamagic.Quicken | Metamagic.Extend | Metamagic.Heighten;
+                bp.m_IsFullRoundAction = false;
+
+                bp.LocalizedDuration = new LocalizedString();
+                bp.LocalizedSavingThrow = new LocalizedString();
+
+                bp.DisableLog = false;
+                bp.ResourceAssetIds = Array.Empty<string>();
+
+                // === Components ===
+
+
+                bp.AddComponent<AbilityEffectRunAction>(c =>
+                {
+                    c.Actions = new ActionList
+                    {
+                        Actions = new GameAction[]
+                        {
+                            new ContextActionApplyBuff
+                            {
+                                m_Buff = buff.ToReference<BlueprintBuffReference>(),
+                                Permanent = true,
+                                UseDurationSeconds = false,
+                                DurationValue = new ContextDurationValue
+                                {
+                                    Rate = DurationRate.Minutes,
+                                    DiceType = DiceType.Zero,
+                                    DiceCountValue = new ContextValue
+                                    {
+                                        ValueType = ContextValueType.Simple,
+                                        Value = 0,
+                                        ValueRank = AbilityRankType.Default,
+                                        ValueShared = AbilitySharedValue.Damage
+                                    },
+                                    BonusValue = new ContextValue
+                                    {
+                                        ValueType = ContextValueType.Simple,
+                                        Value = 1,
+                                        ValueRank = AbilityRankType.Default,
+                                        ValueShared = AbilitySharedValue.Damage
+                                    },
+                                    m_IsExtendable = true
+                                },
+                                DurationSeconds = 0f,
+                                IsFromSpell = true,
+                                IsNotDispelable = false,
+                                ToCaster = true,
+                                AsChild = false,
+                                SameDuration = false,
+                                NotLinkToAreaEffect = false
+                            }
+                        }
+                    };
+                });
+
+                bp.AddComponent<SpellDescriptorComponent>(c =>
+                {
+                    c.Descriptor = new SpellDescriptorWrapper
+                    {
+                        m_IntValue = 8589934592L
+                    };
+                });
+
+                bp.AddComponent<AbilityExecuteActionOnCast>(c =>
+                {
+                    c.Actions = new ActionList
+                    {
+                        Actions = new GameAction[]
+                        {
+                            new ContextActionRemoveBuffsByDescriptor
+                            {
+                                SpellDescriptor = new SpellDescriptorWrapper
+                                {
+                                    m_IntValue = 8589934592L
+                                }
+                            }
+                        }
+                    };
+                });
+            });
+
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Feature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Feature.Name", $"Dragon Form ({ageName})");
+
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
+                bp.AddComponent<AddFacts>(c =>
+                {
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        ability.ToReference<BlueprintUnitFactReference>()
+                    };
+                });
+                if (previousStageFeature != null)
+                {
+                    bp.AddComponent<RemoveFeatureOnApply>(c =>
+                    {
+                        c.m_Feature = previousStageFeature;
+                    });
+                }
+            });
+            
+            return feature;
+        }
+
+        private void ApplyTinyFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormMediumId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                    // Bite 1d4
+                    new BlueprintItemWeaponReference
+                    {
+                        deserializedGuid = BlueprintGuid.Parse("35dfad6517f401145af54111be04d6cf")
+                    },
+                    // Claw 1d3
+                    new BlueprintItemWeaponReference
+                    {
+                        deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
+                    },
+                        
+                    // Claw 1d3
+                    new BlueprintItemWeaponReference
+                    {
+                        deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
+                    }
+                };
+        }
+
+        private void ApplySmallFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormMediumId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                // Bite 1d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("a000716f88c969c499a535dadcf09286")
+                },
+                // Claw 1d4
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("118fdd03e569a66459ab01a20af6811a")
+                },
+                        
+                // Claw 1d4
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("118fdd03e569a66459ab01a20af6811a")
+                }
+            };
+        }
+
+        private void ApplyMediumFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormMediumId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                // Bite 1d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("61bc14eca5f8c1040900215000cfc218")
+                },
+                // Claw 1d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("65eb73689b94d894080d33a768cdf645")
+                },
+                        
+                // Claw 1d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("65eb73689b94d894080d33a768cdf645")
+                }
+            };
+            c.m_SecondaryAdditionalLimbs = new[]
+            {
+                // Wing 1d4
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("864e29d3e07ad4a4f96d576b366b4a86")
+                },
+                // Wing 1d4
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("864e29d3e07ad4a4f96d576b366b4a86")
+                }
+            };
+        }
+
+        private void ApplyLargeFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormLargeId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                // Bite 2d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
+                },
+                // Claw 1d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("13a4ac62fe603fc4c99f9ed5e5d0b9d6")
+                },
+                        
+                // Claw 1d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("13a4ac62fe603fc4c99f9ed5e5d0b9d6")
+                }
+            };
+            c.m_SecondaryAdditionalLimbs = new[]
+            {
+                // Wing 1d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Wing 1d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Tail Slap 1d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
+                }
+            };
+        }
+
+        private void ApplyHugeFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormHugeId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                // Bite 2d6 // Todo: upgrade to 2d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
+                },
+                // Claw 2d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("d498b2af675bd3447a0ab65ccc34d952")
+                },
+                        
+                // Claw 2d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("d498b2af675bd3447a0ab65ccc34d952")
+                }
+            };
+            c.m_SecondaryAdditionalLimbs = new[]
+            {
+                // Wing 1d6 //todo: upgrade to 1d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Wing 1d6 //todo: upgrade to 1d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Tail Slap 1d8 //todo: upgrade to 2d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
+                }
+            };
+        }
+
+        private void ApplyGargantuanFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormHugeId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                // Bite 2d6 // Todo: upgrade to 4d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
+                },
+                // Claw 2d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
+                },
+                        
+                // Claw 2d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
+                }
+            };
+            c.m_SecondaryAdditionalLimbs = new[]
+            {
+                // Wing 1d6 //todo: upgrade to 2d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Wing 1d6 //todo: upgrade to 2d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Tail Slap 1d8 //todo: upgrade to 2d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
+                }
+            };
+        }
+
+        private void ApplyCollossalFormPolymorphSettings(Polymorph c)
+        {
+            var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormHugeId);
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+
+            c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
+            c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
+            c.m_Portrait = shifterFormBuffPolymorph.m_Portrait;
+            c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
+            c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
+            c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.m_AdditionalLimbs = new[]
+            {
+                // Bite 2d6 // Todo: upgrade to 4d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
+                },
+                // Claw 2d8 // Todo: upgrade to 4d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
+                },
+                        
+                // Claw 2d8 // Todo: upgrade to 4d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
+                }
+            };
+            c.m_SecondaryAdditionalLimbs = new[]
+            {
+                // Wing 1d6 //todo: upgrade to 2d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Wing 1d6 //todo: upgrade to 2d8
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("cdbf5fdd86eb4d238cef15f7835e42c3")
+                },
+                // Tail Slap 1d8 //todo: upgrade to 4d6
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
+                }
+            };
+        }
+
+        private BlueprintFeature GetBonusSpellsFeature(DragonAge age)
+        {
+            var ageCategory = age.Name.Replace(" ", "");
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}Feature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}Feature.Name", $"{BloodlineName} Dragon Bonus Spells ({ageCategory})");
+                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}LevelFeature.Description", "At certain levels, you gain access to spells that represent the power of your dragon heritage. These spells are added to your spellbook and can be prepared and cast as normal.");
+                bp.IsClassFeature = true;
+                bp.Ranks = 1;
+                foreach (var spell in age.BonusSpells)
+                {
+                    bp.AddComponent<AddKnownSpell>(c =>
+                    {
+                        c.m_Spell = BlueprintTools.GetBlueprintReference<BlueprintAbilityReference>(spell.BlueprintId);
+                        c.m_CharacterClass = DragonClass.GetReference();
+                        c.SpellLevel = spell.Level;
+                    });
+                }
+            });
+
+            return feature;
+        }
+    }
+}

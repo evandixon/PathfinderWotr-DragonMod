@@ -19,7 +19,7 @@ namespace WotrSandbox.Content.Buffs
         private static readonly LocalizedString Description = Helpers.CreateString(Main.IsekaiContext, $"DragonNaturalWeaponsBuff.Description",
             "A half dragon gets 1 bite and 2x claws");
         private static readonly LocalizedString DescriptionShort = Helpers.CreateString(Main.IsekaiContext, $"DragonNaturalWeaponsBuff.DescriptionShort",
-            "Half Dragon");
+            "Half dragon natural weapons.");
         public static void Add()
         {
             var naturalWeaponsBuff = Helpers.CreateBlueprint<BlueprintBuff>(Main.IsekaiContext, "DragonNaturalWeaponsBuff", bp =>
@@ -33,22 +33,30 @@ namespace WotrSandbox.Content.Buffs
                 bp.Stacking = StackingType.Replace;
                 bp.Frequency = Kingmaker.UnitLogic.Mechanics.DurationRate.Rounds;
 
+                var bite1d6 = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("a000716f88c969c499a535dadcf09286");
+                var claw1d4 = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("118fdd03e569a66459ab01a20af6811a");
                 bp.AddComponent<AddAdditionalLimb>(l =>
                 {
                     // Bite 1d6
-                    l.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("a000716f88c969c499a535dadcf09286");
+                    l.m_Weapon = bite1d6;
                 });
-                bp.AddComponent<AddAdditionalLimb>(l =>
+
+                // Maybe redundant with EmptyHandWeaponOverride
+                //bp.AddComponent<AddAdditionalLimb>(l =>
+                //{
+                //    // Claw 1d4
+                //    l.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("118fdd03e569a66459ab01a20af6811a");
+                //});
+                //bp.AddComponent<AddAdditionalLimb>(l =>
+                //{
+                //    // Claw 1d4
+                //    l.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("118fdd03e569a66459ab01a20af6811a");
+                //});
+
+                bp.AddComponent<EmptyHandWeaponOverride>(c =>
                 {
-                    // Claw 1d4
-                    l.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("118fdd03e569a66459ab01a20af6811a");
+                    c.m_Weapon = claw1d4;
                 });
-                bp.AddComponent<AddAdditionalLimb>(l =>
-                {
-                    // Claw 1d4
-                    l.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("118fdd03e569a66459ab01a20af6811a");
-                });
-                bp.AddComponent<EmptyHandWeaponOverride>();
             });
         }
     }

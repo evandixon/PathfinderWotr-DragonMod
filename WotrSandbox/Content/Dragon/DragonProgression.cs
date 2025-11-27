@@ -53,7 +53,7 @@ namespace WotrSandbox.Content.Dragon
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Name", "Dragon Intelligence");
                 bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Description", "Dragon Intelligence");
                 bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.DescriptionShort", "Dragon Intelligence");
-                bp.Ranks = 10;
+                bp.Ranks = 4;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
                     c.Descriptor = ModifierDescriptor.Racial;
@@ -66,7 +66,7 @@ namespace WotrSandbox.Content.Dragon
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Name", "Dragon Charisma");
                 bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Description", "Dragon Charisma");
                 bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonCharisma.DescriptionShort", "Dragon Charisma");
-                bp.Ranks = 10;
+                bp.Ranks = 4;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
                     c.Descriptor = ModifierDescriptor.Racial;
@@ -91,15 +91,16 @@ namespace WotrSandbox.Content.Dragon
             var legendaryHeroFeature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonLegendaryHeroFeature", bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Name", "Legendary Dragon");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Description", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. You gain class levels at twice the rate of most mortals.");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.DescriptionShort", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. You gain class levels at twice the rate of most mortals.");
+                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Description", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
+                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.DescriptionShort", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
                 bp.AddComponent<AddMechanicsFeature>(c =>
                 {
                     c.m_Feature = AddMechanicsFeature.MechanicsFeatureType.LegendaryHero;
                 });
             });
 
-            var sorcererCantripsFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("c58b36ec3f759c84089c67611d1bcc21"); // Sorcerer Cantrips Feature
+            var simpleWeaponProficiency = BlueprintTools.GetBlueprintReference<BlueprintFeatureReference>("e70ecf1ed95ca2f40b754f1adb22bbdd");
+            var halfDragonFeature = HalfDragonFeature.GetReference<BlueprintFeatureReference>();
 
             var dragonProgression = Helpers.CreateBlueprint<BlueprintProgression>(IsekaiContext, "DragonProgression", bp => {
                 bp.SetName(StaticReferences.Strings.Null);
@@ -113,84 +114,53 @@ namespace WotrSandbox.Content.Dragon
                         AdditionalLevel = 0
                     }
                 };
+                bp.LevelEntries = new LevelEntry[30] {
+                    Helpers.CreateLevelEntry(1,
+                        simpleWeaponProficiency,
+                        halfDragonFeature,
+                        legendaryHeroFeature,
+                        DragonBloodlineSelection.GetReference()),
+                    Helpers.CreateLevelEntry(2, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(3, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(4, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(5, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(6, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(7, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(8, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(9, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(10, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(11, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(12, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(13, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(14, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(15, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(16, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(17, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(18, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(19, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(20, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(21, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(22, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(23, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(24, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(25, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(26, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(27, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(28, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(29, new BlueprintFeatureBase[0]),
+                    Helpers.CreateLevelEntry(30, new BlueprintFeatureBase[0]),
+                };
+
+                bp.UIGroups = new UIGroup[]
+                {
+                    Helpers.CreateUIGroup(legendaryHeroFeature),
+                };
+                bp.m_UIDeterminatorsGroup = new BlueprintFeatureBaseReference[] {
+                    DragonBloodlineSelection.GetReference<BlueprintFeatureBaseReference>()
+                };
             });
-
-            dragonProgression.LevelEntries = new LevelEntry[30] {
-                Helpers.CreateLevelEntry(1,sorcererCantripsFeature, legendaryHeroFeature, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor, DragonBloodlineSelection.GetReference()),
-                Helpers.CreateLevelEntry(2, dragonStrength, dragonConstitution, dragonIntelligence, dragonNaturalArmor),
-                Helpers.CreateLevelEntry(3, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor),
-                Helpers.CreateLevelEntry(4, dragonStrength, dragonNaturalArmor, dragonIntelligence),
-                Helpers.CreateLevelEntry(5, dragonCharisma),
-                Helpers.CreateLevelEntry(6, dragonIntelligence),
-                Helpers.CreateLevelEntry(7, dragonCharisma),
-                Helpers.CreateLevelEntry(8, dragonIntelligence),
-                Helpers.CreateLevelEntry(9, dragonCharisma),
-                Helpers.CreateLevelEntry(10, dragonIntelligence),
-                Helpers.CreateLevelEntry(11, dragonCharisma),
-                Helpers.CreateLevelEntry(12, dragonIntelligence),
-                Helpers.CreateLevelEntry(13, dragonCharisma),
-                Helpers.CreateLevelEntry(14, dragonIntelligence),
-                Helpers.CreateLevelEntry(15, dragonCharisma),
-                Helpers.CreateLevelEntry(16, dragonIntelligence),
-                Helpers.CreateLevelEntry(17, dragonCharisma),
-                Helpers.CreateLevelEntry(18, dragonIntelligence),
-                Helpers.CreateLevelEntry(19, dragonCharisma),
-                Helpers.CreateLevelEntry(20, dragonIntelligence),
-                Helpers.CreateLevelEntry(21, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(22, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(23, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(24, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(25, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(26, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(27, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(28, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(29, new BlueprintFeatureBase[0]),
-                Helpers.CreateLevelEntry(30, new BlueprintFeatureBase[0]),
-            };
-            dragonProgression.UIGroups = new UIGroup[] 
-            {
-                Helpers.CreateUIGroup(legendaryHeroFeature, dragonStrength, dragonConstitution, dragonIntelligence, dragonCharisma, dragonNaturalArmor),
-
-                //// Isekai UI group
-                //Helpers.CreateUIGroup(PlotArmor, IsekaiFighterTraining, SignatureAbility, SignatureMoveSelection,
-                //    SummonHaremFeature, IsekaiAuraSelection, GodEmperorAuraSelection, DarkAuraFeature, HeroAuraSelection, Afterimage,
-                //    IsekaiQuickFooted, GodEmperorQuickFooted, MastermindQuickFooted, BeachEpisodeSelection, OtherworldlyStamina, HaxSelection,
-                //    ChuunibyouActualisationFeature, DeusExMachinaFeature, MasterplanFeature, SecondPhaseFeature),
-                //Helpers.CreateUIGroup(ReleaseEnergy, Gifted, SignatureMoveBonusSelection, SecretPowerSelection, BeachEpisodeBonusSelection,
-                //    SecondReincarnation),
-                
-                //// Edge Lord UI group
-                //Helpers.CreateUIGroup(SupersonicCombat, ExtraStrike, ExtraSpecialPowerSelection),
-                
-                //// God Emperor UI group
-                //Helpers.CreateUIGroup(NascentApotheosis, LightEnergyCondensation, GodEmperorEnergySelection, BodyMindAlterSelection,
-                //    EnergyCondensationSelection, BarrierSelection, PathSelection, RealmSelection, GodlyVessel, Godhood),
-                
-                //// Hero UI group
-                //Helpers.CreateUIGroup(GracefulCombat, IsekaiChannelPositiveEnergyFeature, HandsOfSalvation, GoldBarrierFeature,
-                //    GoldBarrierHeroism, GoldBarrierFastHealing, GoldBarrierResistance),
-                
-                //// Mastermind UI group
-                //Helpers.CreateUIGroup(AutoMetamagicSelectionMastermind, ArcanistExploitSelection),
-                //Helpers.CreateUIGroup(MastermindConsumeSpells, EldritchFontEldritchSurge, EldritchFontImprovedSurge, EldritchFontGreaterSurge),
-
-                //// Overlord UI group
-                //Helpers.CreateUIGroup(OverpoweredAbilitySelectionOverlord, IsekaiChannelNegativeEnergyFeature, CorruptAuraFeature, SiphoningAuraFeature),
-                
-                //// OP ability and Special Power UI group
-                //Helpers.CreateUIGroup(OverpoweredAbilitySelection, SpecialPowerSelection, ArmorSaint),
-
-                //// Legacy UI groups
-                //Helpers.CreateUIGroup(LegacySelection.GetClassFeature()),
-                //Helpers.CreateUIGroup(HeroLegacySelection.getClassFeature()),
-                //Helpers.CreateUIGroup(MastermindLegacySelection.getClassFeature()),
-                //Helpers.CreateUIGroup(OverlordLegacySelection.getClassFeature()),
-                //Helpers.CreateUIGroup(EdgeLordLegacySelection.getClassFeature()),
-            };
-            dragonProgression.m_UIDeterminatorsGroup = new BlueprintFeatureBaseReference[] {
-                DragonBloodlineSelection.GetReference<BlueprintFeatureBaseReference>()
-            };
         }
+
         public static BlueprintProgressionReference GetReference()
         {
             return BlueprintTools.GetModBlueprintReference<BlueprintProgressionReference>(IsekaiContext, "DragonProgression");

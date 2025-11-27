@@ -29,9 +29,9 @@ namespace WotrSandbox.Content.Dragon
     {
         private static readonly LocalizedString Name = Helpers.CreateString(IsekaiContext, $"DragonClass.Name", "Dragon");
         private static readonly LocalizedString Description = Helpers.CreateString(IsekaiContext, $"DragonClass.Description",
-            "Dragons are considered to some to be the perfect being, boasting immense strength, durability, and magical powers.");
+            "As a result of strange magical experiments, you have become a half dragon, with a path toward true dragonhood.");
         private static readonly LocalizedString DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonClass.DescriptionShort",
-            "Dragons are considered to some to be the perfect being, boasting immense strength, durability, and magical powers.");
+            "As a result of strange magical experiments, you have become a half dragon, with a path toward true dragonhood.");
         private static BlueprintCharacterClass dragonClass;
 
         // Stat Progression
@@ -269,46 +269,46 @@ namespace WotrSandbox.Content.Dragon
                 bp.Levels = new SpellsLevelEntry[]
                 {
                     new SpellsLevelEntry { Count = new int[] {} }, // Level 0
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 1
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 2
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 3
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 4
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 5
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 6
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 7
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 8
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 9
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 10
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 11
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 12
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 13
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 14
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 15
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 16
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 17
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 18
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 19
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 20
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 21
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 22
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 23
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 24
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 25
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 26
-                    new SpellsLevelEntry { Count = new int[] {} }, // Level 27
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,1,0} }, // Level 28 - Wyrm
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,1} }, // Level 29
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 30 - Great Wyrm
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 31
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 32
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 33
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 34
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 35
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 36
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 37
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 38
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 39
-                    new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 40
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 1
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 2
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 3
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 4
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 5
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 6
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 7
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 8
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 9
+                    //new SpellsLevelEntry { Count = new int[] {} }, // Level 10
+                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 11
+                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 12
+                    new SpellsLevelEntry { Count = new int[] {0,1,1} }, // Level 13
+                    new SpellsLevelEntry { Count = new int[] {0,1,1} }, // Level 14
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1} }, // Level 15
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1} }, // Level 16
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1} }, // Level 17
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1} }, // Level 18
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1} }, // Level 19
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1} }, // Level 20
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1} }, // Level 21
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1} }, // Level 22
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1} }, // Level 23
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1} }, // Level 24
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1} }, // Level 25
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1} }, // Level 26
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 27
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 28 - Wyrm
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 29
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 30 - Great Wyrm
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 31
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 32
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 33
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 34
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 35
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 36
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 37
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 38
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 39
+                    new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 40
                 };
             });
             var spellsPerDay = Helpers.CreateBlueprint<BlueprintSpellsTable>(IsekaiContext, "DragonClassSpellsPerDay", bp =>
@@ -326,25 +326,25 @@ namespace WotrSandbox.Content.Dragon
                     //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 8
                     //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 9
                     //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 10
-                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 11
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 12 (level 1 adjusted to 4 with stats)
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 13
-                    new SpellsLevelEntry { Count = new int[] {0,5} }, // Level 14
-                    new SpellsLevelEntry { Count = new int[] {0,5} }, // Level 15
-                    new SpellsLevelEntry { Count = new int[] {0,6,4} }, // Level 16
-                    new SpellsLevelEntry { Count = new int[] {0,6,4} }, // Level 17
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,4} }, // Level 18
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,4} }, // Level 19
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,4} }, // Level 20
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,4} }, // Level 21
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,4} }, // Level 22
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,4} }, // Level 23
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,4} }, // Level 24
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,4} }, // Level 25
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,4} }, // Level 26
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,4} }, // Level 27
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,4} }, // Level 28
-                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,4} }, // Level 29
+                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 11
+                    new SpellsLevelEntry { Count = new int[] {0,4} }, // Level 12 (level 1 adjusted to 4 with stats)
+                    new SpellsLevelEntry { Count = new int[] {0,4,3} }, // Level 13
+                    new SpellsLevelEntry { Count = new int[] {0,5,3} }, // Level 14
+                    new SpellsLevelEntry { Count = new int[] {0,5,5,3} }, // Level 15
+                    new SpellsLevelEntry { Count = new int[] {0,6,5,3} }, // Level 16
+                    new SpellsLevelEntry { Count = new int[] {0,6,5,4,3} }, // Level 17
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,5,3} }, // Level 18
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,5,3,3} }, // Level 19
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,4,3} }, // Level 20
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,5,3,3} }, // Level 21
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,4,3} }, // Level 22
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,5,3,3} }, // Level 23
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,4,3} }, // Level 24
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,5,3,3} }, // Level 25
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,4,3} }, // Level 26
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,4,3,3} }, // Level 27
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,4,3} }, // Level 28
+                    new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,5,3} }, // Level 29
                     new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,6,4} }, // Level 30
                     new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,6,4} }, // Level 31
                     new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,6,4} }, // Level 32
@@ -388,7 +388,7 @@ namespace WotrSandbox.Content.Dragon
                 bp.CantripsType = CantripsType.Cantrips;
                 bp.IsArcane = true;
                 bp.Spontaneous = true;
-                bp.CasterLevelModifier =-11;
+                bp.CasterLevelModifier =-10;
 
                 // These relate to special spell slots (like wizard's favourite school spell slots or shaman's spirit magic slots)
                 bp.HasSpecialSpellList = false;

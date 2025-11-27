@@ -44,10 +44,12 @@ namespace WotrSandbox.Content
                 DragonBloodlineGold.Instance.Add();
                 DragonBloodlineSelection.Add();
 
+                HalfDragonFeature.Add();
+
                 DragonClass.Add();
                 DragonNaturalWeapons.Add();
                 DragonProgression.Add();
-                KitsuneHalfDragonHeritage.Add();
+                //KitsuneHalfDragonHeritage.Add();
             }
 
         }
