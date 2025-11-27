@@ -357,6 +357,7 @@
     <Compile Include="Content\Buffs\DragonNaturalWeapons.cs" />
     <Compile Include="Content\ContentAdder.cs" />
     <Compile Include="Content\Dragon\Bloodlines\DragonBloodlineGold.cs" />
+    <Compile Include="Content\Dragon\Bloodlines\DragonBloodlineSelection.cs" />
     <Compile Include="Content\Dragon\DragonClass.cs" />
     <Compile Include="Content\Dragon\DragonProgression.cs" />
     <Compile Include="Content\Dragon\DragonRace.cs" />

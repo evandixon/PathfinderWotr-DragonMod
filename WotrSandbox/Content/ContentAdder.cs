@@ -41,7 +41,8 @@ namespace WotrSandbox.Content
 
             public static void AddIsekaiProtagonistClass()
             {
-                new DragonBloodlineGold().Add();
+                DragonBloodlineGold.Instance.Add();
+                DragonBloodlineSelection.Add();
 
                 DragonClass.Add();
                 DragonNaturalWeapons.Add();

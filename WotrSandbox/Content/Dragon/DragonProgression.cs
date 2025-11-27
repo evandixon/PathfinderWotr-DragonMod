@@ -12,6 +12,7 @@ using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.UnitLogic.FactLogic;
 using Kingmaker.Enums;
 using Kingmaker.EntitySystem.Stats;
+using WotrSandbox.Content.Dragon.Bloodlines;
 
 namespace WotrSandbox.Content.Dragon
 {
@@ -87,16 +88,6 @@ namespace WotrSandbox.Content.Dragon
                 });
             });
 
-            var bloodlineSelection = Helpers.CreateBlueprint<BlueprintFeatureSelection>(IsekaiContext, "DragonBloodlineSelection", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodlineSelection.Name", "Dragon Type");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodlineSelection.Description", "There are many kinds of dragons in the world.");
-                bp.m_AllFeatures = new BlueprintFeatureReference[]
-                {
-                    BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(IsekaiContext, "DragonBloodlineGold")
-                };
-            });
-
             var legendaryHeroFeature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonLegendaryHeroFeature", bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Name", "Legendary Dragon");
@@ -125,7 +116,7 @@ namespace WotrSandbox.Content.Dragon
             });
 
             dragonProgression.LevelEntries = new LevelEntry[30] {
-                Helpers.CreateLevelEntry(1,sorcererCantripsFeature, legendaryHeroFeature, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor, bloodlineSelection),
+                Helpers.CreateLevelEntry(1,sorcererCantripsFeature, legendaryHeroFeature, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor, DragonBloodlineSelection.GetReference()),
                 Helpers.CreateLevelEntry(2, dragonStrength, dragonConstitution, dragonIntelligence, dragonNaturalArmor),
                 Helpers.CreateLevelEntry(3, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor),
                 Helpers.CreateLevelEntry(4, dragonStrength, dragonNaturalArmor, dragonIntelligence),
@@ -197,7 +188,7 @@ namespace WotrSandbox.Content.Dragon
                 //Helpers.CreateUIGroup(EdgeLordLegacySelection.getClassFeature()),
             };
             dragonProgression.m_UIDeterminatorsGroup = new BlueprintFeatureBaseReference[] {
-                bloodlineSelection.ToReference<BlueprintFeatureBaseReference>()
+                DragonBloodlineSelection.GetReference<BlueprintFeatureBaseReference>()
             };
         }
         public static BlueprintProgressionReference GetReference()

@@ -1,6 +1,7 @@
 ﻿using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Prerequisites;
+using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Designers.EventConditionActionSystem.Conditions;
 using Kingmaker.ElementsSystem;
@@ -16,7 +17,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TabletopTweaks.Core.Utilities;
+using WotrSandbox.Content.Dragon.Bloodlines;
 using WotrSandbox.Infrastructure;
+using static TabletopTweaks.Core.MechanicsChanges.AdditionalModifierDescriptors;
 using static TabletopTweaks.Core.Utilities.SpellTools;
 using static WotrSandbox.Main;
 
@@ -266,33 +269,33 @@ namespace WotrSandbox.Content.Dragon
                 bp.Levels = new SpellsLevelEntry[]
                 {
                     new SpellsLevelEntry { Count = new int[] {} }, // Level 0
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 1
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 2
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 3
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 4
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 5
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 6
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 7
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 8
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 9
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 10
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 11
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 12
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 13
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 14
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 15
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 16
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 17
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 18
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 19
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 20
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 21
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 22
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 23
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 24
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 25
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 26
-                    new SpellsLevelEntry { Count = new int[] {0,1} }, // Level 27
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 1
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 2
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 3
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 4
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 5
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 6
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 7
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 8
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 9
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 10
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 11
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 12
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 13
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 14
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 15
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 16
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 17
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 18
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 19
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 20
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 21
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 22
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 23
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 24
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 25
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 26
+                    new SpellsLevelEntry { Count = new int[] {} }, // Level 27
                     new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,1,0} }, // Level 28 - Wyrm
                     new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,1} }, // Level 29
                     new SpellsLevelEntry { Count = new int[] {0,0,0,0,0,0,0,0,2,2} }, // Level 30 - Great Wyrm
@@ -313,17 +316,17 @@ namespace WotrSandbox.Content.Dragon
                 bp.Levels = new SpellsLevelEntry[]
                 {
                     new SpellsLevelEntry { Count = new int[] {} }, // Level 0
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 1
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 2
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 3
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 4
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 5
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 6
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 7
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 8
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 9
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 10
-                    new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 11
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 1
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 2
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 3
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 4
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 5
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 6
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 7
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 8
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 9
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 10
+                    //new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 11
                     new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 12 (level 1 adjusted to 4 with stats)
                     new SpellsLevelEntry { Count = new int[] {0,3} }, // Level 13
                     new SpellsLevelEntry { Count = new int[] {0,5} }, // Level 14
@@ -376,8 +379,8 @@ namespace WotrSandbox.Content.Dragon
             {
                 bp.Name = Helpers.CreateString(IsekaiContext, "DragonClassSpellbook.Name", "Dragon Class Spellbook");
                 bp.m_CharacterClass = DragonClass.GetReference();
-                bp.m_SpellsPerDay = BlueprintTools.GetBlueprintReference<BlueprintSpellsTableReference>("dbff16956df2eda48a1da5c9617cc836");// spellsPerDay.ToReference<BlueprintSpellsTableReference>();
-                bp.m_SpellsKnown = BlueprintTools.GetBlueprintReference<BlueprintSpellsTableReference>("d232bc78d967a964bac4d4d38e7ca5f4");// spellsKnown.ToReference<BlueprintSpellsTableReference>();
+                bp.m_SpellsPerDay = spellsPerDay.ToReference<BlueprintSpellsTableReference>();
+                bp.m_SpellsKnown = spellsKnown.ToReference<BlueprintSpellsTableReference>();
                 //bp.m_SpellList = spellsList.ToReference<BlueprintSpellListReference>();
                 // Use sorcerer (aka wizard) spell list for now
                 bp.m_SpellList = BlueprintTools.GetBlueprintReference<BlueprintSpellListReference>("ba0401fdeb4062f40a7aa95b6f07fe89");
@@ -385,13 +388,15 @@ namespace WotrSandbox.Content.Dragon
                 bp.CantripsType = CantripsType.Cantrips;
                 bp.IsArcane = true;
                 bp.Spontaneous = true;
-                bp.CasterLevelModifier = 0;// -11;
+                bp.CasterLevelModifier =-11;
 
                 // These relate to special spell slots (like wizard's favourite school spell slots or shaman's spirit magic slots)
                 bp.HasSpecialSpellList = false;
                 bp.SpecialSpellListName = StaticReferences.Strings.Null;
             });
             PatchTools.RegisterSpellbook(spellbook);
+
+            var defaultBuild = GetDefaultBuild();
 
             // Main Class
             dragonClass = Helpers.CreateBlueprint<BlueprintCharacterClass>(IsekaiContext, "DragonClass", bp =>
@@ -441,7 +446,7 @@ namespace WotrSandbox.Content.Dragon
                 bp.m_Progression = DragonProgression.GetReference();
 
                 // Set Default Build later using SetDefaultBuild
-                bp.m_DefaultBuild = null;
+                bp.m_DefaultBuild = defaultBuild.ToReference<BlueprintUnitFactReference>();
 
                 bp.m_AdditionalVisualSettings = visualSettingsProgression.ToReference<BlueprintClassAdditionalVisualSettingsProgression.Reference>();// dragonAdditionalVisualSettings.ToReference<BlueprintClassAdditionalVisualSettingsProgression.Reference>();
 
@@ -486,6 +491,118 @@ namespace WotrSandbox.Content.Dragon
         public static BlueprintCharacterClassReference GetReference()
         {
             return BlueprintTools.GetModBlueprintReference<BlueprintCharacterClassReference>(IsekaiContext, "DragonClass");
+        }
+
+        private static BlueprintFeature GetDefaultBuild()
+        {
+            var basicFeatSelection = BlueprintTools.GetBlueprint<BlueprintFeatureSelection>("247a4068296e8be42890143f451b4b45");
+
+            var PowerAttack = BlueprintTools.GetBlueprint<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+            var CombatReflexes = BlueprintTools.GetBlueprint<BlueprintFeature>("0f8939ae6f220984e8fb568abbdfba95");
+            var ImprovedInitiative = BlueprintTools.GetBlueprint<BlueprintFeature>("797f25d709f559546b29e7bcb181cc74");
+            var IronWill = BlueprintTools.GetBlueprint<BlueprintFeature>("175d1577bb6c9a04baf88eec99c66334");
+            var Outflank = BlueprintTools.GetBlueprint<BlueprintFeature>("422dab7309e1ad343935f33a4d6e9f11");
+            var IronWillImproved = BlueprintTools.GetBlueprint<BlueprintFeature>("3ea2215150a1c8a4a9bfed9d9023903e");
+            var Dodge = BlueprintTools.GetBlueprint<BlueprintFeature>("97e216dbb46ae3c4faef90cf6bbe6fd5");
+            var Toughness = BlueprintTools.GetBlueprint<BlueprintFeature>("d09b20029e9abfe4480b356c92095623");
+            var SpellPenetration = BlueprintTools.GetBlueprint<BlueprintFeature>("ee7dc126939e4d9438357fbd5980d459");
+            var GreaterSpellPenetration = BlueprintTools.GetBlueprint<BlueprintFeature>("1978c3f91cfbbc24b9c9b0d017f4beec");
+
+            var defaultBuild = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonClassDefaultBuild", bp =>
+            {
+                bp.Ranks = 1;
+                bp.HideInUI = true;
+
+                bp.AddComponent<AddClassLevels>(c =>
+                {
+                    c.DoNotApplyAutomatically = false;
+                    c.m_CharacterClass = GetReference();
+                    c.Levels = 30;
+                    c.RaceStat = StatType.Strength;
+                    c.LevelsStat = StatType.Charisma;
+
+                    c.Skills = new StatType[]
+                    {
+                        StatType.SkillAthletics,
+                        StatType.SkillMobility,
+                        StatType.SkillPerception,
+                        StatType.SkillPersuasion,
+                        StatType.SkillLoreReligion,
+                        StatType.SkillLoreNature,
+                        StatType.SkillKnowledgeArcana,
+                        StatType.SkillKnowledgeWorld,
+                        StatType.SkillStealth,
+                        StatType.SkillUseMagicDevice
+                    };
+
+                    c.Selections = new SelectionEntry[]
+                    {
+                        new SelectionEntry
+                        {
+                            m_Selection = basicFeatSelection.ToReference<BlueprintFeatureSelectionReference>(),
+                            m_Features = new BlueprintFeatureReference[]
+                            {
+                                PowerAttack.ToReference<BlueprintFeatureReference>(),
+                                CombatReflexes.ToReference<BlueprintFeatureReference>(),
+                                ImprovedInitiative.ToReference<BlueprintFeatureReference>(),
+                                Outflank.ToReference<BlueprintFeatureReference>(),
+                                IronWill.ToReference<BlueprintFeatureReference>(),
+                                IronWillImproved.ToReference<BlueprintFeatureReference>(),
+                                Dodge.ToReference<BlueprintFeatureReference>(),
+                                Toughness.ToReference<BlueprintFeatureReference>(),
+                                SpellPenetration.ToReference<BlueprintFeatureReference>(),
+                                GreaterSpellPenetration.ToReference<BlueprintFeatureReference>(),
+                            }
+                        },
+                        new SelectionEntry
+                        {
+                            m_Selection = DragonBloodlineSelection.GetReference<BlueprintFeatureSelectionReference>(),
+                            m_Features = new BlueprintFeatureReference[]
+                            {
+                                DragonBloodlineGold.Instance.GetReference<BlueprintFeatureReference>()
+                            }
+                        }
+                    };
+                    c.m_SelectSpells = new BlueprintAbilityReference[]
+                    {
+                        BlueprintTools.GetBlueprintReference<BlueprintAbilityReference>("90e59f4a4ada87243b7b3535a06d0638")
+                    };
+                });
+
+
+                // Todo: update
+                bp.AddComponent<StatsDistributionPreset>(c => {
+                    c.TargetPoints = 20;
+                    c.Strength = 14;
+                    c.Dexterity = 12;
+                    c.Constitution = 8;
+                    c.Intelligence = 10;
+                    c.Wisdom = 12;
+                    c.Charisma = 17;
+                });
+                // Todo: update
+                bp.AddComponent<StatsDistributionPreset>(c => {
+                    c.TargetPoints = 25;
+                    c.Strength = 14;
+                    c.Dexterity = 13;
+                    c.Constitution = 8;
+                    c.Intelligence = 10;
+                    c.Wisdom = 12;
+                    c.Charisma = 18;
+                });
+                // Todo: update
+                bp.AddComponent<BuildBalanceRadarChart>(c => {
+                    c.Control = 2;
+                    c.Defense = 5;
+                    c.Magic = 4;
+                    c.Melee = 5;
+                    c.Ranged = 2;
+                    c.Support = 3;
+                });
+
+            });
+
+            return defaultBuild;
         }
     }
 }

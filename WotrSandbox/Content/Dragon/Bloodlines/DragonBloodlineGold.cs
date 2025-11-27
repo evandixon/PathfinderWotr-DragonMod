@@ -45,6 +45,8 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
         private const DamageEnergyType element = DamageEnergyType.Fire;
         private const string primaryBreathProjectileId = "52c3a84f628ddde4dbfb38e4a581b01a"; // FireCone30Feet00Breath
 
+        public static DragonBloodlineGold Instance { get; } = new DragonBloodlineGold();
+
         public void Add()
         {
             var dragonWings = BlueprintTools.GetBlueprint<BlueprintFeature>(sorcererDragonWingsFeatureId);
@@ -144,6 +146,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 {
                 };
             });
+        }
+        public T GetReference<T>() where T : BlueprintReferenceBase
+        {
+            return BlueprintTools.GetModBlueprintReference<T>(IsekaiContext, $"DragonBloodline{bloodlineName}");
         }
 
         private BlueprintFeature GetPrimaryBreath(BlueprintBuff breathCooldownBuff)
