@@ -42,6 +42,7 @@ namespace WotrSandbox.Content
             public static void AddIsekaiProtagonistClass()
             {
                 DragonBloodlineGold.Instance.Add();
+                DragonBloodlineSilver.Instance.Add();
                 DragonBloodlineSelection.Add();
 
                 HalfDragonFeature.Add();

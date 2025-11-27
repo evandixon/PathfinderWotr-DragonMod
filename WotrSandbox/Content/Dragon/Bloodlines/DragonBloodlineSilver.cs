@@ -32,8 +32,8 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
 
         protected override string BloodlineName => "Silver";
         protected override DamageEnergyType Element => DamageEnergyType.Cold;
-        protected override string EnergyImmunityBlueprintId => "b8bbe8f713da9ad44a899aa551ca6b5b"; // Cold
-        protected override string EnergyVulnerabilityBlueprintId => "11ac3433adfa74642a93111624376070"; // Fire
+        protected override string EnergyImmunityBlueprintId => "9ae23798a9284e044ad2716a772a410e"; // Cold
+        protected override string EnergyVulnerabilityBlueprintId => "8e934134fec60ab4c8972c85a7b62f89"; // Fire
         protected override string DragonWingsFeatureId => "0080e2cf464f67143809ed0f96ddd1f7"; // Sorcerer silver dragon wings
         protected override string PrimaryBreathProjectileId => "72b45860bdfb81f4284aa005c04594dd"; // ColdCone30Feet00Breath
         protected override string ShifterFormMediumId => "3c4bf82676d345dca2718cac680f5906";
@@ -249,6 +249,8 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
 
         protected override BlueprintFeature GetSecondaryBreath(BlueprintBuff breathCooldownBuff)
         {
+            // to-do
+
             var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility", bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");

@@ -20,7 +20,8 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodlineSelection.Description", "There are many kinds of dragons in the world.");
                 bp.m_AllFeatures = new BlueprintFeatureReference[]
                 {
-                    BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(IsekaiContext, "DragonBloodlineGold")
+                    BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(IsekaiContext, "DragonBloodlineGold"),
+                    BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(IsekaiContext, "DragonBloodlineSilver"),
                 };
             });
         }
