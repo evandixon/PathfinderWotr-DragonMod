@@ -287,6 +287,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
 
                 bp.AddComponent<AbilityEffectRunAction>(c =>
                 {
+                    // We handle the saves manually inside, so this is cosmetic / UI only
+                    c.SavingThrowType = SavingThrowType.Unknown;
+
                     c.Actions = new ActionList
                     {
                         Actions = new GameAction[]
@@ -310,20 +313,8 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                                         }
                                     }
                                 }
-                            }
-                        }
-                    };
-                });
+                            },
 
-                bp.AddComponent<AbilityEffectRunAction>(c =>
-                {
-                    // We handle the saves manually inside, so this is cosmetic / UI only
-                    c.SavingThrowType = SavingThrowType.Unknown;
-
-                    c.Actions = new ActionList
-                    {
-                        Actions = new GameAction[]
-                        {
                             // First: Fortitude save, negates Strength damage
                             new ContextActionSavingThrow
                             {

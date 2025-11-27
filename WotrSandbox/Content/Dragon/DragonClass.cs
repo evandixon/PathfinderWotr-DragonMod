@@ -448,7 +448,7 @@ namespace WotrSandbox.Content.Dragon
                 // Set Default Build later using SetDefaultBuild
                 bp.m_DefaultBuild = defaultBuild.ToReference<BlueprintUnitFactReference>();
 
-                bp.m_AdditionalVisualSettings = visualSettingsProgression.ToReference<BlueprintClassAdditionalVisualSettingsProgression.Reference>();// dragonAdditionalVisualSettings.ToReference<BlueprintClassAdditionalVisualSettingsProgression.Reference>();
+                bp.m_AdditionalVisualSettings = null;// visualSettingsProgression.ToReference<BlueprintClassAdditionalVisualSettingsProgression.Reference>();// dragonAdditionalVisualSettings.ToReference<BlueprintClassAdditionalVisualSettingsProgression.Reference>();
 
                 //bp.AddComponent<PrerequisiteCondition>(c =>
                 //{

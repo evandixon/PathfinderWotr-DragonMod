@@ -28,6 +28,7 @@ using Kingmaker.Utility;
 using Kingmaker.Visual.Animation.Kingmaker.Actions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TabletopTweaks.Core.Utilities;
 using static WotrSandbox.Main;
@@ -158,9 +159,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 bp.CanTargetPoint = true;
                 bp.CanTargetEnemies = true;
                 bp.CanTargetFriends = true;
-                bp.CanTargetSelf = true;
+                bp.CanTargetSelf = false;
                 bp.EffectOnEnemy = AbilityEffectOnUnit.Harmful;
-                bp.EffectOnAlly = AbilityEffectOnUnit.None;
+                bp.EffectOnAlly = AbilityEffectOnUnit.Harmful;
                 bp.Animation = UnitAnimationActionCastSpell.CastAnimationStyle.BreathWeapon;
                 bp.ActionType = UnitCommand.CommandType.Standard;
                 bp.Type = AbilityType.Supernatural;
@@ -178,11 +179,12 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
 
                 bp.AddComponent<AbilityEffectRunAction>(c =>
                 {
+                    c.SavingThrowType = SavingThrowType.Reflex;
+                    c.IgnoreCaster = true;
                     c.Actions = new ActionList
                     {
                         Actions = new GameAction[]
                         {
-
                             new ContextActionOnContextCaster
                             {
                                 Actions = new ActionList
@@ -203,17 +205,6 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                                     }
                                 }
                             },
-                        }
-                    };
-                });
-
-                bp.AddComponent<AbilityEffectRunAction>(c =>
-                {
-                    c.SavingThrowType = SavingThrowType.Reflex;
-                    c.Actions = new ActionList
-                    {
-                        Actions = new GameAction[]
-                        {
                             new ContextActionDealDamage
                             {
                                 m_Type = ContextActionDealDamage.Type.Damage,
@@ -229,6 +220,11 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                                     {
                                         ValueType = ContextValueType.Rank,
                                         ValueRank = AbilityRankType.DamageDice
+                                    },
+                                    BonusValue  = new ContextValue
+                                    {
+                                        ValueType = ContextValueType.Simple,
+                                        Value = 0
                                     }
                                 },
                                 IsAoE = true,
@@ -245,15 +241,11 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                     {
                         m_Value = 30
                     };
-                    c.m_LineWidth = new Feet
-                    {
-                        m_Value = 5
-                    };
                     c.NeedAttackRoll = false;
                 });
                 bp.AddComponent<ContextRankConfig>(c =>
                 {
-                    c.m_Type = Kingmaker.Enums.AbilityRankType.DamageDice;
+                    c.m_Type = AbilityRankType.DamageDice;
                     c.m_BaseValueType = ContextRankBaseValueType.ClassLevel;
                     c.m_Progression = ContextRankProgression.AsIs;
                     c.m_Max = 20;
@@ -264,7 +256,7 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 });
                 bp.AddComponent<ContextRankConfig>(c =>
                 {
-                    c.m_Type = Kingmaker.Enums.AbilityRankType.StatBonus;
+                    c.m_Type = AbilityRankType.StatBonus;
                     c.m_BaseValueType = ContextRankBaseValueType.ClassLevel;
                     c.m_Progression = ContextRankProgression.Div2;
                     c.m_Max = 20;

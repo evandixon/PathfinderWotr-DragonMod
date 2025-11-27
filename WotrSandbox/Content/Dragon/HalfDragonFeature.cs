@@ -52,11 +52,20 @@ namespace WotrSandbox.Content.Dragon
                     };
                 });
 
-                // Dragon type (e.g. immunities)
-                bp.AddComponent<AddFacts>(c => {
+                //// Dragon type (e.g. immunities)
+                //bp.AddComponent<AddFacts>(c => {
+                //    c.m_Facts = new BlueprintUnitFactReference[]
+                //    {
+                //        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("455ac88e22f55804ab87c2467deff1d6")
+                //    };
+                //});
+                bp.AddComponent<AddFacts>(c =>
+                {
                     c.m_Facts = new BlueprintUnitFactReference[]
                     {
-                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("455ac88e22f55804ab87c2467deff1d6")
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("c263f44f72df009489409af122b5eefc"),
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("4b152a7bc5bab5042b437b955fea46cd"),
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("70cffb448c132fa409e49156d013b175")
                     };
                 });
 
