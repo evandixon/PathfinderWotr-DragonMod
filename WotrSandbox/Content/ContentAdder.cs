@@ -33,14 +33,15 @@ namespace WotrSandbox.Content
             {
                 if (Initialized) return;
                 Initialized = true;
-                Main.LogDebug("first init call");
+
+                LegendXpTable.Patch();
 
                 AddIsekaiProtagonistClass();
             }
 
             public static void AddIsekaiProtagonistClass()
             {
-                DragonBloodlineGold.Add();
+                new DragonBloodlineGold().Add();
 
                 DragonClass.Add();
                 DragonNaturalWeapons.Add();

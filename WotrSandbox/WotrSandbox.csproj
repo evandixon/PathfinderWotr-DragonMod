@@ -66,10 +66,10 @@
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Owlcat.Runtime.Core">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Wrath_Data\Managed\Owlcat.Runtime.Core.dll</HintPath>
+      <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Core.dll</HintPath>
     </Reference>
     <Reference Include="Owlcat.Runtime.Validation">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure\Wrath_Data\Managed\Owlcat.Runtime.Validation.dll</HintPath>
+      <HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Validation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -372,9 +372,12 @@
     <Compile Include="Content\Dragon\Heritages\IsekaiSuccubusHeritage.cs" />
     <Compile Include="Content\Dragon\Heritages\IsekaiVampireHeritage.cs" />
     <Compile Include="Content\Dragon\Heritages\IsekaiWoodElfHeritage.cs" />
+    <Compile Include="Content\LegendXpTable.cs" />
     <Compile Include="Infrastructure\ActionFlow.cs" />
+    <Compile Include="Infrastructure\ContextCalculateAbilityParamsBasedOnClasses.cs" />
     <Compile Include="Infrastructure\ExtensionMethods.cs" />
     <Compile Include="Infrastructure\ModTTTContext.cs" />
+    <Compile Include="Infrastructure\PatchTools.cs" />
     <Compile Include="Infrastructure\StaticReferences.cs" />
     <Compile Include="Infrastructure\TTCoreExtensions.cs" />
     <Compile Include="Infrastructure\Values.cs" />

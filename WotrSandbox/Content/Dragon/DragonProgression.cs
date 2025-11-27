@@ -52,12 +52,12 @@ namespace WotrSandbox.Content.Dragon
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Name", "Dragon Intelligence");
                 bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Description", "Dragon Intelligence");
                 bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.DescriptionShort", "Dragon Intelligence");
-                bp.Ranks = 1;
+                bp.Ranks = 10;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
                     c.Descriptor = ModifierDescriptor.Racial;
                     c.Stat = StatType.Intelligence;
-                    c.Value = 2;
+                    c.Value = 1;
                 });
             });
             var dragonCharisma = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonCharismaFeature", bp =>
@@ -65,12 +65,12 @@ namespace WotrSandbox.Content.Dragon
                 bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Name", "Dragon Charisma");
                 bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Description", "Dragon Charisma");
                 bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonCharisma.DescriptionShort", "Dragon Charisma");
-                bp.Ranks = 1;
+                bp.Ranks = 10;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
                     c.Descriptor = ModifierDescriptor.Racial;
                     c.Stat = StatType.Charisma;
-                    c.Value = 2;
+                    c.Value = 1;
                 });
             });
             var dragonNaturalArmor = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonNaturalArmorFeature", bp =>
@@ -89,11 +89,26 @@ namespace WotrSandbox.Content.Dragon
 
             var bloodlineSelection = Helpers.CreateBlueprint<BlueprintFeatureSelection>(IsekaiContext, "DragonBloodlineSelection", bp =>
             {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodlineSelection.Name", "Dragon Type");
+                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodlineSelection.Description", "There are many kinds of dragons in the world.");
                 bp.m_AllFeatures = new BlueprintFeatureReference[]
                 {
                     BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(IsekaiContext, "DragonBloodlineGold")
                 };
             });
+
+            var legendaryHeroFeature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonLegendaryHeroFeature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Name", "Legendary Dragon");
+                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Description", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. You gain class levels at twice the rate of most mortals.");
+                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.DescriptionShort", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. You gain class levels at twice the rate of most mortals.");
+                bp.AddComponent<AddMechanicsFeature>(c =>
+                {
+                    c.m_Feature = AddMechanicsFeature.MechanicsFeatureType.LegendaryHero;
+                });
+            });
+
+            var sorcererCantripsFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("c58b36ec3f759c84089c67611d1bcc21"); // Sorcerer Cantrips Feature
 
             var dragonProgression = Helpers.CreateBlueprint<BlueprintProgression>(IsekaiContext, "DragonProgression", bp => {
                 bp.SetName(StaticReferences.Strings.Null);
@@ -108,74 +123,43 @@ namespace WotrSandbox.Content.Dragon
                     }
                 };
             });
-            dragonProgression.LevelEntries = new LevelEntry[20] {
-                /* Level 1 — “Your blood wakes.” (Light transformation, first powers)
-                        Give the smallest portion of stats and the “starter” features.
-                        Level 1 package:
-                        +2 STR
-                        +2 CON
-                        +2 CHA (this is small enough to give early)
-                        Natural Armor +1 (optional, fits the vibe)
-                        Breath Weapon (Minor)
-                        1/day or 1/1d4 rounds
-                        1d6 per 2 class levels
-                        Scent (dragons often have it)
 
-                        This level says:
-                        “You are becoming draconic, but not fully transformed.”
-
-                        It parallels lvl 1 of Dragon Disciple without being too explosive. */
-                Helpers.CreateLevelEntry(1, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor, bloodlineSelection),
-
-                /*
-⭐ Level 2 — “Your body changes.” (Physical metamorphosis)
-This is where you pour in the big stat increases.
-Level 2 package:
-+4 STR (bringing total to +6 STR so far)
-+2 CON (bringing total to +4 CON so far)
-+2 INT
-Natural Armor +2 (total +3 so far)
-
-This level is the “bulk” of the template power. 
-*/
-                Helpers.CreateLevelEntry(2, dragonStrength, dragonConstitution, dragonIntelligence, dragonNaturalArmor /*,goldDragonBreath*/),
-/* ⭐ Level 3 — “You are Half-Dragon.” (Capstone transformation)
-This is where the final stats and the big visual marker (wings) come in.
-Level 3 package:
-+2 STR (total +8)
-+2 CON (total +6)
-Natural Armor +1 (bringing to +4 total)
-Immunity to your dragon’s element (fire/cold/electric/acid)
-Wings
-40–60 ft fly speed
-Average maneuverability
-Breath Weapon (Full)
-1/1d4 rounds
-Scaling area (40-ft cone / 80-ft line)
-Damage = 1d6 * class level
-Blindsense 30 ft
-This level “locks in” the complete Half-Dragon template.*/
-                Helpers.CreateLevelEntry(3, dragonStrength, dragonConstitution, dragonNaturalArmor),
-                Helpers.CreateLevelEntry(4, dragonStrength, dragonNaturalArmor),
-                Helpers.CreateLevelEntry(5, generalFeatSelection),
-                Helpers.CreateLevelEntry(6, generalFeatSelection),
-                Helpers.CreateLevelEntry(7, generalFeatSelection),
-                Helpers.CreateLevelEntry(8, generalFeatSelection),
-                Helpers.CreateLevelEntry(9, generalFeatSelection),
-                Helpers.CreateLevelEntry(10, generalFeatSelection),
-                Helpers.CreateLevelEntry(11, generalFeatSelection),
-                Helpers.CreateLevelEntry(12, generalFeatSelection),
-                Helpers.CreateLevelEntry(13, generalFeatSelection),
-                Helpers.CreateLevelEntry(14, generalFeatSelection),
-                Helpers.CreateLevelEntry(15, generalFeatSelection),
-                Helpers.CreateLevelEntry(16, generalFeatSelection),
-                Helpers.CreateLevelEntry(17, generalFeatSelection),
-                Helpers.CreateLevelEntry(18, generalFeatSelection),
-                Helpers.CreateLevelEntry(19, generalFeatSelection),
-                Helpers.CreateLevelEntry(20, generalFeatSelection),
+            dragonProgression.LevelEntries = new LevelEntry[30] {
+                Helpers.CreateLevelEntry(1,sorcererCantripsFeature, legendaryHeroFeature, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor, bloodlineSelection),
+                Helpers.CreateLevelEntry(2, dragonStrength, dragonConstitution, dragonIntelligence, dragonNaturalArmor),
+                Helpers.CreateLevelEntry(3, dragonStrength, dragonConstitution, dragonCharisma, dragonNaturalArmor),
+                Helpers.CreateLevelEntry(4, dragonStrength, dragonNaturalArmor, dragonIntelligence),
+                Helpers.CreateLevelEntry(5, dragonCharisma),
+                Helpers.CreateLevelEntry(6, dragonIntelligence),
+                Helpers.CreateLevelEntry(7, dragonCharisma),
+                Helpers.CreateLevelEntry(8, dragonIntelligence),
+                Helpers.CreateLevelEntry(9, dragonCharisma),
+                Helpers.CreateLevelEntry(10, dragonIntelligence),
+                Helpers.CreateLevelEntry(11, dragonCharisma),
+                Helpers.CreateLevelEntry(12, dragonIntelligence),
+                Helpers.CreateLevelEntry(13, dragonCharisma),
+                Helpers.CreateLevelEntry(14, dragonIntelligence),
+                Helpers.CreateLevelEntry(15, dragonCharisma),
+                Helpers.CreateLevelEntry(16, dragonIntelligence),
+                Helpers.CreateLevelEntry(17, dragonCharisma),
+                Helpers.CreateLevelEntry(18, dragonIntelligence),
+                Helpers.CreateLevelEntry(19, dragonCharisma),
+                Helpers.CreateLevelEntry(20, dragonIntelligence),
+                Helpers.CreateLevelEntry(21, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(22, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(23, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(24, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(25, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(26, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(27, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(28, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(29, new BlueprintFeatureBase[0]),
+                Helpers.CreateLevelEntry(30, new BlueprintFeatureBase[0]),
             };
-            dragonProgression.UIGroups = new UIGroup[] {
-                
+            dragonProgression.UIGroups = new UIGroup[] 
+            {
+                Helpers.CreateUIGroup(legendaryHeroFeature, dragonStrength, dragonConstitution, dragonIntelligence, dragonCharisma, dragonNaturalArmor),
+
                 //// Isekai UI group
                 //Helpers.CreateUIGroup(PlotArmor, IsekaiFighterTraining, SignatureAbility, SignatureMoveSelection,
                 //    SummonHaremFeature, IsekaiAuraSelection, GodEmperorAuraSelection, DarkAuraFeature, HeroAuraSelection, Afterimage,
@@ -213,18 +197,12 @@ This level “locks in” the complete Half-Dragon template.*/
                 //Helpers.CreateUIGroup(EdgeLordLegacySelection.getClassFeature()),
             };
             dragonProgression.m_UIDeterminatorsGroup = new BlueprintFeatureBaseReference[] {
-                //IsekaiCantrips.ToReference<BlueprintFeatureBaseReference>(),
-                //StartingWeaponSelection.ToReference<BlueprintFeatureBaseReference>(),
-                //IsekaiPetSelection.ToReference<BlueprintFeatureBaseReference>(),
-                //IsekaiProficiencies.ToReference<BlueprintFeatureBaseReference>(),
-                //EdgeLordProficiencies.ToReference<BlueprintFeatureBaseReference>(),
-                //GodEmperorProficiencies.ToReference<BlueprintFeatureBaseReference>(),
-                //HeroProficiencies.ToReference<BlueprintFeatureBaseReference>(),
-                //MastermindProficiencies.ToReference<BlueprintFeatureBaseReference>(),
-                //OverlordProficiencies.ToReference<BlueprintFeatureBaseReference>(),
-                //ArcanistArcaneReservoirFeature.ToReference<BlueprintFeatureBaseReference>(),
+                bloodlineSelection.ToReference<BlueprintFeatureBaseReference>()
             };
-            DragonClass.SetProgression(dragonProgression);
+        }
+        public static BlueprintProgressionReference GetReference()
+        {
+            return BlueprintTools.GetModBlueprintReference<BlueprintProgressionReference>(IsekaiContext, "DragonProgression");
         }
     }
 }
