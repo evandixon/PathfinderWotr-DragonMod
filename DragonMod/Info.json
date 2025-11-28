@@ -1,0 +1,10 @@
+﻿{
+	"Id": "DragonMod",
+	"DisplayName": "Dragon Mod",
+	"Author": "evandixon",
+	"Version": "1.0.0",
+	"ManagerVersion": "0.25.4",
+	"Requirements": [],
+	"AssemblyName": "DragonMod.dll",
+	"EntryMethod": "DragonMod.Main.Load"
+}
