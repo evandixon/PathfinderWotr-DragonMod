@@ -255,24 +255,24 @@ namespace DragonMod.Infrastructure
             int mylevel = level + 1;
             if (mylevel > 10)
             {
-                IsekaiContext.Logger.LogError("Attempt to patch Progression Tree stopped at Level 10 to prevent endless loop, if you see this message please report so we can figure out if someone created a loop here or if this limit needs to be higher");
+                DragonModContext.Logger.LogError("Attempt to patch Progression Tree stopped at Level 10 to prevent endless loop, if you see this message please report so we can figure out if someone created a loop here or if this limit needs to be higher");
                 if (feature.name != null)
                 {
-                    IsekaiContext.Logger.LogError($"reference class={referenceClass.Guid} Stop Feature={feature.AssetGuid} name={feature.name}");
+                    DragonModContext.Logger.LogError($"reference class={referenceClass.Guid} Stop Feature={feature.AssetGuid} name={feature.name}");
                     foreach (BlueprintFeatureBase calltrace in loopPrevention)
                     {
-                        IsekaiContext.Logger.LogError($"guid={calltrace.AssetGuid}");
+                        DragonModContext.Logger.LogError($"guid={calltrace.AssetGuid}");
                     }
                 }
                 else
                 {
-                    IsekaiContext.Logger.LogError($"reference class={referenceClass.Guid} Stop Feature={feature.AssetGuid}");
+                    DragonModContext.Logger.LogError($"reference class={referenceClass.Guid} Stop Feature={feature.AssetGuid}");
                 }
                 return;
             }
             if (feature == null || myClass == null || referenceClass == null)
             {
-                IsekaiContext.Logger.LogError("Call to add feature but one of the three parameters is null");
+                DragonModContext.Logger.LogError("Call to add feature but one of the three parameters is null");
                 return;
             }
             if (FeaturesIgnoredWhenPatching.Contains(feature))
@@ -282,7 +282,7 @@ namespace DragonMod.Infrastructure
             }
             if (loopPrevention.Contains(feature))
             {
-                IsekaiContext.Logger.Log($"reference class={referenceClass.Guid} feature re-encountered at level={mylevel} guid={feature.AssetGuid} name={feature.name}");
+                DragonModContext.Logger.Log($"reference class={referenceClass.Guid} feature re-encountered at level={mylevel} guid={feature.AssetGuid} name={feature.name}");
                 return;
             }
             else
@@ -366,11 +366,11 @@ namespace DragonMod.Infrastructure
             {
                 if (feature.name != null)
                 {
-                    IsekaiContext.Logger.LogError($"Unpatachable Feature={feature.AssetGuid} name={feature.name} at level={mylevel} reason={e.Message}");
+                    DragonModContext.Logger.LogError($"Unpatachable Feature={feature.AssetGuid} name={feature.name} at level={mylevel} reason={e.Message}");
                 }
                 else
                 {
-                    IsekaiContext.Logger.LogError($"Unpatachable Feature={feature.AssetGuid} at level={mylevel} reason={e.Message}");
+                    DragonModContext.Logger.LogError($"Unpatachable Feature={feature.AssetGuid} at level={mylevel} reason={e.Message}");
                 }
             }
         }
@@ -419,7 +419,7 @@ namespace DragonMod.Infrastructure
                 || selectionGuid.Equals("5c883ae0cd6d7d5448b7a420f51f8459") // WildTalentSelection
                 ))
             {
-                IsekaiContext.Logger.LogError($"reference class={referenceClass.Guid} Stop Feature={selectionGuid} name={selection.name} reason=selection contains too many features and thus likely is a basic feat variation");
+                DragonModContext.Logger.LogError($"reference class={referenceClass.Guid} Stop Feature={selectionGuid} name={selection.name} reason=selection contains too many features and thus likely is a basic feat variation");
                 return;
             }
             foreach (BlueprintFeatureReference featureRef in selection.m_AllFeatures)
@@ -433,7 +433,7 @@ namespace DragonMod.Infrastructure
             var mylevel = level + 1;
             if (mylevel > 20)
             {
-                IsekaiContext.Logger.LogError("Attempt to patch Progression Tree stopped at Level 20 to prevent endless loop, if you see this message please report so we can figure out if someone created a loop here or if this limit needs to be higher");
+                DragonModContext.Logger.LogError("Attempt to patch Progression Tree stopped at Level 20 to prevent endless loop, if you see this message please report so we can figure out if someone created a loop here or if this limit needs to be higher");
                 return;
             }
             if (component == null) { return; }
@@ -447,7 +447,7 @@ namespace DragonMod.Infrastructure
             }
             catch (NullReferenceException)
             {
-                IsekaiContext.Logger.LogError($"{featureGuid} component cast asSpell failed due to Nullpointer");
+                DragonModContext.Logger.LogError($"{featureGuid} component cast asSpell failed due to Nullpointer");
             }
 
             try
@@ -466,7 +466,7 @@ namespace DragonMod.Infrastructure
             }
             catch (NullReferenceException)
             {
-                IsekaiContext.Logger.LogError($"{featureGuid} component cast AddSpecialSpellList failed due to Nullpointer");
+                DragonModContext.Logger.LogError($"{featureGuid} component cast AddSpecialSpellList failed due to Nullpointer");
             }
             if (component is AddAbilityUseTrigger trigger && trigger.m_Spellbooks != null && trigger.m_Spellbooks.Length > 0)
             {
@@ -563,14 +563,14 @@ namespace DragonMod.Infrastructure
                         }
                         else
                         {
-                            IsekaiContext.Logger.LogError($"{featureGuid} component cast AddFacts factRef was null");
+                            DragonModContext.Logger.LogError($"{featureGuid} component cast AddFacts factRef was null");
                         }
                     }
                 }
             }
             catch (NullReferenceException)
             {
-                IsekaiContext.Logger.LogError($"{featureGuid} component cast AddFacts failed due to Nullpointer");
+                DragonModContext.Logger.LogError($"{featureGuid} component cast AddFacts failed due to Nullpointer");
             }
             if (component is AddAbilityResources addResource)
             {

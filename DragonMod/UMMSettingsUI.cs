@@ -28,7 +28,7 @@ namespace DragonMod
 
     internal static class SettingsTabs
     {
-        private static readonly AddedContent addedContent = Main.IsekaiContext.AddedContent;
+        private static readonly AddedContent addedContent = Main.DragonModContext.AddedContent;
         public static void AddedContent()
         {
             var TabLevel = SetttingUI.TabLevel.Zero;

@@ -19,10 +19,10 @@ namespace DragonMod.Content.Dragon.Heritages {
 
         public static void Add() {
             // Spriggan Abilities
-            var Icon_Spriggan = AssetLoader.LoadInternal(IsekaiContext, "Heritages", "ICON_SPRIGGAN.png");
+            var Icon_Spriggan = AssetLoader.LoadInternal(DragonModContext, "Heritages", "ICON_SPRIGGAN.png");
             var SizeAlterationBuff = TTCoreExtensions.CreateBuff("SizeAlterationBuff", bp => {
-                bp.SetName(IsekaiContext, "Size Alteration");
-                bp.SetDescription(IsekaiContext, "This creature's size is increased by two size categories and they gain +10 Speed, +12 Strength, -2 Dexterity, +6 Constitution, and a -2 penalty to AC.");
+                bp.SetName(DragonModContext, "Size Alteration");
+                bp.SetDescription(DragonModContext, "This creature's size is increased by two size categories and they gain +10 Speed, +12 Strength, -2 Dexterity, +6 Constitution, and a -2 penalty to AC.");
                 bp.m_Icon = Icon_Spriggan;
                 bp.AddComponent<ChangeUnitSize>(c => {
                     c.m_Type = ChangeUnitSize.ChangeType.Delta;
@@ -58,8 +58,8 @@ namespace DragonMod.Content.Dragon.Heritages {
                 bp.m_Flags = BlueprintBuff.Flags.StayOnDeath;
             });
             var SizeAlterationAbility = TTCoreExtensions.CreateActivatableAbility("SizeAlterationAbility", bp => {
-                bp.SetName(IsekaiContext, "Size Alteration");
-                bp.SetDescription(IsekaiContext, "As a standard action, increase your size by two size categories and gain +10 Speed, +12 Strength, -2 Dexterity, +6 Constitution, and a -2 penalty to AC.");
+                bp.SetName(DragonModContext, "Size Alteration");
+                bp.SetDescription(DragonModContext, "As a standard action, increase your size by two size categories and gain +10 Speed, +12 Strength, -2 Dexterity, +6 Constitution, and a -2 penalty to AC.");
                 bp.m_Icon = Icon_Spriggan;
                 bp.m_Buff = SizeAlterationBuff.ToReference<BlueprintBuffReference>();
                 bp.ActivationType = AbilityActivationType.WithUnitCommand;
@@ -67,9 +67,9 @@ namespace DragonMod.Content.Dragon.Heritages {
             });
 
             // Spriggan Heritage
-            var IsekaiSprigganHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiSprigganHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai Spriggan");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Spriggan have both extreme beauty and power. "
+            var IsekaiSprigganHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiSprigganHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai Spriggan");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Spriggan have both extreme beauty and power. "
                     + "Their shape changing abilities allow them to easily defeat everyone who would underestimate their power.\n"
                     + "The Isekai Spriggan gains a +1 racial bonus on concentration checks and on the {g|Encyclopedia:DC}DC{/g} of all "
                     + "{g|Encyclopedia:Spell}spells{/g} they cast. "

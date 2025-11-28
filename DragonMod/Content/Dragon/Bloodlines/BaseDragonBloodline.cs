@@ -56,9 +56,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
             var energyVulnerability = !string.IsNullOrEmpty(EnergyVulnerabilityBlueprintId) ? BlueprintTools.GetBlueprint<BlueprintFeature>(EnergyVulnerabilityBlueprintId) : null;
             var energyImmunity = BlueprintTools.GetBlueprint<BlueprintFeature>(EnergyImmunityBlueprintId);
 
-            var breathCooldownBuff = Helpers.CreateBlueprint<BlueprintBuff>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathCooldown", bp =>
+            var breathCooldownBuff = Helpers.CreateBlueprint<BlueprintBuff>(DragonModContext, $"DragonBloodline{BloodlineName}BreathCooldown", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BreathCooldown.Name", $"{Element:f} Breath Cooldown");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BreathCooldown.Name", $"{Element:f} Breath Cooldown");
                 bp.m_Flags = BlueprintBuff.Flags.IsFromSpell;
                 bp.Frequency = DurationRate.Rounds;
                 bp.Stacking = StackingType.Replace;
@@ -71,11 +71,11 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
             var secondaryBreathFeature = GetSecondaryBreath(breathCooldownBuff);
 
-            var bloodline = Helpers.CreateBlueprint<BlueprintProgression>(IsekaiContext, $"DragonBloodline{BloodlineName}", bp =>
+            var bloodline = Helpers.CreateBlueprint<BlueprintProgression>(DragonModContext, $"DragonBloodline{BloodlineName}", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}.Name", $"{BloodlineName}");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}.Description", $"{BloodlineName} Dragon");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}.DescriptionShort", "");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}.Name", $"{BloodlineName}");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}.Description", $"{BloodlineName} Dragon");
+                bp.m_DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}.DescriptionShort", "");
                 bp.LevelEntries = new LevelEntry[30]
                 {
                     Helpers.CreateLevelEntry(1, dragonWings, energyImmunity, breathFeature),
@@ -157,14 +157,14 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
         public T GetReference<T>() where T : BlueprintReferenceBase
         {
-            return BlueprintTools.GetModBlueprintReference<T>(IsekaiContext, $"DragonBloodline{BloodlineName}");
+            return BlueprintTools.GetModBlueprintReference<T>(DragonModContext, $"DragonBloodline{BloodlineName}");
         }
 
         private BlueprintFeature GetPrimaryBreath(BlueprintBuff breathCooldownBuff)
         {
-            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility", bp =>
+            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility.Name", $"{Element:F} Breath");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility.Name", $"{Element:F} Breath");
                 bp.CanTargetPoint = true;
                 bp.CanTargetEnemies = true;
                 bp.CanTargetFriends = true;
@@ -287,12 +287,12 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     };
                 });
             });
-            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility");
-            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathAbility");
+            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility");
+            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility");
 
-            return Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}BreathFeature", bp =>
+            return Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}BreathFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BreathFeature.Name", $"{Element:F} Breath");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BreathFeature.Name", $"{Element:F} Breath");
 
                 bp.Ranks = 1;
                 bp.IsClassFeature = true;
@@ -336,10 +336,10 @@ namespace DragonMod.Content.Dragon.Bloodlines
             var ageName = age.Name.Replace(" ", "");
             var mythicDragonFormAbility = BlueprintTools.GetBlueprint<BlueprintAbility>("a0273cfaafe84f0b89a70b3580568ebc");
 
-            var buff = Helpers.CreateBlueprint<BlueprintBuff>(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff", bp =>
+            var buff = Helpers.CreateBlueprint<BlueprintBuff>(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Name", $"{BloodlineName} Dragon Form ({ageName})");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Description", $"As a {ageName} dragon, you can assume your true form of a {sizeName} dragon, gaining its physical attributes and natural weapons.");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Name", $"{BloodlineName} Dragon Form ({ageName})");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Description", $"As a {ageName} dragon, you can assume your true form of a {sizeName} dragon, gaining its physical attributes and natural weapons.");
                 bp.Comment = "";
                 bp.m_AllowNonContextActions = false;
                 bp.IsClassFeature = true;
@@ -489,9 +489,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     });
                 }
             });
-            var ability = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability", bp =>
+            var ability = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability.Name", $"Dragon Form ({ageName})");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability.Name", $"Dragon Form ({ageName})");
 
                 bp.m_DefaultAiAction = null;
                 bp.m_AutoUseIsForbidden = true;
@@ -600,9 +600,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 });
             });
 
-            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Feature", bp =>
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Feature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}Form{ageName}Feature.Name", $"Dragon Form ({ageName})");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Feature.Name", $"Dragon Form ({ageName})");
 
                 bp.Ranks = 1;
                 bp.IsClassFeature = true;
@@ -972,10 +972,10 @@ namespace DragonMod.Content.Dragon.Bloodlines
         private BlueprintFeature GetBonusSpellsFeature(DragonAge age)
         {
             var ageCategory = age.Name.Replace(" ", "");
-            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}Feature", bp =>
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}Feature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}Feature.Name", $"{BloodlineName} Dragon Bonus Spells ({ageCategory})");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}LevelFeature.Description", "At certain levels, you gain access to spells that represent the power of your dragon heritage. These spells are added to your spellbook and can be prepared and cast as normal.");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}Feature.Name", $"{BloodlineName} Dragon Bonus Spells ({ageCategory})");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BonusSpells{ageCategory}LevelFeature.Description", "At certain levels, you gain access to spells that represent the power of your dragon heritage. These spells are added to your spellbook and can be prepared and cast as normal.");
                 bp.IsClassFeature = true;
                 bp.Ranks = 1;
                 foreach (var spell in age.BonusSpells)

@@ -23,11 +23,11 @@ namespace DragonMod.Content.Dragon
         {
             var generalFeatSelection = BlueprintTools.GetBlueprint<BlueprintFeatureSelection>("247a4068296e8be42890143f451b4b45");
 
-            var legendaryHeroFeature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonLegendaryHeroFeature", bp =>
+            var legendaryHeroFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "DragonLegendaryHeroFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Name", "Legendary Dragon");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.Description", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonLegendaryHeroFeature.DescriptionShort", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonLegendaryHeroFeature.Name", "Legendary Dragon");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonLegendaryHeroFeature.Description", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
+                bp.m_DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonLegendaryHeroFeature.DescriptionShort", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
                 bp.AddComponent<AddMechanicsFeature>(c =>
                 {
                     c.m_Feature = AddMechanicsFeature.MechanicsFeatureType.LegendaryHero;
@@ -37,9 +37,9 @@ namespace DragonMod.Content.Dragon
             var simpleWeaponProficiency = BlueprintTools.GetBlueprintReference<BlueprintFeatureReference>("e70ecf1ed95ca2f40b754f1adb22bbdd");
             var halfDragonFeature = HalfDragonFeature.GetReference<BlueprintFeatureReference>();
 
-            var dragonProgression = Helpers.CreateBlueprint<BlueprintProgression>(IsekaiContext, "DragonProgression", bp => {
+            var dragonProgression = Helpers.CreateBlueprint<BlueprintProgression>(DragonModContext, "DragonProgression", bp => {
                 bp.SetName(StaticReferences.Strings.Null);
-                bp.SetDescription(IsekaiContext, "Dragon");
+                bp.SetDescription(DragonModContext, "Dragon");
                 bp.m_AllowNonContextActions = false;
                 bp.IsClassFeature = true;
                 bp.m_FeaturesRankIncrease = null;
@@ -98,7 +98,7 @@ namespace DragonMod.Content.Dragon
 
         public static BlueprintProgressionReference GetReference()
         {
-            return BlueprintTools.GetModBlueprintReference<BlueprintProgressionReference>(IsekaiContext, "DragonProgression");
+            return BlueprintTools.GetModBlueprintReference<BlueprintProgressionReference>(DragonModContext, "DragonProgression");
         }
     }
 }

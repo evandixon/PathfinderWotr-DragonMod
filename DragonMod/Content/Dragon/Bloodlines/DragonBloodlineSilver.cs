@@ -204,9 +204,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
         {
             // to-do
 
-            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility", bp =>
+            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
                 bp.CanTargetPoint = true;
                 bp.CanTargetEnemies = true;
                 bp.CanTargetFriends = true;
@@ -386,12 +386,12 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     };
                 });
             });
-            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
-            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
+            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
+            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
 
-            return Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}SecondaryBreathFeature", bp =>
+            return Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SecondaryBreathFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
 
                 bp.Ranks = 1;
                 bp.IsClassFeature = true;

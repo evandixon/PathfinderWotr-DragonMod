@@ -9,9 +9,9 @@ namespace DragonMod.Content.Dragon.Heritages {
     internal class IsekaiHighHumanHeritage {
 
         public static void Add() {
-            var ourHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiHighHumanHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai High Human");
-                bp.SetDescription(IsekaiContext,
+            var ourHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiHighHumanHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai High Human");
+                bp.SetDescription(DragonModContext,
                     "Otherworldly entities who are reincarnated into the world of Golarion as a High Human have both extreme beauty and power. "
                     + "They possess exceptional drive and a great capacity to endure and expand.\n"
                     + "The Isekai High Humans have a +2 racial bonus to all attributes.");

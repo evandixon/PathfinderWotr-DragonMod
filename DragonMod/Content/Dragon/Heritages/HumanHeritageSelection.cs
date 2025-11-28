@@ -15,24 +15,24 @@ namespace DragonMod.Content.Dragon.Heritages {
         public static void CreateDummy() {
             ourHeritages = new BlueprintFeature[] { };
 
-            ourHeritageSelection = Helpers.CreateBlueprint<BlueprintFeatureSelection>(IsekaiContext, "IsekaiHumanHeritageSelection", bp => {
-                bp.SetName(IsekaiContext, "Alternate Racial Traits");
-                bp.SetDescription(IsekaiContext, "The following alternate traits are available.");
+            ourHeritageSelection = Helpers.CreateBlueprint<BlueprintFeatureSelection>(DragonModContext, "IsekaiHumanHeritageSelection", bp => {
+                bp.SetName(DragonModContext, "Alternate Racial Traits");
+                bp.SetDescription(DragonModContext, "The following alternate traits are available.");
                 bp.IsClassFeature = true;
                 bp.Groups = new[] { FeatureGroup.Racial };
                 bp.Group = FeatureGroup.KitsuneHeritage;
                 bp.m_Features = new BlueprintFeatureReference[] { };
                 bp.m_AllFeatures = new BlueprintFeatureReference[] { };
             });
-            dummyBasicFeat = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiHumanHeritageDummyFeat", bp => {
-                bp.SetName(IsekaiContext, FeatTools.Selections.BasicFeatSelection.m_DisplayName);
-                bp.SetDescription(IsekaiContext, FeatTools.Selections.BasicFeatSelection.m_Description);
+            dummyBasicFeat = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiHumanHeritageDummyFeat", bp => {
+                bp.SetName(DragonModContext, FeatTools.Selections.BasicFeatSelection.m_DisplayName);
+                bp.SetDescription(DragonModContext, FeatTools.Selections.BasicFeatSelection.m_Description);
                 bp.m_Icon = FeatTools.Selections.BasicFeatSelection.m_Icon;
                 bp.IsClassFeature = true;
             });
-            dummyNoFeat = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiHumanHeritageNoFeat", bp => {
-                bp.SetName(IsekaiContext, "None");
-                bp.SetDescription(IsekaiContext, "No alternate trait");
+            dummyNoFeat = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiHumanHeritageNoFeat", bp => {
+                bp.SetName(DragonModContext, "None");
+                bp.SetDescription(DragonModContext, "No alternate trait");
                 bp.m_Icon = FeatTools.Selections.BasicFeatSelection.m_Icon;
                 bp.IsClassFeature = true;
             });
@@ -55,12 +55,12 @@ namespace DragonMod.Content.Dragon.Heritages {
             }
 
             if (candidate != null) {
-                IsekaiContext.Logger.Log("found a selection added by another mod, adding onto that rather than creating our own");
+                DragonModContext.Logger.Log("found a selection added by another mod, adding onto that rather than creating our own");
                 foreach (var heritage in ourHeritages) {
                     candidate.AddFeatures(heritage);
                 }
             } else {
-                IsekaiContext.Logger.Log("patching our own alternate human heritage feats into the game because no other source was present");
+                DragonModContext.Logger.Log("patching our own alternate human heritage feats into the game because no other source was present");
                 human.m_Features = new BlueprintFeatureBaseReference[] {
                     dummyBasicFeat.ToReference<BlueprintFeatureBaseReference>(),
                     skilled.ToReference<BlueprintFeatureBaseReference>(),

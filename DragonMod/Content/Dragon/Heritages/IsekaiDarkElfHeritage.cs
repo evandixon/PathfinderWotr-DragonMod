@@ -32,7 +32,7 @@ namespace DragonMod.Content.Dragon.Heritages {
 
         public static void Add() {
             // Dark Elf Abilities
-            var DrowPoisonResource = Helpers.CreateBlueprint<BlueprintAbilityResource>(IsekaiContext, "DrowPoisonResource", bp => {
+            var DrowPoisonResource = Helpers.CreateBlueprint<BlueprintAbilityResource>(DragonModContext, "DrowPoisonResource", bp => {
                 bp.m_MaxAmount = new BlueprintAbilityResource.Amount {
                     BaseValue = 0,
                     IncreasedByLevel = false,
@@ -48,7 +48,7 @@ namespace DragonMod.Content.Dragon.Heritages {
                     ResourceBonusStat = StatType.Intelligence,
                 };
             });
-            var DrowPoisonUnitProperty = Helpers.CreateBlueprint<BlueprintUnitProperty>(IsekaiContext, "DrowPoisonUnitProperty", bp => {
+            var DrowPoisonUnitProperty = Helpers.CreateBlueprint<BlueprintUnitProperty>(DragonModContext, "DrowPoisonUnitProperty", bp => {
                 bp.name = "DrowPoisonUnitProperty";
                 bp.AddComponent<SimplePropertyGetter>(c => {
                     c.Property = UnitProperty.Level;
@@ -60,8 +60,8 @@ namespace DragonMod.Content.Dragon.Heritages {
                 bp.OperationOnComponents = BlueprintUnitProperty.MathOperation.Sum;
             });
             var DrowPoisonBuff = TTCoreExtensions.CreateBuff("DrowPoisonBuff", bp => {
-                bp.SetName(IsekaiContext, "Drow Poison");
-                bp.SetDescription(IsekaiContext, "Drow Poison causes their target to become unconsious on a failed fortitude save.");
+                bp.SetName(DragonModContext, "Drow Poison");
+                bp.SetDescription(DragonModContext, "Drow Poison causes their target to become unconsious on a failed fortitude save.");
                 bp.m_Icon = Icon_AcidBomb;
                 bp.IsClassFeature = true;
                 bp.Stacking = StackingType.Replace;
@@ -96,9 +96,9 @@ namespace DragonMod.Content.Dragon.Heritages {
                     c.DC = Values.CreateContextCasterCustomPropertyValue(DrowPoisonUnitProperty);
                 });
             });
-            var DrowPoisonAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, "DrowPoisonAbility", bp => {
-                bp.SetName(IsekaiContext, "Drow Poison");
-                bp.SetDescription(IsekaiContext, "As a swift action, you can coat your weapon with a special drow poison. Enemies hit by the poisoned weapon will need to make a Fortitude save "
+            var DrowPoisonAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, "DrowPoisonAbility", bp => {
+                bp.SetName(DragonModContext, "Drow Poison");
+                bp.SetDescription(DragonModContext, "As a swift action, you can coat your weapon with a special drow poison. Enemies hit by the poisoned weapon will need to make a Fortitude save "
                     + "or become unconscious for 1 minute. This fortitude save is equal to 10 + your character level + your Intelligence modifier.");
                 bp.m_Icon = Icon_AcidBomb;
                 bp.AddComponent<AbilityEffectRunAction>(c => {
@@ -132,10 +132,10 @@ namespace DragonMod.Content.Dragon.Heritages {
             });
 
             // Dark Elf Heritage
-            var Icon_Dark_Elf = AssetLoader.LoadInternal(IsekaiContext, "Heritages", "ICON_DARK_ELF.png");
-            var IsekaiDarkElfHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiDarkElfHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai Dark Elf");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Dark Elf have both extreme beauty and power. "
+            var Icon_Dark_Elf = AssetLoader.LoadInternal(DragonModContext, "Heritages", "ICON_DARK_ELF.png");
+            var IsekaiDarkElfHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiDarkElfHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai Dark Elf");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Dark Elf have both extreme beauty and power. "
                     + "They are a cruel and cunning dark reflection of the elven race.\n"
                     + "The Isekai Dark Elf has a +4 racial {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Intelligence}Intelligence{/g}, a +2 racial bonus to "
                     + "{g|Encyclopedia:Dexterity}Dexterity{/g} and {g|Encyclopedia:Wisdom}Wisdom{/g}, and a -2 penalty to Constitution. "

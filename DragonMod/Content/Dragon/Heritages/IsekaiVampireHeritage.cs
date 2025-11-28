@@ -19,10 +19,10 @@ namespace DragonMod.Content.Dragon.Heritages {
 
         public static void Add() {
             // Vampire Heritage
-            var Icon_Vampire = AssetLoader.LoadInternal(IsekaiContext, "Heritages", "ICON_VAMPIRE.png");
-            var IsekaiVampireHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiVampireHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai Vampire");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Vampire have both extreme beauty and power. Incredibly beautiful but "
+            var Icon_Vampire = AssetLoader.LoadInternal(DragonModContext, "Heritages", "ICON_VAMPIRE.png");
+            var IsekaiVampireHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiVampireHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai Vampire");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Vampire have both extreme beauty and power. Incredibly beautiful but "
                     + "strikingly grim shades that straddle the line between humanity and vampirekind, they are often single-minded loners intent on a specific goal.\n"
                     + "The Isekai Vampire has a +4 racial {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Dexterity}Dexterity{/g} and {g|Encyclopedia:Charisma}Charisma{/g}, "
                     + "a -2 {g|Encyclopedia:Penalty}penalty{/g} to {g|Encyclopedia:Constitution}Constitution{/g}, and a +2 racial bonus on {g|Encyclopedia:Persuasion}Persuasion{/g} and "

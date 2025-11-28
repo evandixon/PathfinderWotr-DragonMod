@@ -12,11 +12,11 @@ namespace DragonMod.Content.Dragon.Features
     {
         public static BlueprintFeature Add()
         {
-            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonNaturalArmorFeature", bp =>
+            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "DragonNaturalArmorFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonNaturalArmorFeature.Name", "Dragon Natural Armor");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonNaturalArmorFeature.Description", "Dragon Natural Armor");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonNaturalArmorFeature.DescriptionShort", "Dragon Natural Armor");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonNaturalArmorFeature.Name", "Dragon Natural Armor");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonNaturalArmorFeature.Description", "Dragon Natural Armor");
+                bp.m_DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonNaturalArmorFeature.DescriptionShort", "Dragon Natural Armor");
                 bp.Ranks = 11;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
@@ -30,7 +30,7 @@ namespace DragonMod.Content.Dragon.Features
 
         public static T GetReference<T>() where T : BlueprintReferenceBase
         {
-            return BlueprintTools.GetModBlueprintReference<T>(Main.IsekaiContext, "DragonNaturalArmorFeature");
+            return BlueprintTools.GetModBlueprintReference<T>(Main.DragonModContext, "DragonNaturalArmorFeature");
         }
     }
 }

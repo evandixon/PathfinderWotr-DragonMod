@@ -19,11 +19,11 @@ namespace DragonMod.Content.Dragon
 {
     internal static class DragonClass
     {
-        private static readonly LocalizedString Name = Helpers.CreateString(IsekaiContext, $"DragonClass.Name", "Dragon");
-        private static readonly LocalizedString Description = Helpers.CreateString(IsekaiContext, $"DragonClass.Description",
+        private static readonly LocalizedString Name = Helpers.CreateString(DragonModContext, $"DragonClass.Name", "Dragon");
+        private static readonly LocalizedString Description = Helpers.CreateString(DragonModContext, $"DragonClass.Description",
             "As a result of strange magical experiments, you have become a half dragon. " +
             "Your draconic soul is incubating and you will some day become a true dragon.");
-        private static readonly LocalizedString DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonClass.DescriptionShort",
+        private static readonly LocalizedString DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonClass.DescriptionShort",
             "As a result of strange magical experiments, you have become a half dragon, with a path toward true dragonhood.");
         private static BlueprintCharacterClass dragonClass;
 
@@ -34,11 +34,11 @@ namespace DragonMod.Content.Dragon
         public static void Add()
         {
             var defaultClothesIndex = StaticReferences.BaseClasses.IndexOf(ClassTools.Classes.DragonDiscipleClass);
-            var clothesIndex = IsekaiContext.AddedContent.IsekaiDefaultClothes;
+            var clothesIndex = DragonModContext.AddedContent.IsekaiDefaultClothes;
             var maxClothesIndex = StaticReferences.BaseClasses.Length;
             var clothesClass = StaticReferences.BaseClasses[clothesIndex > -1 && clothesIndex < maxClothesIndex ? clothesIndex : defaultClothesIndex];
 
-            var visualSettings = Helpers.CreateBlueprint<BlueprintClassAdditionalVisualSettings>(IsekaiContext, "DragonClassVisual1", bp =>
+            var visualSettings = Helpers.CreateBlueprint<BlueprintClassAdditionalVisualSettings>(DragonModContext, "DragonClassVisual1", bp =>
             {
                 // ColorRamps
                 bp.ColorRamps = new[]
@@ -245,7 +245,7 @@ namespace DragonMod.Content.Dragon
 
             });
 
-            var visualSettingsProgression = Helpers.CreateBlueprint<BlueprintClassAdditionalVisualSettingsProgression>(IsekaiContext, "DragonClassVisualProgression", bp =>
+            var visualSettingsProgression = Helpers.CreateBlueprint<BlueprintClassAdditionalVisualSettingsProgression>(DragonModContext, "DragonClassVisualProgression", bp =>
             {
                 bp.Entries = new BlueprintClassAdditionalVisualSettingsProgression.Entry[]
                 {
@@ -257,7 +257,7 @@ namespace DragonMod.Content.Dragon
                 };
             });
 
-            var spellsKnown = Helpers.CreateBlueprint<BlueprintSpellsTable>(IsekaiContext, "DragonClassSpellsKnown", bp =>
+            var spellsKnown = Helpers.CreateBlueprint<BlueprintSpellsTable>(DragonModContext, "DragonClassSpellsKnown", bp =>
             {
                 bp.Levels = new SpellsLevelEntry[]
                 {
@@ -304,7 +304,7 @@ namespace DragonMod.Content.Dragon
                     new SpellsLevelEntry { Count = new int[] {0,1,1,1,1,1,1,1,1,1} }, // Level 40
                 };
             });
-            var spellsPerDay = Helpers.CreateBlueprint<BlueprintSpellsTable>(IsekaiContext, "DragonClassSpellsPerDay", bp =>
+            var spellsPerDay = Helpers.CreateBlueprint<BlueprintSpellsTable>(DragonModContext, "DragonClassSpellsPerDay", bp =>
             {
                 bp.Levels = new SpellsLevelEntry[]
                 {
@@ -351,7 +351,7 @@ namespace DragonMod.Content.Dragon
                     new SpellsLevelEntry { Count = new int[] {0,6,6,6,6,6,6,6,6,4} }, // Level 40
                 };
             });
-            var spellsList = Helpers.CreateBlueprint<BlueprintSpellList>(IsekaiContext, "DragonClassSpellsList", bp =>
+            var spellsList = Helpers.CreateBlueprint<BlueprintSpellList>(DragonModContext, "DragonClassSpellsList", bp =>
             {
                 bp.SpellsByLevel = new SpellLevelList[10]
                 {
@@ -368,9 +368,9 @@ namespace DragonMod.Content.Dragon
                 };
             });
 
-            var spellbook = Helpers.CreateBlueprint<BlueprintSpellbook>(IsekaiContext, "DragonClassSpellbook", bp =>
+            var spellbook = Helpers.CreateBlueprint<BlueprintSpellbook>(DragonModContext, "DragonClassSpellbook", bp =>
             {
-                bp.Name = Helpers.CreateString(IsekaiContext, "DragonClassSpellbook.Name", "Dragon Class Spellbook");
+                bp.Name = Helpers.CreateString(DragonModContext, "DragonClassSpellbook.Name", "Dragon Class Spellbook");
                 bp.m_CharacterClass = DragonClass.GetReference();
                 bp.m_SpellsPerDay = spellsPerDay.ToReference<BlueprintSpellsTableReference>();
                 bp.m_SpellsKnown = spellsKnown.ToReference<BlueprintSpellsTableReference>();
@@ -392,7 +392,7 @@ namespace DragonMod.Content.Dragon
             var defaultBuild = GetDefaultBuild();
 
             // Main Class
-            dragonClass = Helpers.CreateBlueprint<BlueprintCharacterClass>(IsekaiContext, "DragonClass", bp =>
+            dragonClass = Helpers.CreateBlueprint<BlueprintCharacterClass>(DragonModContext, "DragonClass", bp =>
             {
                 bp.LocalizedName = Name;
                 bp.LocalizedDescription = Description;
@@ -478,12 +478,12 @@ namespace DragonMod.Content.Dragon
             {
                 return dragonClass;
             }
-            return BlueprintTools.GetModBlueprint<BlueprintCharacterClass>(IsekaiContext, "DragonClass");
+            return BlueprintTools.GetModBlueprint<BlueprintCharacterClass>(DragonModContext, "DragonClass");
         }
 
         public static BlueprintCharacterClassReference GetReference()
         {
-            return BlueprintTools.GetModBlueprintReference<BlueprintCharacterClassReference>(IsekaiContext, "DragonClass");
+            return BlueprintTools.GetModBlueprintReference<BlueprintCharacterClassReference>(DragonModContext, "DragonClass");
         }
 
         private static BlueprintFeature GetDefaultBuild()
@@ -501,7 +501,7 @@ namespace DragonMod.Content.Dragon
             var SpellPenetration = BlueprintTools.GetBlueprint<BlueprintFeature>("ee7dc126939e4d9438357fbd5980d459");
             var GreaterSpellPenetration = BlueprintTools.GetBlueprint<BlueprintFeature>("1978c3f91cfbbc24b9c9b0d017f4beec");
 
-            var defaultBuild = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonClassDefaultBuild", bp =>
+            var defaultBuild = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "DragonClassDefaultBuild", bp =>
             {
                 bp.Ranks = 1;
                 bp.HideInUI = true;

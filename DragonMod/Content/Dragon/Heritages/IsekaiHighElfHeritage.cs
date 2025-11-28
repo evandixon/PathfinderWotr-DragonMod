@@ -20,9 +20,9 @@ namespace DragonMod.Content.Dragon.Heritages {
 
         public static void Add() {
             // High Elf Heritage
-            var IsekaiHighElfHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiHighElfHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai High Elf");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as a High Elf have both extreme beauty and power. "
+            var IsekaiHighElfHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiHighElfHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai High Elf");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as a High Elf have both extreme beauty and power. "
                     + "They are a refined and cultured reflection of the elven race.\n"
                     + "The Isekai High Elf has a +4 racial {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Wisdom}Wisdom{/g}, a +2 racial bonus to "
                     + "{g|Encyclopedia:Dexterity}Dexterity{/g} and {g|Encyclopedia:Intelligence}Intelligence{/g}, and a -2 penalty to Constitution. "

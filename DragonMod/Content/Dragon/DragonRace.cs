@@ -18,16 +18,16 @@ namespace DragonMod.Content.Dragon
 {
     public static class DragonRace
     {
-        private static readonly LocalizedString Name = Helpers.CreateString(IsekaiContext, $"DragonRace.Name", "Dragon");
-        private static readonly LocalizedString Description = Helpers.CreateString(IsekaiContext, $"DragonRace.Description",
+        private static readonly LocalizedString Name = Helpers.CreateString(DragonModContext, $"DragonRace.Name", "Dragon");
+        private static readonly LocalizedString Description = Helpers.CreateString(DragonModContext, $"DragonRace.Description",
             "Dragon");
-        private static readonly LocalizedString DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonRace.DescriptionShort",
+        private static readonly LocalizedString DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonRace.DescriptionShort",
             "Dragon");
         private static BlueprintCharacterClass dragonClass;
 
         public static void Add()
         {
-            var dragonRace = Helpers.CreateBlueprint<BlueprintRace>(IsekaiContext, "DragonRace", bp =>
+            var dragonRace = Helpers.CreateBlueprint<BlueprintRace>(DragonModContext, "DragonRace", bp =>
             {
                 // Basic fields
                 bp.m_Overrides = new List<string>();

@@ -12,9 +12,9 @@ namespace DragonMod.Content.Dragon.Features
     {
         public static void Add()
         {
-            var halfDragonFeature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "HalfDragonFeature", bp => {
-                bp.SetName(IsekaiContext, "Half-Dragon");
-                bp.SetDescription(IsekaiContext, "You have become a half dragon.");
+            var halfDragonFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "HalfDragonFeature", bp => {
+                bp.SetName(DragonModContext, "Half-Dragon");
+                bp.SetDescription(DragonModContext, "You have become a half dragon.");
                 bp.m_Icon = null;
 
                 // Attributes
@@ -48,7 +48,7 @@ namespace DragonMod.Content.Dragon.Features
                 bp.AddComponent<AddFacts>(c => {
                     c.m_Facts = new BlueprintUnitFactReference[]
                     {
-                        BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, "DragonNaturalWeaponsBuff")
+                        BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, "DragonNaturalWeaponsBuff")
                     };
                 });
 
@@ -85,7 +85,7 @@ namespace DragonMod.Content.Dragon.Features
 
         public static T GetReference<T>() where T : BlueprintReferenceBase
         {
-            return BlueprintTools.GetModBlueprintReference<T>(IsekaiContext, "HalfDragonFeature");
+            return BlueprintTools.GetModBlueprintReference<T>(DragonModContext, "HalfDragonFeature");
         }
     }
 }

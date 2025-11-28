@@ -12,11 +12,11 @@ namespace DragonMod.Content.Dragon.Features
     {
         public static BlueprintFeature Add()
         {
-            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonCharismaFeature", bp =>
+            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "DragonCharismaFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Name", "Dragon Charisma");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Description", "Dragon Charisma");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonCharisma.DescriptionShort", "Dragon Charisma");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonCharisma.Name", "Dragon Charisma");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonCharisma.Description", "Dragon Charisma");
+                bp.m_DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonCharisma.DescriptionShort", "Dragon Charisma");
                 bp.Ranks = 6;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
@@ -30,7 +30,7 @@ namespace DragonMod.Content.Dragon.Features
 
         public static T GetReference<T>() where T : BlueprintReferenceBase
         {
-            return BlueprintTools.GetModBlueprintReference<T>(Main.IsekaiContext, "DragonCharismaFeature");
+            return BlueprintTools.GetModBlueprintReference<T>(Main.DragonModContext, "DragonCharismaFeature");
         }
     }
 }

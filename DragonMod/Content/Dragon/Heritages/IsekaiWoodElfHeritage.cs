@@ -16,10 +16,10 @@ namespace DragonMod.Content.Dragon.Heritages {
 
         public static void Add() {
             // Wood Elf Heritage
-            var Icon_Wood_Elf = AssetLoader.LoadInternal(IsekaiContext, "Heritages", "ICON_WOOD_ELF.png");
-            var IsekaiWoodElfHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiWoodElfHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai Wood Elf");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Wood Elf have both extreme beauty and power. "
+            var Icon_Wood_Elf = AssetLoader.LoadInternal(DragonModContext, "Heritages", "ICON_WOOD_ELF.png");
+            var IsekaiWoodElfHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiWoodElfHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai Wood Elf");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Wood Elf have both extreme beauty and power. "
                     + "They are a nimble and natural reflection of the elven race.\n"
                     + "The Isekai Wood Elf has a +4 racial {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Dexterity}Dexterity{/g}, a +2 racial bonus to "
                     + "{g|Encyclopedia:Wisdom}Wisdom{/g} and {g|Encyclopedia:Intelligence}Intelligence{/g}, and a -2 penalty to Constitution. "

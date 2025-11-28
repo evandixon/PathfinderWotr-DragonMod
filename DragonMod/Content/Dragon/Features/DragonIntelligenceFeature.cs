@@ -12,11 +12,11 @@ namespace DragonMod.Content.Dragon.Features
     {
         public static BlueprintFeature Add()
         {
-            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonIntelligenceFeature", bp =>
+            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "DragonIntelligenceFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Name", "Dragon Intelligence");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Description", "Dragon Intelligence");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.DescriptionShort", "Dragon Intelligence");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonIntelligence.Name", "Dragon Intelligence");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonIntelligence.Description", "Dragon Intelligence");
+                bp.m_DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonIntelligence.DescriptionShort", "Dragon Intelligence");
                 bp.Ranks = 6;
                 bp.AddComponent<AddStatBonus>(c =>
                 {
@@ -30,7 +30,7 @@ namespace DragonMod.Content.Dragon.Features
 
         public static T GetReference<T>() where T : BlueprintReferenceBase
         {
-            return BlueprintTools.GetModBlueprintReference<T>(Main.IsekaiContext, "DragonIntelligenceFeature");
+            return BlueprintTools.GetModBlueprintReference<T>(Main.DragonModContext, "DragonIntelligenceFeature");
         }
     }
 }

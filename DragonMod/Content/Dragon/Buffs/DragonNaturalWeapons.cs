@@ -9,14 +9,14 @@ namespace DragonMod.Content.Dragon.Buffs
 {
     public static class DragonNaturalWeapons
     {
-        private static readonly LocalizedString Name = Helpers.CreateString(Main.IsekaiContext, $"DragonNaturalWeaponsBuff.Name", "Half Dragon Natural Weapons");
-        private static readonly LocalizedString Description = Helpers.CreateString(Main.IsekaiContext, $"DragonNaturalWeaponsBuff.Description",
+        private static readonly LocalizedString Name = Helpers.CreateString(Main.DragonModContext, $"DragonNaturalWeaponsBuff.Name", "Half Dragon Natural Weapons");
+        private static readonly LocalizedString Description = Helpers.CreateString(Main.DragonModContext, $"DragonNaturalWeaponsBuff.Description",
             "A half dragon gets 1 bite and 2x claws");
-        private static readonly LocalizedString DescriptionShort = Helpers.CreateString(Main.IsekaiContext, $"DragonNaturalWeaponsBuff.DescriptionShort",
+        private static readonly LocalizedString DescriptionShort = Helpers.CreateString(Main.DragonModContext, $"DragonNaturalWeaponsBuff.DescriptionShort",
             "Half dragon natural weapons.");
         public static void Add()
         {
-            var naturalWeaponsBuff = Helpers.CreateBlueprint<BlueprintBuff>(Main.IsekaiContext, "DragonNaturalWeaponsBuff", bp =>
+            var naturalWeaponsBuff = Helpers.CreateBlueprint<BlueprintBuff>(Main.DragonModContext, "DragonNaturalWeaponsBuff", bp =>
             {
                 bp.m_DisplayName = Name;
                 bp.m_Description = Description;

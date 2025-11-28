@@ -16,9 +16,9 @@ namespace DragonMod.Content.Dragon.Heritages {
         private static readonly BlueprintFeature DestinyBeyondBirthMythicFeat = BlueprintTools.GetBlueprint<BlueprintFeature>("325f078c584318849bfe3da9ea245b9d");
 
         public static void Add() {
-            var IsekaiFurryHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "KitsuneHalfDragonHeritage", bp => {
-                bp.SetName(IsekaiContext, "Kitsune Half-Dragon");
-                bp.SetDescription(IsekaiContext, "A kitsune who has been altered in some way to become a half dragon.");
+            var IsekaiFurryHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "KitsuneHalfDragonHeritage", bp => {
+                bp.SetName(DragonModContext, "Kitsune Half-Dragon");
+                bp.SetDescription(DragonModContext, "A kitsune who has been altered in some way to become a half dragon.");
                 bp.m_Icon = null;
 
                 // Attributes
@@ -44,7 +44,7 @@ namespace DragonMod.Content.Dragon.Heritages {
                 bp.AddComponent<AddFacts>(c => {
                     c.m_Facts = new BlueprintUnitFactReference[]
                     {
-                        BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, "DragonNaturalWeaponsBuff")
+                        BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, "DragonNaturalWeaponsBuff")
                     };
                 });
 

@@ -214,9 +214,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
         protected override BlueprintFeature GetSecondaryBreath(BlueprintBuff breathCooldownBuff)
         {
-            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility", bp =>
+            var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
                 bp.CanTargetPoint = true;
                 bp.CanTargetEnemies = true;
                 bp.CanTargetFriends = true;
@@ -387,12 +387,12 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     };
                 });
             });
-            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
-            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
+            var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
+            var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility");
 
-            return Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}SecondaryBreathFeature", bp =>
+            return Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SecondaryBreathFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SeconaryBreathAbility.Name", "Weakening Breath");
 
                 bp.Ranks = 1;
                 bp.IsClassFeature = true;
@@ -435,10 +435,10 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
         private BlueprintFeature GetBlessAtWillFeature()
         {
-            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}BlessAtWillFeature", bp =>
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}BlessAtWillFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BlessAtWillFeature.Name", $"{BloodlineName} Dragon Blessing (At-Will)");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}BlessAtWillFeature.Description", "You can cast the bless spell at will as a spell-like ability.");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BlessAtWillFeature.Name", $"{BloodlineName} Dragon Blessing (At-Will)");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BlessAtWillFeature.Description", "You can cast the bless spell at will as a spell-like ability.");
                 bp.IsClassFeature = true;
                 bp.Ranks = 1;
                 bp.AddComponent<AddFacts>(c =>
@@ -459,10 +459,10 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
         private BlueprintFeature GetSunburstAtWillFeature()
         {
-            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"DragonBloodline{BloodlineName}SunburstAtWillFeature", bp =>
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SunburstAtWillFeature", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SunburstAtWillFeature.Name", $"{BloodlineName} Dragon Sunburst (At-Will)");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonBloodline{BloodlineName}SunburstAtWillFeature.Description", "You can cast the sunburst spell at will as a spell-like ability.");
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SunburstAtWillFeature.Name", $"{BloodlineName} Dragon Sunburst (At-Will)");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SunburstAtWillFeature.Description", "You can cast the sunburst spell at will as a spell-like ability.");
                 bp.IsClassFeature = true;
                 bp.Ranks = 1;
                 bp.AddComponent<AddFacts>(c =>

@@ -39,7 +39,7 @@ namespace DragonMod.Infrastructure
         {
             if (ContainsClass(ClassTools.Classes.AllClasses, classToRegister))
             {
-                IsekaiContext.Logger.LogWarning("class already registered= " + classToRegister.name + " gui id=" + classToRegister.AssetGuid.m_Guid.ToString("N"));
+                DragonModContext.Logger.LogWarning("class already registered= " + classToRegister.name + " gui id=" + classToRegister.AssetGuid.m_Guid.ToString("N"));
                 return;
             }
             BlueprintRoot.Instance.Progression.m_CharacterClasses = ClassTools.ClassReferences.AllClasses.AddToArray(classToRegister.ToReference<BlueprintCharacterClassReference>());
@@ -73,7 +73,7 @@ namespace DragonMod.Infrastructure
         {
             if (ContainsSpellbook(mythicSpellbook.AllowedSpellbooks, spellBook))
             {
-                IsekaiContext.Logger.LogWarning("spellbook already registered= " + spellBook.name + " gui id=" + spellBook.AssetGuid.m_Guid.ToString("N") + " for mythic= " + mythicSpellbook.Name);
+                DragonModContext.Logger.LogWarning("spellbook already registered= " + spellBook.name + " gui id=" + spellBook.AssetGuid.m_Guid.ToString("N") + " for mythic= " + mythicSpellbook.Name);
                 return;
             }
             mythicSpellbook.m_AllowedSpellbooks = mythicSpellbook.m_AllowedSpellbooks.AddToArray(spellBook.ToReference<BlueprintSpellbookReference>());
@@ -113,7 +113,7 @@ namespace DragonMod.Infrastructure
                 }
                 else
                 {
-                    IsekaiContext.Logger.LogWarning("prestige class spellbook array contained null value");
+                    DragonModContext.Logger.LogWarning("prestige class spellbook array contained null value");
                 }
             }
             return false;
@@ -121,7 +121,7 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintCheck CreateCheck(string name, Action<BlueprintCheck> init = null)
         {
-            var result = Helpers.CreateBlueprint<BlueprintCheck>(IsekaiContext, name, bp => {
+            var result = Helpers.CreateBlueprint<BlueprintCheck>(DragonModContext, name, bp => {
                 bp.ShowOnce = false;
                 bp.ShowOnceCurrentDialog = false;
                 bp.DCModifiers = new DCModifier[0];
@@ -134,7 +134,7 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintAnswer CreateAnswer(string name, Action<BlueprintAnswer> init = null)
         {
-            var result = Helpers.CreateBlueprint<BlueprintAnswer>(IsekaiContext, name, bp => {
+            var result = Helpers.CreateBlueprint<BlueprintAnswer>(DragonModContext, name, bp => {
                 bp.NextCue = new CueSelection()
                 {
                     Cues = new List<BlueprintCueBaseReference>(),
@@ -175,7 +175,7 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintCue CreateCue(string name, Action<BlueprintCue> init = null)
         {
-            var result = Helpers.CreateBlueprint<BlueprintCue>(IsekaiContext, name, bp => {
+            var result = Helpers.CreateBlueprint<BlueprintCue>(DragonModContext, name, bp => {
                 bp.Speaker = new DialogSpeaker
                 {
                     m_Blueprint = null,
@@ -203,7 +203,7 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintBuff CreateBuff(string name, Action<BlueprintBuff> init = null)
         {
-            var result = Helpers.CreateBlueprint<BlueprintBuff>(IsekaiContext, name, bp => {
+            var result = Helpers.CreateBlueprint<BlueprintBuff>(DragonModContext, name, bp => {
                 bp.FxOnStart = new PrefabLink();
                 bp.FxOnRemove = new PrefabLink();
             });
@@ -213,7 +213,7 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintActivatableAbility CreateActivatableAbility(string name, Action<BlueprintActivatableAbility> init = null)
         {
-            var result = Helpers.CreateBlueprint<BlueprintActivatableAbility>(IsekaiContext, name, bp => {
+            var result = Helpers.CreateBlueprint<BlueprintActivatableAbility>(DragonModContext, name, bp => {
                 bp.IsOnByDefault = true;
                 bp.DeactivateImmediately = true;
                 bp.ActivationType = AbilityActivationType.Immediately;
@@ -235,24 +235,24 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintFeature CreateToggleBuffFeature(string name, string displayName, string description, string displayNameBuff, string descriptionBuff, Sprite icon, Action<BlueprintBuff> buffEffect = null)
         {
-            LocalizedString displayDesc = Helpers.CreateString(IsekaiContext, $"{name}.Description", description);
-            LocalizedString buffDesc = Helpers.CreateString(IsekaiContext, $"{name}Buff.Description", descriptionBuff);
+            LocalizedString displayDesc = Helpers.CreateString(DragonModContext, $"{name}.Description", description);
+            LocalizedString buffDesc = Helpers.CreateString(DragonModContext, $"{name}Buff.Description", descriptionBuff);
 
             var buff = CreateBuff($"{name}Buff", bp => {
-                bp.SetName(IsekaiContext, displayNameBuff);
+                bp.SetName(DragonModContext, displayNameBuff);
                 bp.SetDescription(buffDesc);
                 bp.m_Icon = icon;
                 bp.IsClassFeature = true;
             });
             buffEffect?.Invoke(buff);
             var ability = CreateActivatableAbility($"{name}Ability", bp => {
-                bp.SetName(IsekaiContext, displayName);
+                bp.SetName(DragonModContext, displayName);
                 bp.SetDescription(displayDesc);
                 bp.m_Icon = icon;
                 bp.m_Buff = buff.ToReference<BlueprintBuffReference>();
             });
-            var feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"{name}Feature", bp => {
-                bp.SetName(IsekaiContext, displayName);
+            var feature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"{name}Feature", bp => {
+                bp.SetName(DragonModContext, displayName);
                 bp.SetDescription(displayDesc);
                 bp.m_Icon = icon;
                 bp.AddComponent<AddFacts>(c => {
@@ -267,9 +267,9 @@ namespace DragonMod.Infrastructure
         public static BlueprintFeature CreateToggleAuraBuffFeature(string name, string description, string descriptionBuff, Sprite icon, BlueprintAbilityAreaEffect.TargetType targetType, Feet auraSize, bool affectEnemies = false, Action<BlueprintBuff> buffEffect = null)
         {
             string displayNameFromName = string.Concat(name.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
-            LocalizedString displayName = Helpers.CreateString(IsekaiContext, $"{name}.Name", displayNameFromName);
-            LocalizedString displayDesc = Helpers.CreateString(IsekaiContext, $"{name}.Description", description);
-            LocalizedString displayDescBuff = Helpers.CreateString(IsekaiContext, $"{name}Buff.Description", descriptionBuff);
+            LocalizedString displayName = Helpers.CreateString(DragonModContext, $"{name}.Name", displayNameFromName);
+            LocalizedString displayDesc = Helpers.CreateString(DragonModContext, $"{name}.Description", description);
+            LocalizedString displayDescBuff = Helpers.CreateString(DragonModContext, $"{name}Buff.Description", descriptionBuff);
             BlueprintBuff buff = CreateBuff($"{name}Buff", bp => {
                 bp.SetName(displayName);
                 bp.SetDescription(displayDescBuff);
@@ -292,7 +292,7 @@ namespace DragonMod.Infrastructure
 
         public static BlueprintFeature CreateToggleAuraFeature(string name, LocalizedString displayName, LocalizedString displayDesc, Sprite icon, Action<BlueprintAbilityAreaEffect> areaEffect = null)
         {
-            BlueprintAbilityAreaEffect area = Helpers.CreateBlueprint<BlueprintAbilityAreaEffect>(IsekaiContext, $"{name}Area", bp => {
+            BlueprintAbilityAreaEffect area = Helpers.CreateBlueprint<BlueprintAbilityAreaEffect>(DragonModContext, $"{name}Area", bp => {
                 bp.Shape = AreaEffectShape.Cylinder;
                 bp.Fx = new PrefabLink();
                 bp.AggroEnemies = false;
@@ -315,7 +315,7 @@ namespace DragonMod.Infrastructure
                 bp.m_Buff = areaBuff.ToReference<BlueprintBuffReference>();
                 bp.DoNotTurnOffOnRest = true;
             });
-            BlueprintFeature feature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, $"{name}Feature", bp => {
+            BlueprintFeature feature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"{name}Feature", bp => {
                 bp.SetName(displayName);
                 bp.SetDescription(displayDesc);
                 bp.m_Icon = icon;
@@ -341,7 +341,7 @@ namespace DragonMod.Infrastructure
 
         public static PortraitData LoadPortraitData(string folder)
         {
-            var imageFolderPath = Path.Combine(IsekaiContext.ModEntry.Path, "Assets", "Portraits", folder);
+            var imageFolderPath = Path.Combine(DragonModContext.ModEntry.Path, "Assets", "Portraits", folder);
             var smallImagePath = Path.Combine(imageFolderPath, "Small.png");
             var mediumImagePath = Path.Combine(imageFolderPath, "Medium.png");
             var fullImagePath = Path.Combine(imageFolderPath, "FullLength.png");

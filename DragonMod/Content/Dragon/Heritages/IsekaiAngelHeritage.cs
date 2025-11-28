@@ -27,11 +27,11 @@ namespace DragonMod.Content.Dragon.Heritages {
             var AasimarSpellLikeResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("a4ea5b9becd98dd47b51c8742aeb70ec");
             var AngelBoltOfJusticeAbility = BlueprintTools.GetBlueprint<BlueprintAbility>("c82168800b665324f8b4807b531fea46");
             var AngelWingsFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("d9bd0fde6deb2e44a93268f2dfb3e169");
-            var BlackWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(IsekaiContext, "BlackWingsAbility");
-            var GhostWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(IsekaiContext, "GhostWingsAbility");
+            var BlackWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(DragonModContext, "BlackWingsAbility");
+            var GhostWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(DragonModContext, "GhostWingsAbility");
 
             // Ability
-            var AngelicBoltUnitProperty = Helpers.CreateBlueprint<BlueprintUnitProperty>(IsekaiContext, "AngelicBoltUnitProperty", bp => {
+            var AngelicBoltUnitProperty = Helpers.CreateBlueprint<BlueprintUnitProperty>(DragonModContext, "AngelicBoltUnitProperty", bp => {
                 bp.name = "AngelicBoltUnitProperty";
                 bp.AddComponent<SimplePropertyGetter>(c => {
                     c.Property = UnitProperty.Level;
@@ -42,9 +42,9 @@ namespace DragonMod.Content.Dragon.Heritages {
                 bp.BaseValue = 10;
                 bp.OperationOnComponents = BlueprintUnitProperty.MathOperation.Sum;
             });
-            var AngelicBoltAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, "AngelicBoltAbility", bp => {
-                bp.SetName(IsekaiContext, "Angelic Bolt");
-                bp.SetDescription(IsekaiContext, "You release a powerful stroke of energy that deals {g|Encyclopedia:Dice}2d6{/g} points of holy {g|Encyclopedia:Damage}damage{/g} per "
+            var AngelicBoltAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, "AngelicBoltAbility", bp => {
+                bp.SetName(DragonModContext, "Angelic Bolt");
+                bp.SetDescription(DragonModContext, "You release a powerful stroke of energy that deals {g|Encyclopedia:Dice}2d6{/g} points of holy {g|Encyclopedia:Damage}damage{/g} per "
                     + "character level. The target needs to make a successful Reflex saving throw, or become prone.\n"
                     + "If the target is evil, the {g|Encyclopedia:Spell}spell{/g} instead deals 2d8 points of holy {g|Encyclopedia:Energy_Damage}damage{/g} per character level. "
                     + "The target needs to make a successful Reflex saving throw, or become prone and suffer a -2 {g|Encyclopedia:Penalty}penalty{/g} to {g|Encyclopedia:Armor_Class}AC{/g}, "
@@ -95,10 +95,10 @@ namespace DragonMod.Content.Dragon.Heritages {
             });
 
             // Angel Heritage
-            var Icon_Angel = AssetLoader.LoadInternal(IsekaiContext, "Heritages", "ICON_ANGEL.png");
-            var IsekaiAngelHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiAngelHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai Angel");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as an Angel have both extreme beauty and power. "
+            var Icon_Angel = AssetLoader.LoadInternal(DragonModContext, "Heritages", "ICON_ANGEL.png");
+            var IsekaiAngelHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiAngelHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai Angel");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as an Angel have both extreme beauty and power. "
                     + "They serve as exemplars of good and light regardless of the myriad forms they may take.\n"
                     + "The Isekai Angel has a +4 racial {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Strength}Strength{/g} and {g|Encyclopedia:Charisma}Charisma{/g}, "
                     + "and a +2 racial bonus on {g|Encyclopedia:Persuasion}Persuasion{/g} and {g|Encyclopedia:Lore_Religion}Lore (religion){/g} checks. "

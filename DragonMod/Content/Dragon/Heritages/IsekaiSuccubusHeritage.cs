@@ -33,8 +33,8 @@ namespace DragonMod.Content.Dragon.Heritages {
 
         public static void Add() {
             // Succubus Abilities
-            var Icon_Charm = AssetLoader.LoadInternal(IsekaiContext, "Features", "ICON_CHARM.png");
-            var SuccubusCharmUnitProperty = Helpers.CreateBlueprint<BlueprintUnitProperty>(IsekaiContext, "SuccubusCharmUnitProperty", bp => {
+            var Icon_Charm = AssetLoader.LoadInternal(DragonModContext, "Features", "ICON_CHARM.png");
+            var SuccubusCharmUnitProperty = Helpers.CreateBlueprint<BlueprintUnitProperty>(DragonModContext, "SuccubusCharmUnitProperty", bp => {
                 bp.name = "SuccubusCharmUnitProperty";
                 bp.AddComponent<SimplePropertyGetter>(c => {
                     c.Property = UnitProperty.Level;
@@ -45,9 +45,9 @@ namespace DragonMod.Content.Dragon.Heritages {
                 bp.BaseValue = 10;
                 bp.OperationOnComponents = BlueprintUnitProperty.MathOperation.Sum;
             });
-            var SuccubusCharmAbility = Helpers.CreateBlueprint<BlueprintAbility>(IsekaiContext, "SuccubusCharmAbility", bp => {
-                bp.SetName(IsekaiContext, "Succubus Charm");
-                bp.SetDescription(IsekaiContext, "You can make any creature fight on your side as if it was your ally. "
+            var SuccubusCharmAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, "SuccubusCharmAbility", bp => {
+                bp.SetName(DragonModContext, "Succubus Charm");
+                bp.SetDescription(DragonModContext, "You can make any creature fight on your side as if it was your ally. "
                     + "It will {g|Encyclopedia:Attack}attack{/g} your opponents to the best of its ability. "
                     + "However this creature will try to throw off the domination effect, making a {g|Encyclopedia:Saving_Throw}Will save{/g} each {g|Encyclopedia:Combat_Round}round{/g}.");
                 bp.m_Icon = Icon_Charm;
@@ -98,15 +98,15 @@ namespace DragonMod.Content.Dragon.Heritages {
                 bp.LocalizedDuration = StaticReferences.Strings.Duration.OneMinutePerLevel;
                 bp.LocalizedSavingThrow = StaticReferences.Strings.SavingThrow.WillNegates;
             });
-            var DevilWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(IsekaiContext, "DevilWingsAbility");
-            var DemonWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(IsekaiContext, "DemonWingsAbility");
-            var BlackWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(IsekaiContext, "BlackWingsAbility");
+            var DevilWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(DragonModContext, "DevilWingsAbility");
+            var DemonWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(DragonModContext, "DemonWingsAbility");
+            var BlackWingsAbility = BlueprintTools.GetModBlueprint<BlueprintActivatableAbility>(DragonModContext, "BlackWingsAbility");
 
             // Succubus Heritage
-            var Icon_Succubus = AssetLoader.LoadInternal(IsekaiContext, "Heritages", "ICON_SUCCUBUS.png");
-            var IsekaiSuccubusHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiSuccubusHeritage", bp => {
-                bp.SetName(IsekaiContext, "Isekai Succubus");
-                bp.SetDescription(IsekaiContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Succubus have both extreme beauty and power, and often "
+            var Icon_Succubus = AssetLoader.LoadInternal(DragonModContext, "Heritages", "ICON_SUCCUBUS.png");
+            var IsekaiSuccubusHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiSuccubusHeritage", bp => {
+                bp.SetName(DragonModContext, "Isekai Succubus");
+                bp.SetDescription(DragonModContext, "Otherworldly entities who are reincarnated into the world of Golarion as a Succubus have both extreme beauty and power, and often "
                     + "have a voracious appetite for sensory pleasures and carnal delights.\n"
                     + "The Isekai Succubus has a +2 racial {g|Encyclopedia:Bonus}bonus{/g} to {g|Encyclopedia:Dexterity}Dexterity{/g} and {g|Encyclopedia:Intelligence}Intelligence{/g}, "
                     + "a +4 racial bonus to {g|Encyclopedia:Charisma}Charisma{/g}, "

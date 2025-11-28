@@ -96,7 +96,7 @@ namespace DragonMod.Infrastructure
             public static readonly BlueprintFeature MartialWeaponProficiency = BlueprintTools.GetBlueprint<BlueprintFeature>("203992ef5b35c864390b4e4a1e200629");
             public static readonly BlueprintFeature ShieldsProficiency = BlueprintTools.GetBlueprint<BlueprintFeature>("cb8686e7357a68c42bdd9d4e65334633");
             public static readonly BlueprintFeature TowerShieldProficiency = BlueprintTools.GetBlueprint<BlueprintFeature>("6105f450bb2acbd458d277e71e19d835");
-            public static BlueprintFeature ExoticWeaponProficiency => BlueprintTools.GetModBlueprint<BlueprintFeature>(Main.IsekaiContext, "ExoticWeaponProficiency");
+            public static BlueprintFeature ExoticWeaponProficiency => BlueprintTools.GetModBlueprint<BlueprintFeature>(Main.DragonModContext, "ExoticWeaponProficiency");
         }
     }
 }

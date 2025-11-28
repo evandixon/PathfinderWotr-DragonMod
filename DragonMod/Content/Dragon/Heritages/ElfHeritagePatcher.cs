@@ -15,9 +15,9 @@ namespace DragonMod.Content.Dragon.Heritages
 
         public static void Patch() {
             // Get Isekai Heritages
-            var IsekaiDarkElfHeritageReference = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, "IsekaiDarkElfHeritage");
-            var IsekaiHighElfHeritageReference = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, "IsekaiHighElfHeritage");
-            var IsekaiWoodElfHeritageReference = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(IsekaiContext, "IsekaiWoodElfHeritage");
+            var IsekaiDarkElfHeritageReference = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, "IsekaiDarkElfHeritage");
+            var IsekaiHighElfHeritageReference = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, "IsekaiHighElfHeritage");
+            var IsekaiWoodElfHeritageReference = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, "IsekaiWoodElfHeritage");
 
             // Don't Add stat bonuses from Elf Race if Isekai Elf Heritage is selected
             var ElfRace = BlueprintTools.GetBlueprint<BlueprintRace>("25a5878d125338244896ebd3238226c8");

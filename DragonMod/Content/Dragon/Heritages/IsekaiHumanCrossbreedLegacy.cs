@@ -10,9 +10,9 @@ namespace DragonMod.Content.Dragon.Heritages {
         private static BlueprintFeature ourHeritage;
 
         public static void Add() {
-            ourHeritage = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "IsekaiHumanCrossbreedLegacy", bp => {
-                bp.SetName(IsekaiContext, "Isekai Crossbreed Human");
-                bp.SetDescription(IsekaiContext,
+            ourHeritage = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, "IsekaiHumanCrossbreedLegacy", bp => {
+                bp.SetName(DragonModContext, "Isekai Crossbreed Human");
+                bp.SetDescription(DragonModContext,
                     "Let us be honest, there is a reason why for any mixed race classification it is always enough to name the non human options. \n" +
                     "Because generally it is simply save to assume that the other part of it will be human. \n" +
                     "There is no other race, except for dragons, that is as flexible when it comes to its choice of bed partners and none as flexible when it comes to being fertile when crossbreeding and realistically by now there are no true pure humans left because everyone is at least (1/2)^100 something else. \n" +
