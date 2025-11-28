@@ -40,6 +40,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected override string ShifterFormLargeId => "2de04456ce2d4e79804f899498ab31cc";
         protected override string ShifterFormHugeId => "3be4d85d65a94960b4242522d0965633";
         protected override int BaseNaturalArmorBonus => 6;
+        protected override int StartingSpellcastingLevel => 11;
 
         public DragonBloodlineSilver()
         { 

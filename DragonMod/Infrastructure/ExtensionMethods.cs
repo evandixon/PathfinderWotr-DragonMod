@@ -59,11 +59,11 @@ namespace DragonMod.Infrastructure
             feature.SetDescription(modContext, desciption + BackgroundAppendix);
         }
 
-        public static void SetLocalisedName(this BlueprintUnit Unit, ModContextBase modContext, string name)
-        {
-            Unit.LocalizedName = ScriptableObject.CreateInstance<SharedStringAsset>();
-            Unit.LocalizedName.String = Helpers.CreateString(modContext, $"{Unit.LocalizedName}.LocalizedName", name);
-        }
+        //public static void SetLocalisedName(this BlueprintUnit Unit, ModContextBase modContext, string name)
+        //{
+        //    Unit.LocalizedName = ScriptableObject.CreateInstance<SharedStringAsset>();
+        //    Unit.LocalizedName.String = Helpers.CreateString(modContext, $"{Unit.LocalizedName}.LocalizedName", name);
+        //}
 
         public static void AddToSelection(this BlueprintFeatureSelection selection, BlueprintFeature feature)
         {

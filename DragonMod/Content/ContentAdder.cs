@@ -4,6 +4,7 @@ using DragonMod.Content.Dragon;
 using DragonMod.Content.Dragon.Bloodlines;
 using DragonMod.Content.Dragon.Buffs;
 using DragonMod.Content.Dragon.Features;
+using DragonMod.Content.Dragon.Bloodlines.Gold;
 
 namespace DragonMod.Content
 {
@@ -35,6 +36,7 @@ namespace DragonMod.Content
                 DragonWisdomFeature.Add();
                 DragonCharismaFeature.Add();
                 DragonNaturalArmorFeature.Add();
+                DragonLegendaryHeroFeature.Add();
 
                 DragonBloodlineGold.Instance.Add();
                 DragonBloodlineSilver.Instance.Add();
@@ -45,9 +47,7 @@ namespace DragonMod.Content
                 DragonClass.Add();
                 DragonNaturalWeapons.Add();
                 DragonProgression.Add();
-                //KitsuneHalfDragonHeritage.Add();
             }
-
         }
     }
 

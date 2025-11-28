@@ -3,8 +3,11 @@
 	"DisplayName": "Dragon Mod",
 	"Author": "evandixon",
 	"Version": "1.0.0",
-	"ManagerVersion": "0.25.4",
+	"ManagerVersion": "0.32.4",
 	"Requirements": [],
 	"AssemblyName": "DragonMod.dll",
-	"EntryMethod": "DragonMod.Main.Load"
+	"EntryMethod": "DragonMod.Main.Load",
+	"LoadAfter": [
+		"TabletopTweaks-Core"
+	]
 }

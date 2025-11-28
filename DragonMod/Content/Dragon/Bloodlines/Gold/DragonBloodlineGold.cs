@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using TabletopTweaks.Core.Utilities;
 using static DragonMod.Main;
 
-namespace DragonMod.Content.Dragon.Bloodlines
+namespace DragonMod.Content.Dragon.Bloodlines.Gold
 {
     public class DragonBloodlineGold : BaseDragonBloodline
     {
@@ -40,6 +40,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected override string ShifterFormLargeId => "5a679cd137d64c629995c626616dbb17";
         protected override string ShifterFormHugeId => "833873205d9b46e99217d02cd04a20d4";
         protected override int BaseNaturalArmorBonus => 7;
+        protected override int StartingSpellcastingLevel => 12;
 
         public DragonBloodlineGold()
         { 

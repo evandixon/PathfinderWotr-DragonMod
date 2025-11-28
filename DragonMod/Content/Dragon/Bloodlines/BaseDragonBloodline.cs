@@ -33,6 +33,7 @@ using System.Linq;
 using TabletopTweaks.Core.Utilities;
 using DragonMod.Content.Dragon.Features;
 using static DragonMod.Main;
+using Kingmaker.UnitLogic.Mechanics.Properties;
 
 namespace DragonMod.Content.Dragon.Bloodlines
 {
@@ -48,6 +49,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected abstract string ShifterFormLargeId { get; }
         protected abstract string ShifterFormHugeId { get; }
         protected abstract int BaseNaturalArmorBonus { get; }
+        protected abstract int StartingSpellcastingLevel { get; }
         protected abstract List<DragonAge> AgeCategories { get; }
 
         public void Add()
@@ -71,14 +73,24 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
             var secondaryBreathFeature = GetSecondaryBreath(breathCooldownBuff);
 
-            var bloodline = Helpers.CreateBlueprint<BlueprintProgression>(DragonModContext, $"DragonBloodline{BloodlineName}", bp =>
+            var spellbook = BaseDragonSpellbook.Add(BloodlineName, StartingSpellcastingLevel);
+
+            var backwardsCompatibility = Helpers.CreateBlueprint<BlueprintProgression>(DragonModContext, $"DragonBloodline{BloodlineName}", bp =>
             {
-                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}.Name", $"{BloodlineName}");
-                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}.Description", $"{BloodlineName} Dragon");
-                bp.m_DescriptionShort = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}.DescriptionShort", "");
-                bp.LevelEntries = new LevelEntry[30]
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Name", $"{BloodlineName} Dragon Backwards Compatibility");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"If you can read this, you should respec your character.");
+            });
+
+            var bloodline = Helpers.CreateBlueprint<BlueprintArchetype>(DragonModContext, $"DragonBloodline{BloodlineName}Archetype", bp =>
+            {
+                bp.LocalizedName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Name", $"{BloodlineName} Dragon");
+                bp.LocalizedDescription = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"As a result of strange magical experiments, you have become a half dragon. Your draconic soul is incubating and you will some day become a true dragon.");
+                bp.LocalizedDescriptionShort = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.DescriptionShort", "");
+                bp.m_ReplaceSpellbook = spellbook.ToReference<BlueprintSpellbookReference>();
+                bp.BuildChanging = true;
+                bp.AddFeatures = new LevelEntry[30]
                 {
-                    Helpers.CreateLevelEntry(1, dragonWings, energyImmunity, breathFeature),
+                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity, breathFeature),
                     Helpers.CreateLevelEntry(2, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(3, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(4, new BlueprintFeature[0]),
@@ -109,29 +121,27 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     Helpers.CreateLevelEntry(29, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(30, new BlueprintFeature[0])
                 };
-                bp.UIGroups = new UIGroup[]
-                {
-                    Helpers.CreateUIGroup(dragonWings, energyImmunity, energyVulnerability),
-                    Helpers.CreateUIGroup(breathFeature, secondaryBreathFeature),
-                };
-                bp.m_UIDeterminatorsGroup = new BlueprintFeatureBaseReference[]
-                {
-                };
+                bp.RemoveFeatures = new LevelEntry[0];
+                bp.m_StartingItems = new BlueprintItemReference[0];
+                bp.ClassSkills = new StatType[0];
+                bp.RecommendedAttributes = new StatType[0];
+                bp.NotRecommendedAttributes = new StatType[0];
+                bp.m_SignatureAbilities = new BlueprintFeatureReference[0];
             });
 
             if (energyVulnerability != null)
             {
-                bloodline.LevelEntries.Single(l => l.Level == 1).m_Features.Add(energyVulnerability.ToReference<BlueprintFeatureBaseReference>());
+                bloodline.AddFeatures.Single(l => l.Level == 1).m_Features.Add(energyVulnerability.ToReference<BlueprintFeatureBaseReference>());
             }
             if (secondaryBreathFeature != null)
             {
-                bloodline.LevelEntries.Single(l => l.Level == 1).m_Features.Add(secondaryBreathFeature.ToReference<BlueprintFeatureBaseReference>());
+                bloodline.AddFeatures.Single(l => l.Level == 1).m_Features.Add(secondaryBreathFeature.ToReference<BlueprintFeatureBaseReference>());
             }
 
             BlueprintFeature previousFormFeature = null;
             foreach (var age in AgeCategories)
             {
-                var levelEntry = bloodline.LevelEntries.Single(l => l.Level == age.HitDice);
+                var levelEntry = bloodline.AddFeatures.Single(l => l.Level == age.HitDice);
 
                 var formFeature = GetFormFeature(age, previousFormFeature?.ToReference<BlueprintUnitFactReference>());
                 levelEntry.m_Features.Add(formFeature.ToReference<BlueprintFeatureBaseReference>());
@@ -153,11 +163,45 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
                 ProcessAgeBasedStatBonusesForBaseCharacter(age, levelEntry);
             }
+
+            var spellbookFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookFeature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookFeature.Name", $"{BloodlineName} Dragon Spellbook");
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
+                bp.AddComponent<AddSpellbook>(c =>
+                {
+                    c.m_Spellbook = spellbook.ToReference<BlueprintSpellbookReference>();
+                    c.m_CasterLevel = new ContextValue
+                    {
+                        ValueType = ContextValueType.CasterProperty,
+                        Property = UnitProperty.Level,
+                        m_AbilityParameter = AbilityParameterType.Level,
+                        PropertyName = ContextPropertyName.Value1
+                    };
+                });
+            });
+            var spellbookLevelFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookLevelFeature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookLevelFeature.Name", $"{BloodlineName} Dragon Spellbook Level");
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
+                bp.HideInUI = true;
+                bp.AddComponent<AddSpellbookLevel>(c =>
+                {
+                    c.m_Spellbook = spellbook.ToReference<BlueprintSpellbookReference>();
+                });
+            });
+            //bloodline.LevelEntries.Single(l => l.Level == StartingSpellcastingLevel).m_Features.Add(spellbookFeature.ToReference<BlueprintFeatureBaseReference>());
+            //for (int i = StartingSpellcastingLevel; i <= 30; i++)
+            //{
+            //    bloodline.LevelEntries.Single(l => l.Level == i).m_Features.Add(spellbookLevelFeature.ToReference<BlueprintFeatureBaseReference>());
+            //}
         }
 
         public T GetReference<T>() where T : BlueprintReferenceBase
         {
-            return BlueprintTools.GetModBlueprintReference<T>(DragonModContext, $"DragonBloodline{BloodlineName}");
+            return BlueprintTools.GetModBlueprintReference<T>(DragonModContext, $"DragonBloodline{BloodlineName}Archetype");
         }
 
         private BlueprintFeature GetPrimaryBreath(BlueprintBuff breathCooldownBuff)
