@@ -41,6 +41,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
         protected override string ShifterFormHugeId => "833873205d9b46e99217d02cd04a20d4";
         protected override int BaseNaturalArmorBonus => 7;
         protected override int StartingSpellcastingLevel => 12;
+        protected override DiceType PrimaryBreathWeaponDamageDie => DiceType.D10;
 
         public DragonBloodlineGold()
         { 
@@ -58,6 +59,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     Name = DragonAgeName.VeryYoung,
                     Size = Size.Medium,
                     HitDice = 10,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                 },
                 new DragonAge
@@ -65,6 +67,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     Name = DragonAgeName.Young,
                     Size = Size.Large,
                     HitDice = 12,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(0, "95f206566c5261c42aa5b3e7e0d1e36c"), // Light (MageLight)
@@ -78,6 +81,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     Name = DragonAgeName.Juvenile,
                     Size = Size.Large,
                     HitDice = 14,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>
                     {
                         new Spell(1, "9d5d2d3ffdd73c648af3eb3e585b1113") // Divine Favor
@@ -94,6 +98,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 16,
                     DamageResistance = 5,
                     SpellResistance = 25,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(1, "183d5bb91dea3a1489a6db6c9cb64445"), // Shield of Faith
@@ -108,6 +113,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 18,
                     DamageResistance = 5,
                     SpellResistance = 25,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>
                     {
                         new Spell(2, "03a9630394d10164a9410882d31572f0"), // Aid
@@ -126,6 +132,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 20,
                     DamageResistance = 5,
                     SpellResistance = 25,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(2, "e84fc922ccf952943b5240293669b171"), // Lesser Restoration
@@ -141,6 +148,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 22,
                     DamageResistance = 10,
                     SpellResistance = 29,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(3, "486eaff58293f6441a5c2759c4872f98"), // Haste
@@ -156,6 +164,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 24,
                     DamageResistance = 14,
                     SpellResistance = 30,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(4, "5bdc37e4acfa209408334326076a43bc"), // Dimension Door (substitute for Teleport)
@@ -172,6 +181,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 26,
                     DamageResistance = 15,
                     SpellResistance = 31,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {                    
                         //new Spell(5, "5bdc37e4acfa209408334326076a43bc"), // True Seeing
@@ -191,6 +201,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 28,
                     DamageResistance = 20,
                     SpellResistance = 32,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(8, "42aa71adc7343714fa92e471baa98d42") // Protection from Spells
@@ -203,6 +214,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
                     HitDice = 30,
                     DamageResistance = 20,
                     SpellResistance = 34,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(8, "cbf3bafa8375340498b86a3313a11e2f") // Euphoric Tranquility

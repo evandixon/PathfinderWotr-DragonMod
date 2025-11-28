@@ -50,6 +50,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected abstract string ShifterFormHugeId { get; }
         protected abstract int BaseNaturalArmorBonus { get; }
         protected abstract int StartingSpellcastingLevel { get; }
+        protected abstract DiceType PrimaryBreathWeaponDamageDie { get; }
         protected abstract List<DragonAge> AgeCategories { get; }
 
         public void Add()
@@ -90,7 +91,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 bp.BuildChanging = true;
                 bp.AddFeatures = new LevelEntry[30]
                 {
-                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity, breathFeature),
+                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity),
                     Helpers.CreateLevelEntry(2, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(3, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(4, new BlueprintFeature[0]),
@@ -133,20 +134,30 @@ namespace DragonMod.Content.Dragon.Bloodlines
             {
                 bloodline.AddFeatures.Single(l => l.Level == 1).m_Features.Add(energyVulnerability.ToReference<BlueprintFeatureBaseReference>());
             }
-            if (secondaryBreathFeature != null)
-            {
-                bloodline.AddFeatures.Single(l => l.Level == 1).m_Features.Add(secondaryBreathFeature.ToReference<BlueprintFeatureBaseReference>());
-            }
 
             BlueprintFeature previousFormFeature = null;
             foreach (var age in AgeCategories)
             {
-                var levelEntry = bloodline.AddFeatures.Single(l => l.Level == age.HitDice);
+                var breathStartingLevel = age.HitDice; // Withold breath until the dragon reaches the starting HD so the math works right
+                var shapeshiftStartingLevel = age.HitDice;
+                if (age.Name == DragonAgeName.Wyrmling)
+                {
+                    // Start at level 1 to give the feel of a dragon at the start
+                    shapeshiftStartingLevel = 1;
+                }
+                
+                var levelEntry = bloodline.AddFeatures.Single(l => l.Level == shapeshiftStartingLevel);
 
                 var formFeature = GetFormFeature(age, previousFormFeature?.ToReference<BlueprintUnitFactReference>());
                 levelEntry.m_Features.Add(formFeature.ToReference<BlueprintFeatureBaseReference>());
                 previousFormFeature = formFeature;
-                
+
+                levelEntry.m_Features.Add(breathFeature.ToReference<BlueprintFeatureBaseReference>());
+                if (secondaryBreathFeature != null)
+                {
+                    levelEntry.m_Features.Add(secondaryBreathFeature.ToReference<BlueprintFeatureBaseReference>());
+                }
+
                 if (age.BonusSpells?.Any() == true)
                 {
                     var spellsFeature = GetBonusSpellsFeature(age);
@@ -206,6 +217,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
         private BlueprintFeature GetPrimaryBreath(BlueprintBuff breathCooldownBuff)
         {
+            var featureName = $"DragonBloodline{BloodlineName}BreathFeature";
             var breathAbility = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility", bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility.Name", $"{Element:F} Breath");
@@ -268,7 +280,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                                 },
                                 Value = new ContextDiceValue
                                 {
-                                    DiceType = DiceType.D6,
+                                    DiceType = PrimaryBreathWeaponDamageDie,
                                     DiceCountValue = new ContextValue
                                     {
                                         ValueType = ContextValueType.Rank,
@@ -299,13 +311,14 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 bp.AddComponent<ContextRankConfig>(c =>
                 {
                     c.m_Type = AbilityRankType.DamageDice;
-                    c.m_BaseValueType = ContextRankBaseValueType.ClassLevel;
-                    c.m_Progression = ContextRankProgression.AsIs;
+                    c.m_BaseValueType = ContextRankBaseValueType.FeatureRank;
+                    c.m_Progression = ContextRankProgression.DoublePlusBonusValue;
                     c.m_Max = 20;
                     c.m_Class = new BlueprintCharacterClassReference[]
                     {
                         DragonClass.GetReference()
                     };
+                    c.m_Feature = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(DragonModContext, featureName);
                 });
                 bp.AddComponent<ContextRankConfig>(c =>
                 {
@@ -334,11 +347,11 @@ namespace DragonMod.Content.Dragon.Bloodlines
             var breathAbilityReference = BlueprintTools.GetModBlueprintReference<BlueprintAbilityReference>(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility");
             var breathAbilityReferenceUnit = BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, $"DragonBloodline{BloodlineName}BreathAbility");
 
-            return Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}BreathFeature", bp =>
+            return Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, featureName, bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}BreathFeature.Name", $"{Element:F} Breath");
 
-                bp.Ranks = 1;
+                bp.Ranks = 12;
                 bp.IsClassFeature = true;
                 bp.AddComponent<AddFacts>(c =>
                 {
@@ -389,7 +402,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 bp.IsClassFeature = true;
                 bp.m_Flags = 0;
                 bp.Stacking = StackingType.Replace;
-                bp.Ranks = 0;
+                bp.Ranks = (int)BlueprintBuff.Flags.StayOnDeath;
                 bp.TickEachSecond = false;
                 bp.Frequency = DurationRate.Rounds;
                 bp.FxOnStart = null;
@@ -398,29 +411,90 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
                 bp.m_Icon = mythicDragonFormAbility.m_Icon;
 
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.MainHand;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.OffHand;
+                });
+                //bp.AddComponent<LockEquipmentSlot>(c =>
+                //{
+                //    c.m_SlotType = LockEquipmentSlot.SlotType.Armor;
+                //});
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon1;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon2;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon3;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon4;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon5;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon6;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon7;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Weapon8;
+                });
+                bp.AddComponent<AddFacts>(c =>
+                {
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        // Barding proficiency
+                        new BlueprintUnitFactReference
+                        {
+                            deserializedGuid = BlueprintGuid.Parse("c62ba548b1a34b94b9802925b35737c2")
+                        }
+                    };
+                });
                 bp.AddComponent<Polymorph>(c =>
                 {
                     c.m_Race = null;
                     c.m_SpecialDollType = SpecialDollType.None;
                     c.m_ReplaceUnitForInspection = null;
                     //m_PortraitTypeEntry = UnitEntityData.PortraitType.SmallPortrait,
-                    c.m_KeepSlots = false;
+                    c.m_KeepSlots = true;
                     c.UseSizeAsBaseForDamage = true;
-
                     c.NaturalArmor = Math.Max(BaseNaturalArmorBonus - 4, 0); // Age-specific boosts appllied to character, not polymorh.. 4 subtracted since that's been front-loaded in the Half Dragon feature
 
                     c.m_MainHand = null;
                     c.m_OffHand = null;
                     c.AllowDamageTransfer = true;
-                    c.m_Facts = new BlueprintUnitFactReference[]
-                    {
-                        // Turn back ability standard
-                        new BlueprintUnitFactReference
-                        {
-                            deserializedGuid = BlueprintGuid.Parse("bd09b025ee2a82f46afab922c4decca9")
-                        },
-                    };
                     c.m_SilentCaster = true;
+                    if (age.CanChangeShape)
+                    {
+                        c.m_Facts = new BlueprintUnitFactReference[]
+                        {
+                            // Turn back ability standard
+                            new BlueprintUnitFactReference
+                            {
+                                deserializedGuid = BlueprintGuid.Parse("bd09b025ee2a82f46afab922c4decca9")
+                            },
+                        };
+                    }
+                    else
+                    {
+                        c.m_Facts = Array.Empty<BlueprintUnitFactReference>();
+                    }
 
                     c.Size = age.Size;
 
@@ -654,7 +728,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     c.m_Facts = new BlueprintUnitFactReference[]
                     {
-                        ability.ToReference<BlueprintUnitFactReference>()
+                        age.CanChangeShape 
+                        ? ability.ToReference<BlueprintUnitFactReference>() 
+                        : buff.ToReference<BlueprintUnitFactReference>()
                     };
                 });
                 if (previousStageFeature != null)

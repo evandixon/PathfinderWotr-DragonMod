@@ -41,6 +41,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected override string ShifterFormHugeId => "3be4d85d65a94960b4242522d0965633";
         protected override int BaseNaturalArmorBonus => 6;
         protected override int StartingSpellcastingLevel => 11;
+        protected override DiceType PrimaryBreathWeaponDamageDie => DiceType.D8;
 
         public DragonBloodlineSilver()
         { 
@@ -58,6 +59,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     Name = DragonAgeName.VeryYoung,
                     Size = Size.Medium,
                     HitDice = 9,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                 },
                 new DragonAge
@@ -65,6 +67,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     Name = DragonAgeName.Young,
                     Size = Size.Large,
                     HitDice = 11,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(0, "95f206566c5261c42aa5b3e7e0d1e36c"), // Light (MageLight)
@@ -76,6 +79,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     Name = DragonAgeName.Juvenile,
                     Size = Size.Large,
                     HitDice = 13,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>
                     {
                         new Spell(1, "9d5d2d3ffdd73c648af3eb3e585b1113"), // Divine Favor
@@ -91,6 +95,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 15,
                     DamageResistance = 5,
                     SpellResistance = 25,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(1, "ef768022b0785eb43a18969903c537c4"), // Shield
@@ -104,6 +109,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 17,
                     DamageResistance = 5,
                     SpellResistance = 25,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>
                     {
                         new Spell(3, "92681f181b507b34ea87018e8f7a528a"), // Dispel Magic
@@ -121,6 +127,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 19,
                     DamageResistance = 10,
                     SpellResistance = 26,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(4, "5bdc37e4acfa209408334326076a43bc"), // Dimension Door
@@ -134,6 +141,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 21,
                     DamageResistance = 10,
                     SpellResistance = 28,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(5, "f9910c76efc34af41b6e43d5d8752f0f"), // Flame Strike
@@ -148,6 +156,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 23,
                     DamageResistance = 15,
                     SpellResistance = 29,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         // Break Enchantment
@@ -162,6 +171,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 25,
                     DamageResistance = 15,
                     SpellResistance = 30,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {                    
                         // Holy Word
@@ -178,6 +188,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 27,
                     DamageResistance = 20,
                     SpellResistance = 31,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(8, "808ab74c12df8784ab4eeaf6a107dbea") // Holy Aura
@@ -190,6 +201,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     HitDice = 29,
                     DamageResistance = 20,
                     SpellResistance = 33,
+                    CanChangeShape = true,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(8, "1f173a16120359e41a20fc75bb53d449") // Mass cure critical wounds
