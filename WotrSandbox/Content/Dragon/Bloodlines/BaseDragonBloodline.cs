@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TabletopTweaks.Core.Utilities;
+using WotrSandbox.Content.Dragon.Features;
 using static WotrSandbox.Main;
 
 namespace WotrSandbox.Content.Dragon.Bloodlines
@@ -46,6 +47,7 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
         protected abstract string ShifterFormMediumId { get; }
         protected abstract string ShifterFormLargeId { get; }
         protected abstract string ShifterFormHugeId { get; }
+        protected abstract int BaseNaturalArmorBonus { get; }
         protected abstract List<DragonAge> AgeCategories { get; }
 
         public void Add()
@@ -62,7 +64,11 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 bp.Stacking = StackingType.Replace;
             });
 
+            // Note: this is the half-dragon breath
+            // True dragon breath starts lower and scales much higher
+            // It should be replaced somewhere along the way
             var breathFeature = GetPrimaryBreath(breathCooldownBuff);
+
             var secondaryBreathFeature = GetSecondaryBreath(breathCooldownBuff);
 
             var bloodline = Helpers.CreateBlueprint<BlueprintProgression>(IsekaiContext, $"DragonBloodline{BloodlineName}", bp =>
@@ -144,8 +150,11 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                         levelEntry.m_Features.Add(feature().ToReference<BlueprintFeatureBaseReference>());
                     }
                 }
+
+                ProcessAgeBasedStatBonusesForBaseCharacter(age, levelEntry);
             }
         }
+
         public T GetReference<T>() where T : BlueprintReferenceBase
         {
             return BlueprintTools.GetModBlueprintReference<T>(IsekaiContext, $"DragonBloodline{BloodlineName}");
@@ -354,10 +363,7 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                     c.m_KeepSlots = false;
                     c.UseSizeAsBaseForDamage = true;
 
-                    c.StrengthBonus = age.StrengthBonus;
-                    c.DexterityBonus = age.DexterityBonus;
-                    c.ConstitutionBonus = age.ConstitutionBonus;
-                    c.NaturalArmor = age.NaturalArmorBonus;
+                    c.NaturalArmor = Math.Max(BaseNaturalArmorBonus - 4, 0); // Age-specific boosts appllied to character, not polymorh.. 4 subtracted since that's been front-loaded in the Half Dragon feature
 
                     c.m_MainHand = null;
                     c.m_OffHand = null;
@@ -453,7 +459,11 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                     m_Feature = AddMechanicsFeature.MechanicsFeatureType.NaturalSpell
                 });
                 bp.AddComponent<NotDispelable>();
-
+                bp.AddComponent<ChangeUnitSize>(c =>
+                {
+                    c.m_Type = ChangeUnitSize.ChangeType.Value;
+                    c.Size = age.Size;
+                });
 
                 if (age.DamageResistance > 0)
                 {
@@ -627,25 +637,29 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
 
+            c.StrengthBonus = -4;
+            c.DexterityBonus = 2;
+            c.ConstitutionBonus = 0;
+
             c.m_AdditionalLimbs = new[]
             {
-                    // Bite 1d4
-                    new BlueprintItemWeaponReference
-                    {
-                        deserializedGuid = BlueprintGuid.Parse("35dfad6517f401145af54111be04d6cf")
-                    },
-                    // Claw 1d3
-                    new BlueprintItemWeaponReference
-                    {
-                        deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
-                    },
+                // Bite 1d4
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("35dfad6517f401145af54111be04d6cf")
+                },
+                // Claw 1d3
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
+                },
                         
-                    // Claw 1d3
-                    new BlueprintItemWeaponReference
-                    {
-                        deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
-                    }
-                };
+                // Claw 1d3
+                new BlueprintItemWeaponReference
+                {
+                    deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
+                }
+            };
         }
 
         private void ApplySmallFormPolymorphSettings(Polymorph c)
@@ -659,6 +673,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.StrengthBonus = -2;
+            c.DexterityBonus = 2;
+            c.ConstitutionBonus = 0;
 
             c.m_AdditionalLimbs = new[]
             {
@@ -692,6 +710,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.StrengthBonus = 0;
+            c.DexterityBonus = 0;
+            c.ConstitutionBonus = 0;
 
             c.m_AdditionalLimbs = new[]
             {
@@ -738,6 +760,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.StrengthBonus = 4;
+            c.DexterityBonus = -2;
+            c.ConstitutionBonus = 2;
 
             c.m_AdditionalLimbs = new[]
             {
@@ -790,6 +816,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
 
+            c.StrengthBonus = 8;
+            c.DexterityBonus = -4;
+            c.ConstitutionBonus = 4;
+
             c.m_AdditionalLimbs = new[]
             {
                 // Bite 2d6 // Todo: upgrade to 2d8
@@ -841,6 +871,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
 
+            c.StrengthBonus = 12;
+            c.DexterityBonus = -4;
+            c.ConstitutionBonus = 6;
+
             c.m_AdditionalLimbs = new[]
             {
                 // Bite 2d6 // Todo: upgrade to 4d6
@@ -891,6 +925,10 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             c.m_EnterTransition = shifterFormBuffPolymorph.m_EnterTransition;
             c.m_ExitTransition = shifterFormBuffPolymorph.m_ExitTransition;
             c.m_TransitionExternal = shifterFormBuffPolymorph.m_TransitionExternal;
+
+            c.StrengthBonus = 16;
+            c.DexterityBonus = -4;
+            c.ConstitutionBonus = 8;
 
             c.m_AdditionalLimbs = new[]
             {
@@ -952,6 +990,117 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             });
 
             return feature;
+        }
+
+        private void ProcessAgeBasedStatBonusesForBaseCharacter(DragonAge age, LevelEntry levelEntry)
+        {
+            // Here's how the math works
+            // Wyrmlings are the baseline. Age number is 1. Very Young is 2, Young is 3, etc.
+            // See "Table: Dragon Ability Scores" on https://www.d20pfsrd.com/bestiary/monster-listings/dragons/dragon/
+            // For every dragon after Wyrmling,
+            // STR = Age * 2 + 2
+            // (I'm not finishing the table since I did different math on paper)
+            // When we combine the above table with "Table: Ability Adjustments from Size Changes" on https://www.d20pfsrd.com/magic#TOC-Transmutation,
+            // and fudge it a little, we get stat adjustments to apply to a Medium character
+            // if we pretend the dragon is the true form and the base character is the polymorph
+            //  1: (base)
+            //  2: STR+2, DEX+0, CON+2
+            //  3: STR+4, DEX+0, CON+2
+            //  4: STR+4, DEX+0, CON+2
+            //  5: STR+4, DEX+0, CON+2
+            //  6: STR+6, DEX+0, CON+4
+            //  7: STR+6, DEX-2, CON+4
+            //  8: STR+8, DEX-2, CON+4
+            //  9: STR+8, DEX-2, CON+4
+            // 10: STR+10, DEX-2, CON+6
+            // 11: STR+10, DEX-4, CON+6
+            // 12: STR+12, DEX-4, CON+6
+            // We will then apply "Table: Ability Adjustments from Size Changes" in reverse to get the stats for the true dragon forms
+            // Mental abilities are easy since shapeshifting doesn't affect them
+
+            // Natural armor is simply increased by 3 each level
+
+            // Tl;dr: these increases represent the increases to the dragon form minus the polymorph adjustment
+            // You're a true dragon, but limited by the mortal form you've polymorphed into
+            // We'll use the dragon form to put things back as Apsu intended
+
+
+            switch (age.Name)
+            {
+                // 2
+                case DragonAgeName.VeryYoung:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonStrengthFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonConstitutionFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonIntelligenceFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonWisdomFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonCharismaFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 3
+                case DragonAgeName.Young:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonStrengthFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 4
+                case DragonAgeName.Juvenile:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonIntelligenceFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonWisdomFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonCharismaFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 5
+                case DragonAgeName.YoungAdult:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 6
+                case DragonAgeName.Adult:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonStrengthFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonConstitutionFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonIntelligenceFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonWisdomFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonCharismaFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 7
+                case DragonAgeName.MatureAdult:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonDexterityFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 8
+                case DragonAgeName.Old:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonStrengthFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonIntelligenceFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonWisdomFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonCharismaFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 9
+                case DragonAgeName.VeryOld:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonStrengthFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 10
+                case DragonAgeName.Ancient:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonStrengthFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonConstitutionFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonIntelligenceFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonWisdomFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonCharismaFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 11
+                case DragonAgeName.Wyrm:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonDexterityFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+                // 12
+                case DragonAgeName.GreatWyrm:
+                    levelEntry.m_Features.Add(DragonNaturalArmorFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonIntelligenceFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonWisdomFeature.GetReference<BlueprintFeatureBaseReference>());
+                    levelEntry.m_Features.Add(DragonCharismaFeature.GetReference<BlueprintFeatureBaseReference>());
+                    break;
+            }
         }
     }
 }

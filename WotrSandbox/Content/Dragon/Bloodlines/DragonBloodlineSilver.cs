@@ -39,6 +39,7 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
         protected override string ShifterFormMediumId => "3c4bf82676d345dca2718cac680f5906";
         protected override string ShifterFormLargeId => "2de04456ce2d4e79804f899498ab31cc";
         protected override string ShifterFormHugeId => "3be4d85d65a94960b4242522d0965633";
+        protected override int BaseNaturalArmorBonus => 6;
 
         public DragonBloodlineSilver()
         { 
@@ -46,35 +47,23 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
             {
                 new DragonAge
                 {
-                    Name = "Wyrmling",
+                    Name = DragonAgeName.Wyrmling,
                     Size = Size.Small,
                     HitDice = 7,
-                    StrengthBonus = 2,
-                    DexterityBonus = 2,
-                    ConstitutionBonus = 2,
-                    NaturalArmorBonus = 2,
                     BonusSpells = new List<Spell>()
                 },
                 new DragonAge
                 {
-                    Name = "Very Young",
+                    Name = DragonAgeName.VeryYoung,
                     Size = Size.Medium,
                     HitDice = 9,
-                    StrengthBonus = 4,
-                    DexterityBonus = 0,
-                    ConstitutionBonus = 2,
-                    NaturalArmorBonus = 5,
                     BonusSpells = new List<Spell>()
                 },
                 new DragonAge
                 {
-                    Name = "Young",
+                    Name = DragonAgeName.Young,
                     Size = Size.Large,
                     HitDice = 11,
-                    StrengthBonus = 6,
-                    DexterityBonus = -2,
-                    ConstitutionBonus = 4,
-                    NaturalArmorBonus = 8,
                     BonusSpells = new List<Spell>()
                     {
                         new Spell(0, "95f206566c5261c42aa5b3e7e0d1e36c"), // Light (MageLight)
@@ -83,13 +72,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Juvenile",
+                    Name = DragonAgeName.Juvenile,
                     Size = Size.Large,
                     HitDice = 13,
-                    StrengthBonus = 6,
-                    DexterityBonus = -2,
-                    ConstitutionBonus = 4,
-                    NaturalArmorBonus = 8,
                     BonusSpells = new List<Spell>
                     {
                         new Spell(1, "9d5d2d3ffdd73c648af3eb3e585b1113"), // Divine Favor
@@ -100,13 +85,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Young Adult",
+                    Name = DragonAgeName.YoungAdult,
                     Size = Size.Huge,
                     HitDice = 15,
-                    StrengthBonus = 8,
-                    DexterityBonus = -4,
-                    ConstitutionBonus = 4,
-                    NaturalArmorBonus = 14,
                     DamageResistance = 5,
                     SpellResistance = 25,
                     BonusSpells = new List<Spell>()
@@ -117,13 +98,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Adult",
+                    Name = DragonAgeName.Adult,
                     Size = Size.Huge,
                     HitDice = 17,
-                    StrengthBonus = 8,
-                    DexterityBonus = -4,
-                    ConstitutionBonus = 4,
-                    NaturalArmorBonus = 17,
                     DamageResistance = 5,
                     SpellResistance = 25,
                     BonusSpells = new List<Spell>
@@ -138,13 +115,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Mature Adult",
+                    Name = DragonAgeName.MatureAdult,
                     Size = Size.Huge,
                     HitDice = 19,
-                    StrengthBonus = 8,
-                    DexterityBonus = -4,
-                    ConstitutionBonus = 4,
-                    NaturalArmorBonus = 20,
                     DamageResistance = 10,
                     SpellResistance = 26,
                     BonusSpells = new List<Spell>()
@@ -155,13 +128,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Old",
+                    Name = DragonAgeName.Old,
                     Size = Size.Gargantuan,
                     HitDice = 21,
-                    StrengthBonus = 10,
-                    DexterityBonus = -6,
-                    ConstitutionBonus = 6,
-                    NaturalArmorBonus = 23,
                     DamageResistance = 10,
                     SpellResistance = 28,
                     BonusSpells = new List<Spell>()
@@ -173,13 +142,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Very Old",
+                    Name = DragonAgeName.VeryOld,
                     Size = Size.Gargantuan,
                     HitDice = 23,
-                    StrengthBonus = 10,
-                    DexterityBonus = -6,
-                    ConstitutionBonus = 6,
-                    NaturalArmorBonus = 26,
                     DamageResistance = 15,
                     SpellResistance = 29,
                     BonusSpells = new List<Spell>()
@@ -191,13 +156,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Ancient",
+                    Name = DragonAgeName.Ancient,
                     Size = Size.Gargantuan,
                     HitDice = 25,
-                    StrengthBonus = 10,
-                    DexterityBonus = -6,
-                    ConstitutionBonus = 6,
-                    NaturalArmorBonus = 29,
                     DamageResistance = 15,
                     SpellResistance = 30,
                     BonusSpells = new List<Spell>()
@@ -211,13 +172,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Wyrm",
+                    Name = DragonAgeName.Wyrm,
                     Size = Size.Gargantuan,
                     HitDice = 27,
-                    StrengthBonus = 10,
-                    DexterityBonus = -6,
-                    ConstitutionBonus = 6,
-                    NaturalArmorBonus = 32,
                     DamageResistance = 20,
                     SpellResistance = 31,
                     BonusSpells = new List<Spell>()
@@ -227,13 +184,9 @@ namespace WotrSandbox.Content.Dragon.Bloodlines
                 },
                 new DragonAge
                 {
-                    Name = "Great Wyrm",
+                    Name = DragonAgeName.GreatWyrm,
                     Size = Size.Colossal,
                     HitDice = 29,
-                    StrengthBonus = 12,
-                    DexterityBonus = -8,
-                    ConstitutionBonus = 8,
-                    NaturalArmorBonus = 35,
                     DamageResistance = 20,
                     SpellResistance = 33,
                     BonusSpells = new List<Spell>()

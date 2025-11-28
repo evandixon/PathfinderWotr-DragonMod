@@ -3,15 +3,9 @@ using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.Localization;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.UnitLogic.FactLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TabletopTweaks.Core.Utilities;
-using WotrSandbox.Infrastructure;
 
-namespace WotrSandbox.Content.Buffs
+namespace WotrSandbox.Content.Dragon.Buffs
 {
     public static class DragonNaturalWeapons
     {

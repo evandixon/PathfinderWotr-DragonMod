@@ -13,6 +13,7 @@ using Kingmaker.UnitLogic.FactLogic;
 using Kingmaker.Enums;
 using Kingmaker.EntitySystem.Stats;
 using WotrSandbox.Content.Dragon.Bloodlines;
+using WotrSandbox.Content.Dragon.Features;
 
 namespace WotrSandbox.Content.Dragon
 {
@@ -21,72 +22,6 @@ namespace WotrSandbox.Content.Dragon
         public static void Add()
         {
             var generalFeatSelection = BlueprintTools.GetBlueprint<BlueprintFeatureSelection>("247a4068296e8be42890143f451b4b45");
-
-            var dragonStrength = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonStrengthFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonStrength.Name", "Dragon Strength");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonStrength.Description", "Dragon Strength");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonStrength.DescriptionShort", "Dragon Strength");
-                bp.Ranks = 4;
-                bp.AddComponent<AddStatBonus>(c =>
-                {
-                    c.Descriptor = ModifierDescriptor.Racial;
-                    c.Stat = StatType.Strength;
-                    c.Value = 2;
-                });
-            });
-            var dragonConstitution = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonConstitutionFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonConstitution.Name", "Dragon Constitution");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonConstitution.Description", "Dragon Constitution");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonConstitution.DescriptionShort", "Dragon Constitution");
-                bp.Ranks = 3;
-                bp.AddComponent<AddStatBonus>(c =>
-                {
-                    c.Descriptor = ModifierDescriptor.Racial;
-                    c.Stat = StatType.Constitution;
-                    c.Value = 2;
-                });
-            });
-            var dragonIntelligence = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonIntelligenceFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Name", "Dragon Intelligence");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.Description", "Dragon Intelligence");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonIntelligence.DescriptionShort", "Dragon Intelligence");
-                bp.Ranks = 4;
-                bp.AddComponent<AddStatBonus>(c =>
-                {
-                    c.Descriptor = ModifierDescriptor.Racial;
-                    c.Stat = StatType.Intelligence;
-                    c.Value = 1;
-                });
-            });
-            var dragonCharisma = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonCharismaFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Name", "Dragon Charisma");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonCharisma.Description", "Dragon Charisma");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonCharisma.DescriptionShort", "Dragon Charisma");
-                bp.Ranks = 4;
-                bp.AddComponent<AddStatBonus>(c =>
-                {
-                    c.Descriptor = ModifierDescriptor.Racial;
-                    c.Stat = StatType.Charisma;
-                    c.Value = 1;
-                });
-            });
-            var dragonNaturalArmor = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonNaturalArmorFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(IsekaiContext, $"DragonNaturalArmor.Name", "Dragon Natural Armor");
-                bp.m_Description = Helpers.CreateString(IsekaiContext, $"DragonNaturalArmor.Description", "Dragon Natural Armor");
-                bp.m_DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonNaturalArmor.DescriptionShort", "Dragon Natural Armor");
-                bp.Ranks = 4;
-                bp.AddComponent<AddStatBonus>(c =>
-                {
-                    c.Descriptor = ModifierDescriptor.NaturalArmor;
-                    c.Stat = StatType.AC;
-                    c.Value = 1;
-                });
-            });
 
             var legendaryHeroFeature = Helpers.CreateBlueprint<BlueprintFeature>(IsekaiContext, "DragonLegendaryHeroFeature", bp =>
             {

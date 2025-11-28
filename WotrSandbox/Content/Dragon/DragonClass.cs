@@ -1,10 +1,7 @@
 ﻿using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Prerequisites;
 using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Designers.EventConditionActionSystem.Conditions;
-using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
 using Kingmaker.Localization;
@@ -13,14 +10,9 @@ using Kingmaker.RuleSystem;
 using Kingmaker.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TabletopTweaks.Core.Utilities;
 using WotrSandbox.Content.Dragon.Bloodlines;
 using WotrSandbox.Infrastructure;
-using static TabletopTweaks.Core.MechanicsChanges.AdditionalModifierDescriptors;
-using static TabletopTweaks.Core.Utilities.SpellTools;
 using static WotrSandbox.Main;
 
 namespace WotrSandbox.Content.Dragon
@@ -29,7 +21,8 @@ namespace WotrSandbox.Content.Dragon
     {
         private static readonly LocalizedString Name = Helpers.CreateString(IsekaiContext, $"DragonClass.Name", "Dragon");
         private static readonly LocalizedString Description = Helpers.CreateString(IsekaiContext, $"DragonClass.Description",
-            "As a result of strange magical experiments, you have become a half dragon, with a path toward true dragonhood.");
+            "As a result of strange magical experiments, you have become a half dragon. " +
+            "Your draconic soul is incubating and you will some day become a true dragon.");
         private static readonly LocalizedString DescriptionShort = Helpers.CreateString(IsekaiContext, $"DragonClass.DescriptionShort",
             "As a result of strange magical experiments, you have become a half dragon, with a path toward true dragonhood.");
         private static BlueprintCharacterClass dragonClass;

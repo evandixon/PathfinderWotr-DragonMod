@@ -1,22 +1,9 @@
 ﻿using HarmonyLib;
-using Kingmaker.Blueprints.Classes.Prerequisites;
-using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.Blueprints.JsonSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using TabletopTweaks.Core.Config;
-using TabletopTweaks.Core.Utilities;
-using UnityEngine.UIElements;
-using WotrSandbox.Config;
-using WotrSandbox.Content.Buffs;
 using WotrSandbox.Content.Dragon;
 using WotrSandbox.Content.Dragon.Bloodlines;
-using WotrSandbox.Content.Dragon.Heritages;
-using static WotrSandbox.Main;
+using WotrSandbox.Content.Dragon.Buffs;
+using WotrSandbox.Content.Dragon.Features;
 
 namespace WotrSandbox.Content
 {
@@ -41,6 +28,14 @@ namespace WotrSandbox.Content
 
             public static void AddIsekaiProtagonistClass()
             {
+                DragonStrengthFeature.Add();
+                DragonDexterityFeature.Add();
+                DragonConstitutionFeature.Add();
+                DragonIntelligenceFeature.Add();
+                DragonWisdomFeature.Add();
+                DragonCharismaFeature.Add();
+                DragonNaturalArmorFeature.Add();
+
                 DragonBloodlineGold.Instance.Add();
                 DragonBloodlineSilver.Instance.Add();
                 DragonBloodlineSelection.Add();

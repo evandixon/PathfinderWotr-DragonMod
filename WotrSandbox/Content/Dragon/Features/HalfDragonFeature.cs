@@ -6,7 +6,7 @@ using Kingmaker.UnitLogic.FactLogic;
 using TabletopTweaks.Core.Utilities;
 using static WotrSandbox.Main;
 
-namespace WotrSandbox.Content.Dragon
+namespace WotrSandbox.Content.Dragon.Features
 {
     public static class HalfDragonFeature
     {
