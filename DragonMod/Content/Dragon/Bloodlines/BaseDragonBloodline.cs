@@ -52,7 +52,32 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected abstract int StartingSpellcastingLevel { get; }
         protected abstract DiceType PrimaryBreathWeaponDamageDie { get; }
         protected abstract int MinimumXP { get; }
-        protected abstract List<DragonAge> AgeCategories { get; }
+        public abstract List<DragonAge> AgeCategories { get; }
+
+        public int[] GetXpTable()
+        {
+            _xpTable ??= XpTablePatcher.GetCustomXPTable(AgeCategories.First().HitDice, AgeCategories.Last().HitDice);
+            return _xpTable;
+        }
+        private int[] _xpTable;
+
+        // A backup idea if legend patching doesn't pan out
+        // Needs to be accompanied by stat adjustments like extra HP and BAB
+        protected virtual Dictionary<string, int> AgeToPCLevel { get; } = new Dictionary<string, int>
+        {
+            [DragonAgeName.Wyrmling] = 1,
+            [DragonAgeName.VeryYoung] = 2,
+            [DragonAgeName.Young] = 3,
+            [DragonAgeName.Juvenile] = 4,
+            [DragonAgeName.YoungAdult] = 6,
+            [DragonAgeName.Adult] = 8,
+            [DragonAgeName.MatureAdult] = 10,
+            [DragonAgeName.Old] = 12,
+            [DragonAgeName.VeryOld] = 14,
+            [DragonAgeName.Ancient] = 16,
+            [DragonAgeName.Wyrm] = 18,
+            [DragonAgeName.GreatWyrm] = 20,
+        };
 
         public void Add()
         {
@@ -94,16 +119,53 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 });
             });
 
+            var startingStatsFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}StartingStatsFeature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}StartingStatsFeature.Name", $"{BloodlineName} Dragon Stats");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}StartingStatsFeature.Description", $"Dragons are born strong and have higher starting stats.");
+
+                bp.AddComponent<AddStatBonus>(c => 
+                {
+                    c.Descriptor = ModifierDescriptor.NaturalArmor;
+                    c.Stat = StatType.AC;
+                    c.Value = BaseNaturalArmorBonus;
+                });
+
+                bp.AddComponent<AddFacts>(c =>
+                {
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("c263f44f72df009489409af122b5eefc"),
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("4b152a7bc5bab5042b437b955fea46cd"),
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("70cffb448c132fa409e49156d013b175")
+                    };
+                });
+
+                // Keen senses (low light vision)
+                // Darkvision doesn't exist but close enough
+                bp.AddComponent<AddFacts>(c => {
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("9c747d24f6321f744aa1bb4bd343880d")
+                    };
+                });
+            });
+
             var bloodline = Helpers.CreateBlueprint<BlueprintArchetype>(DragonModContext, $"DragonBloodline{BloodlineName}Archetype", bp =>
             {
                 bp.LocalizedName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Name", $"{BloodlineName} Dragon");
-                bp.LocalizedDescription = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"As a result of strange magical experiments, you have become a half dragon. Your draconic soul is incubating and you will some day become a true dragon.");
+                bp.LocalizedDescription = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"As a result of strange magical experiments, you have become a true dragon.");
                 bp.LocalizedDescriptionShort = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.DescriptionShort", "");
                 bp.m_ReplaceSpellbook = spellbook.ToReference<BlueprintSpellbookReference>();
-                bp.BuildChanging = true;
+                //bp.BuildChanging = true;
+
+                bp.RemoveFeatures = new LevelEntry[]
+                {
+                    Helpers.CreateLevelEntry(1, HalfDragonFeature.GetReference<BlueprintFeatureReference>())
+                };
                 bp.AddFeatures = new LevelEntry[30]
                 {
-                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity, extraXPFeature),
+                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity, startingStatsFeature),
                     Helpers.CreateLevelEntry(2, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(3, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(4, new BlueprintFeature[0]),
@@ -134,7 +196,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     Helpers.CreateLevelEntry(29, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(30, new BlueprintFeature[0])
                 };
-                bp.RemoveFeatures = new LevelEntry[0];
                 bp.m_StartingItems = new BlueprintItemReference[0];
                 bp.ClassSkills = new StatType[0];
                 bp.RecommendedAttributes = new StatType[0];
@@ -150,15 +211,16 @@ namespace DragonMod.Content.Dragon.Bloodlines
             BlueprintFeature previousFormFeature = null;
             foreach (var age in AgeCategories)
             {
+                //var level = AgeToPCLevel[age.Name];
+
                 var breathStartingLevel = age.HitDice; // Withold breath until the dragon reaches the starting HD so the math works right
-                var shapeshiftStartingLevel = age.HitDice;
+                var level = age.HitDice;
                 if (age.Name == DragonAgeName.Wyrmling)
                 {
                     // Start at level 1 to give the feel of a dragon at the start
-                    shapeshiftStartingLevel = 1;
+                    level = 1;
                 }
-                
-                var levelEntry = bloodline.AddFeatures.Single(l => l.Level == shapeshiftStartingLevel);
+                var levelEntry = bloodline.AddFeatures.Single(l => l.Level == level);
 
                 var formFeature = GetFormFeature(age, previousFormFeature?.ToReference<BlueprintUnitFactReference>());
                 levelEntry.m_Features.Add(formFeature.ToReference<BlueprintFeatureBaseReference>());
@@ -187,34 +249,34 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 ProcessAgeBasedStatBonusesForBaseCharacter(age, levelEntry);
             }
 
-            var spellbookFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookFeature.Name", $"{BloodlineName} Dragon Spellbook");
-                bp.Ranks = 1;
-                bp.IsClassFeature = true;
-                bp.AddComponent<AddSpellbook>(c =>
-                {
-                    c.m_Spellbook = spellbook.ToReference<BlueprintSpellbookReference>();
-                    c.m_CasterLevel = new ContextValue
-                    {
-                        ValueType = ContextValueType.CasterProperty,
-                        Property = UnitProperty.Level,
-                        m_AbilityParameter = AbilityParameterType.Level,
-                        PropertyName = ContextPropertyName.Value1
-                    };
-                });
-            });
-            var spellbookLevelFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookLevelFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookLevelFeature.Name", $"{BloodlineName} Dragon Spellbook Level");
-                bp.Ranks = 1;
-                bp.IsClassFeature = true;
-                bp.HideInUI = true;
-                bp.AddComponent<AddSpellbookLevel>(c =>
-                {
-                    c.m_Spellbook = spellbook.ToReference<BlueprintSpellbookReference>();
-                });
-            });
+            //var spellbookFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookFeature", bp =>
+            //{
+            //    bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookFeature.Name", $"{BloodlineName} Dragon Spellbook");
+            //    bp.Ranks = 1;
+            //    bp.IsClassFeature = true;
+            //    bp.AddComponent<AddSpellbook>(c =>
+            //    {
+            //        c.m_Spellbook = spellbook.ToReference<BlueprintSpellbookReference>();
+            //        c.m_CasterLevel = new ContextValue
+            //        {
+            //            ValueType = ContextValueType.CasterProperty,
+            //            Property = UnitProperty.Level,
+            //            m_AbilityParameter = AbilityParameterType.Level,
+            //            PropertyName = ContextPropertyName.Value1
+            //        };
+            //    });
+            //});
+            //var spellbookLevelFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookLevelFeature", bp =>
+            //{
+            //    bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}SpellbookLevelFeature.Name", $"{BloodlineName} Dragon Spellbook Level");
+            //    bp.Ranks = 1;
+            //    bp.IsClassFeature = true;
+            //    bp.HideInUI = true;
+            //    bp.AddComponent<AddSpellbookLevel>(c =>
+            //    {
+            //        c.m_Spellbook = spellbook.ToReference<BlueprintSpellbookReference>();
+            //    });
+            //});
             //bloodline.LevelEntries.Single(l => l.Level == StartingSpellcastingLevel).m_Features.Add(spellbookFeature.ToReference<BlueprintFeatureBaseReference>());
             //for (int i = StartingSpellcastingLevel; i <= 30; i++)
             //{
@@ -486,7 +548,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     //m_PortraitTypeEntry = UnitEntityData.PortraitType.SmallPortrait,
                     c.m_KeepSlots = true;
                     c.UseSizeAsBaseForDamage = true;
-                    c.NaturalArmor = Math.Max(BaseNaturalArmorBonus - 4, 0); // Age-specific boosts appllied to character, not polymorh.. 4 subtracted since that's been front-loaded in the Half Dragon feature
 
                     c.m_MainHand = null;
                     c.m_OffHand = null;

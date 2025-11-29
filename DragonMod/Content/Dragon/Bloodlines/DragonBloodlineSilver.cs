@@ -212,7 +212,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
             };
         }
 
-        protected override List<DragonAge> AgeCategories { get; }
+        public override List<DragonAge> AgeCategories { get; }
 
         protected override BlueprintFeature GetSecondaryBreath(BlueprintBuff breathCooldownBuff)
         {

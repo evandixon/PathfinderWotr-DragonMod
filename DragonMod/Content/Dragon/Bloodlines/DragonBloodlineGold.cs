@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using TabletopTweaks.Core.Utilities;
 using static DragonMod.Main;
 
-namespace DragonMod.Content.Dragon.Bloodlines.Gold
+namespace DragonMod.Content.Dragon.Bloodlines
 {
     public class DragonBloodlineGold : BaseDragonBloodline
     {
@@ -224,7 +224,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
             };
         }
 
-        protected override List<DragonAge> AgeCategories { get; }
+        public override List<DragonAge> AgeCategories { get; }
 
         protected override BlueprintFeature GetSecondaryBreath(BlueprintBuff breathCooldownBuff)
         {

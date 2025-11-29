@@ -1,5 +1,5 @@
 ﻿using DragonMod.Content.Dragon.Bloodlines;
-using DragonMod.Content.Dragon.Bloodlines.Gold;
+using DragonMod.Content.Dragon.Features;
 using DragonMod.Infrastructure;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
@@ -33,7 +33,7 @@ namespace DragonMod.Content.Dragon
         public static void Add()
         {
             var defaultClothesIndex = StaticReferences.BaseClasses.IndexOf(ClassTools.Classes.SorcererClass);
-            var clothesIndex = DragonModContext.AddedContent.IsekaiDefaultClothes;
+            var clothesIndex = -1;// DragonModContext.AddedContent.IsekaiDefaultClothes;
             var maxClothesIndex = StaticReferences.BaseClasses.Length;
             var clothesClass = StaticReferences.BaseClasses[clothesIndex > -1 && clothesIndex < maxClothesIndex ? clothesIndex : defaultClothesIndex];
 
@@ -296,11 +296,10 @@ namespace DragonMod.Content.Dragon
                 bp.SecondaryColor = 0;
                 bp.MaleEquipmentEntities = clothesClass.MaleEquipmentEntities;
                 bp.FemaleEquipmentEntities = clothesClass.FemaleEquipmentEntities;
-                bp.m_SignatureAbilities = new BlueprintFeatureReference[0] {
+                bp.m_SignatureAbilities = new BlueprintFeatureReference[] 
+                {
+                    HalfDragonFeature.GetReference<BlueprintFeatureReference>()
                 };
-
-                // Register Archetypes later using RegisterArchetype
-                bp.m_Archetypes = new BlueprintArchetypeReference[0];
 
                 // Set Progression later using SetProgression (Some features in the progression reference IsekaiProtagonistClass which doeesn't exist yet)
                 bp.m_Progression = DragonProgression.GetReference();

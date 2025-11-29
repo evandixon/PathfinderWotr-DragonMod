@@ -1,19 +1,18 @@
-﻿using HarmonyLib;
-using Kingmaker.Blueprints.JsonSystem;
-using DragonMod.Content.Dragon;
+﻿using DragonMod.Content.Dragon;
 using DragonMod.Content.Dragon.Bloodlines;
 using DragonMod.Content.Dragon.Buffs;
 using DragonMod.Content.Dragon.Features;
-using DragonMod.Content.Dragon.Bloodlines.Gold;
+using HarmonyLib;
+using Kingmaker.Blueprints.JsonSystem;
 
 namespace DragonMod.Content
 {
-    class ContentAdder
+    public static class ContentAdder
     {
         [HarmonyPatch(typeof(BlueprintsCache), "Init")]
-        static class BlueprintsCache_Init_Patch
+        public static class BlueprintsCache_Init_Patch
         {
-            private static bool Initialized;
+            public static bool Initialized { get; private set; }
 
             [HarmonyPriority(Priority.First)]
             [HarmonyPostfix]
@@ -22,7 +21,9 @@ namespace DragonMod.Content
                 if (Initialized) return;
                 Initialized = true;
 
-                LegendXpTable.Patch();
+                Main.Log("Creating dragon mod blueprints");
+
+                XpTablePatcher.Patch();
 
                 AddIsekaiProtagonistClass();
             }
@@ -38,11 +39,11 @@ namespace DragonMod.Content
                 DragonNaturalArmorFeature.Add();
                 DragonLegendaryHeroFeature.Add();
 
+                HalfDragonFeature.Add();
+
                 DragonBloodlineGold.Instance.Add();
                 DragonBloodlineSilver.Instance.Add();
                 DragonBloodlineSelection.Add();
-
-                HalfDragonFeature.Add();
 
                 DragonClass.Add();
                 DragonNaturalWeapons.Add();

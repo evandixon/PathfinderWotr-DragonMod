@@ -14,10 +14,10 @@ namespace DragonMod.Content.Dragon.Features
                 bp.m_DisplayName = Helpers.CreateString(Main.DragonModContext, $"DragonLegendaryHeroFeature.Name", "Legendary Dragon");
                 bp.m_Description = Helpers.CreateString(Main.DragonModContext, $"DragonLegendaryHeroFeature.Description", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
                 bp.m_DescriptionShort = Helpers.CreateString(Main.DragonModContext, $"DragonLegendaryHeroFeature.DescriptionShort", "It can take many centuries for a normal dragon to reach full power. Luckily you're not ordinary. Your level cap is 40, and you gain levels at roughly twice the rate of mortals.");
-                bp.AddComponent<AddMechanicsFeature>(c =>
-                {
-                    c.m_Feature = AddMechanicsFeature.MechanicsFeatureType.LegendaryHero;
-                });
+                //bp.AddComponent<AddMechanicsFeature>(c =>
+                //{
+                //    c.m_Feature = AddMechanicsFeature.MechanicsFeatureType.LegendaryHero;
+                //});
             });
         }
 

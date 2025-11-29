@@ -63,7 +63,7 @@ namespace DragonMod.Content.Dragon
                     //Helpers.CreateLevelEntry(29, new BlueprintFeatureBase[0]),
                     //Helpers.CreateLevelEntry(30, new BlueprintFeatureBase[0]),
                 };
-
+                
                 bp.UIGroups = new UIGroup[]
                 {
                     Helpers.CreateUIGroup(halfDragonFeature),

@@ -351,13 +351,14 @@
     <Compile Include="Config\AddedContent.cs" />
     <Compile Include="Content\AddStatBonusIfNotHasFact.cs" />
     <Compile Include="Content\Dragon\Bloodlines\BaseDragonSpellbook.cs" />
+    <Compile Include="Content\Dragon\Bloodlines\BloodlineList.cs" />
     <Compile Include="Content\Dragon\Bloodlines\DragonAgeName.cs" />
     <Compile Include="Content\Dragon\Buffs\DragonNaturalWeapons.cs" />
     <Compile Include="Content\ContentAdder.cs" />
     <Compile Include="Content\Dragon\Bloodlines\BaseDragonBloodline.cs" />
     <Compile Include="Content\Dragon\Bloodlines\DragonAge.cs" />
     <Compile Include="Content\Dragon\Bloodlines\DragonBloodlineSilver.cs" />
-    <Compile Include="Content\Dragon\Bloodlines\Gold\DragonBloodlineGold.cs" />
+    <Compile Include="Content\Dragon\Bloodlines\DragonBloodlineGold.cs" />
     <Compile Include="Content\Dragon\Bloodlines\DragonBloodlineSelection.cs" />
     <Compile Include="Content\Dragon\Bloodlines\Spell.cs" />
     <Compile Include="Content\Dragon\DragonClass.cs" />
@@ -372,7 +373,7 @@
     <Compile Include="Content\Dragon\Features\DragonIntelligenceFeature.cs" />
     <Compile Include="Content\Dragon\Features\DragonStrengthFeature.cs" />
     <Compile Include="Content\Dragon\Features\HalfDragonFeature.cs" />
-    <Compile Include="Content\LegendXpTable.cs" />
+    <Compile Include="Content\XpTablePatcher.cs" />
     <Compile Include="Content\MinimumXPComponent.cs" />
     <Compile Include="Infrastructure\ActionFlow.cs" />
     <Compile Include="Infrastructure\ExtensionMethods.cs" />
