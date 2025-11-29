@@ -373,6 +373,7 @@
     <Compile Include="Content\Dragon\Features\DragonStrengthFeature.cs" />
     <Compile Include="Content\Dragon\Features\HalfDragonFeature.cs" />
     <Compile Include="Content\LegendXpTable.cs" />
+    <Compile Include="Content\MinimumXPComponent.cs" />
     <Compile Include="Infrastructure\ActionFlow.cs" />
     <Compile Include="Infrastructure\ExtensionMethods.cs" />
     <Compile Include="Infrastructure\ModTTTContext.cs" />

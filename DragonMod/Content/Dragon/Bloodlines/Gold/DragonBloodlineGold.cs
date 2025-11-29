@@ -41,6 +41,7 @@ namespace DragonMod.Content.Dragon.Bloodlines.Gold
         protected override string ShifterFormHugeId => "833873205d9b46e99217d02cd04a20d4";
         protected override int BaseNaturalArmorBonus => 7;
         protected override int StartingSpellcastingLevel => 12;
+        protected override int MinimumXP => 9000; // Level 8 with custom table
         protected override DiceType PrimaryBreathWeaponDamageDie => DiceType.D10;
 
         public DragonBloodlineGold()

@@ -51,6 +51,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
         protected abstract int BaseNaturalArmorBonus { get; }
         protected abstract int StartingSpellcastingLevel { get; }
         protected abstract DiceType PrimaryBreathWeaponDamageDie { get; }
+        protected abstract int MinimumXP { get; }
         protected abstract List<DragonAge> AgeCategories { get; }
 
         public void Add()
@@ -82,6 +83,17 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"If you can read this, you should respec your character.");
             });
 
+            var extraXPFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature", bp =>
+            {
+                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature.Name", $"{BloodlineName} Dragon Extra XP");
+                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature.Description", $"Dragons are born strong and start at a higher level.");
+
+                bp.AddComponent<MinimumXPComponent>(c =>
+                {
+                    c.MinimumXP = this.MinimumXP;
+                });
+            });
+
             var bloodline = Helpers.CreateBlueprint<BlueprintArchetype>(DragonModContext, $"DragonBloodline{BloodlineName}Archetype", bp =>
             {
                 bp.LocalizedName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Name", $"{BloodlineName} Dragon");
@@ -91,7 +103,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 bp.BuildChanging = true;
                 bp.AddFeatures = new LevelEntry[30]
                 {
-                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity),
+                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity, extraXPFeature),
                     Helpers.CreateLevelEntry(2, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(3, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(4, new BlueprintFeature[0]),
