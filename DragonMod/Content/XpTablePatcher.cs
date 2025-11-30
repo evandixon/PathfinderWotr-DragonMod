@@ -223,7 +223,7 @@ namespace DragonMod.Content
 
             if (ShouldOverride(__instance))
             {
-                Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable - Override applied");
+                //Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable - Override applied");
                 var expTable = GetCustomExperienceTable(__instance);
                 if (expTable != null)
                 {
@@ -283,7 +283,7 @@ namespace DragonMod.Content
                 var level = GetCustomMaxLevel(__instance);
                 if (level.HasValue)
                 {
-                    Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel - Override applied");
+                    //Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel - Override applied");
                     __result = level.Value;
                     return false;
                 }

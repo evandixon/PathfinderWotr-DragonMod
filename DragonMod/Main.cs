@@ -36,12 +36,11 @@ namespace DragonMod
 
         public static void Log(string msg)
         {
-
-            lock (logLock)
-            {
-                var path = @"C:\Users\evanl\AppData\LocalLow\Owlcat Games\Pathfinder Wrath Of The Righteous\dragon.txt";
-                File.AppendAllText(path, DateTime.Now.ToString() + " - " + msg + "\n");
-            }
+            //lock (logLock)
+            //{
+            //    var path = @"C:\Users\evanl\AppData\LocalLow\Owlcat Games\Pathfinder Wrath Of The Righteous\dragon.txt";
+            //    File.AppendAllText(path, DateTime.Now.ToString() + " - " + msg + "\n");
+            //}
 
             DragonModContext.Logger.Log(msg);
         }
@@ -49,12 +48,11 @@ namespace DragonMod
         [System.Diagnostics.Conditional("DEBUG")]
         public static void LogDebug(string msg)
         {
-
-            lock (logLock)
-            {
-                var path = @"C:\Users\evanl\AppData\LocalLow\Owlcat Games\Pathfinder Wrath Of The Righteous\dragon.txt";
-                File.AppendAllText(path, DateTime.Now.ToString() + " (Debug) - " + msg + "\n");
-            }
+            //lock (logLock)
+            //{
+            //    var path = @"C:\Users\evanl\AppData\LocalLow\Owlcat Games\Pathfinder Wrath Of The Righteous\dragon.txt";
+            //    File.AppendAllText(path, DateTime.Now.ToString() + " (Debug) - " + msg + "\n");
+            //}
             DragonModContext.Logger.Log(msg);
         }
 
