@@ -212,14 +212,14 @@ namespace DragonMod.Content
         [HarmonyPrefix]
         public static bool Prefix(UnitProgressionData __instance, ref BlueprintStatProgression __result)
         {
-            Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable entered");
+            //Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable entered");
             if (!ContentAdder.BlueprintsCache_Init_Patch.Initialized)
             {
-                Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable patch skipped");
+                //Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable patch skipped");
                 return true;
             }
 
-            Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable - " + string.Join(",", __instance.Classes.Select(c => c.CharacterClass.AssetGuid.ToString())));
+            //Main.Log("DragonMod patch - UnitProgressionData.ExperienceTable - " + string.Join(",", __instance.Classes.Select(c => c.CharacterClass.AssetGuid.ToString())));
 
             if (ShouldOverride(__instance))
             {
@@ -238,7 +238,6 @@ namespace DragonMod.Content
         private static bool ShouldOverride(UnitProgressionData data)
         {
             var dragonClassReference = DragonClass.GetReference();
-            var legendaryDragonReference = DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>();
             return data.Classes.Any(c => c.CharacterClass.AssetGuid == dragonClassReference.Guid);
         }
 
@@ -271,14 +270,14 @@ namespace DragonMod.Content
         [HarmonyPrefix]
         public static bool Prefix(UnitProgressionData __instance, ref int __result)
         {
-            Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel entered");
+            //Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel entered");
             if (!ContentAdder.BlueprintsCache_Init_Patch.Initialized)
             {
-                Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel patch skipped");
+                //Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel patch skipped");
                 return true;
             }
 
-            Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel - " + string.Join(",", __instance.Classes.Select(c => c.CharacterClass.AssetGuid.ToString())));
+            //Main.Log("DragonMod patch - UnitProgressionData.MaxAvailableCharacterLevel - " + string.Join(",", __instance.Classes.Select(c => c.CharacterClass.AssetGuid.ToString())));
             if (ShouldOverride(__instance))
             {
                 var level = GetCustomMaxLevel(__instance);
@@ -345,7 +344,7 @@ namespace DragonMod.Content
         [HarmonyPrefix]
         public static bool Prefix(UnitExperienceForLevel __instance, ref int __result)
         {
-            Main.Log("DragonMod patch - UnitExperienceForLevel.GetValueInternal");
+            //Main.Log("DragonMod patch - UnitExperienceForLevel.GetValueInternal");
 
             if (__instance.Unit == null || !__instance.Unit.CanEvaluate() || !__instance.Unit.TryGetValue(out UnitEntityData value))
             {
@@ -369,7 +368,7 @@ namespace DragonMod.Content
         [HarmonyPrefix]
         public static bool Prefix(AdvanceUnitLevel __instance)
         {
-            Main.Log("DragonMod patch - AdvanceUnitLevel.RunAction");
+            //Main.Log("DragonMod patch - AdvanceUnitLevel.RunAction");
 
             UnitEntityData value = __instance.Unit.GetValue();
             int[] obj = value.Progression.ExperienceTable.Bonuses;
@@ -385,7 +384,7 @@ namespace DragonMod.Content
         [HarmonyPrefix]
         public static bool Prefix(LevelUpUnit __instance)
         {
-            Main.Log("DragonMod patch - LevelUpUnit.RunAction");
+            //Main.Log("DragonMod patch - LevelUpUnit.RunAction");
 
             UnitEntityData value = __instance.Unit.GetValue();
             int bonus = value.Progression.ExperienceTable.GetBonus(__instance.TargetLevel.GetValue());
@@ -400,7 +399,7 @@ namespace DragonMod.Content
         [HarmonyPrefix]
         public static bool Prefix()
         {
-            Main.Log("DragonMod patch - DungeonController.CreateMainCharacter");
+            //Main.Log("DragonMod patch - DungeonController.CreateMainCharacter");
 
             Vector3 position = Game.Instance.Player.MainCharacter.Value.Position;
             float orientation = Game.Instance.Player.MainCharacter.Value.Orientation;

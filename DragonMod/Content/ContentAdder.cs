@@ -30,6 +30,10 @@ namespace DragonMod.Content
 
             public static void AddIsekaiProtagonistClass()
             {
+                // Old, for backwards compatibility
+                DragonLegendaryHeroFeature.Add();
+                DragonBloodlineSelection.Add();
+
                 DragonStrengthFeature.Add();
                 DragonDexterityFeature.Add();
                 DragonConstitutionFeature.Add();
@@ -37,13 +41,11 @@ namespace DragonMod.Content
                 DragonWisdomFeature.Add();
                 DragonCharismaFeature.Add();
                 DragonNaturalArmorFeature.Add();
-                DragonLegendaryHeroFeature.Add();
 
                 HalfDragonFeature.Add();
 
                 DragonBloodlineGold.Instance.Add();
                 DragonBloodlineSilver.Instance.Add();
-                DragonBloodlineSelection.Add();
 
                 DragonClass.Add();
                 DragonNaturalWeapons.Add();

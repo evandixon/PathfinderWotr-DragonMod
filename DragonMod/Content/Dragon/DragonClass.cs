@@ -264,7 +264,7 @@ namespace DragonMod.Content.Dragon
                 bp.LocalizedName = Name;
                 bp.LocalizedDescription = Description;
                 bp.LocalizedDescriptionShort = DescriptionShort;
-                bp.HitDie = DiceType.D12;
+                bp.HitDie = DiceType.D10; // D12 but adjusted for favored class bonus to HP
                 bp.m_BaseAttackBonus = BABFull.ToReference<BlueprintStatProgressionReference>();
                 bp.m_FortitudeSave = SavesHigh.ToReference<BlueprintStatProgressionReference>();
                 bp.m_ReflexSave = SavesHigh.ToReference<BlueprintStatProgressionReference>();

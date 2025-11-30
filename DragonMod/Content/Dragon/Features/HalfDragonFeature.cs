@@ -1,4 +1,5 @@
-﻿using Kingmaker.Blueprints;
+﻿using DragonMod.Content.Dragon.Buffs;
+using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
@@ -48,7 +49,7 @@ namespace DragonMod.Content.Dragon.Features
                 bp.AddComponent<AddFacts>(c => {
                     c.m_Facts = new BlueprintUnitFactReference[]
                     {
-                        BlueprintTools.GetModBlueprintReference<BlueprintUnitFactReference>(DragonModContext, "DragonNaturalWeaponsBuff")
+                        new BlueprintUnitFactReference { deserializedGuid = DragonNaturalWeapons.GetReference().Guid }
                     };
                 });
 

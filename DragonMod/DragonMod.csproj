@@ -373,6 +373,7 @@
     <Compile Include="Content\Dragon\Features\DragonIntelligenceFeature.cs" />
     <Compile Include="Content\Dragon\Features\DragonStrengthFeature.cs" />
     <Compile Include="Content\Dragon\Features\HalfDragonFeature.cs" />
+    <Compile Include="Content\Dragon\UnequipUnsupportedItemsComponent.cs" />
     <Compile Include="Content\XpTablePatcher.cs" />
     <Compile Include="Content\MinimumXPComponent.cs" />
     <Compile Include="Infrastructure\ActionFlow.cs" />

@@ -53,5 +53,10 @@ namespace DragonMod.Content.Dragon.Buffs
                 });
             });
         }
+
+        public static BlueprintBuffReference GetReference()
+        {
+            return BlueprintTools.GetModBlueprintReference<BlueprintBuffReference>(Main.DragonModContext, "DragonNaturalWeaponsBuff");
+        }
     }
 }

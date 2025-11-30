@@ -34,6 +34,10 @@ using TabletopTweaks.Core.Utilities;
 using DragonMod.Content.Dragon.Features;
 using static DragonMod.Main;
 using Kingmaker.UnitLogic.Mechanics.Properties;
+using DragonMod.Infrastructure;
+using DragonMod.Content.Dragon.Buffs;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
+using Kingmaker.UnitLogic.Mechanics.Conditions;
 
 namespace DragonMod.Content.Dragon.Bloodlines
 {
@@ -102,22 +106,22 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
             var spellbook = BaseDragonSpellbook.Add(BloodlineName, StartingSpellcastingLevel);
 
-            var backwardsCompatibility = Helpers.CreateBlueprint<BlueprintProgression>(DragonModContext, $"DragonBloodline{BloodlineName}", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Name", $"{BloodlineName} Dragon Backwards Compatibility");
-                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"If you can read this, you should respec your character.");
-            });
+            //var backwardsCompatibility = Helpers.CreateBlueprint<BlueprintProgression>(DragonModContext, $"DragonBloodline{BloodlineName}", bp =>
+            //{
+            //    bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Name", $"{BloodlineName} Dragon Backwards Compatibility");
+            //    bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Archetype.Description", $"If you can read this, you should respec your character.");
+            //});
 
-            var extraXPFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature", bp =>
-            {
-                bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature.Name", $"{BloodlineName} Dragon Extra XP");
-                bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature.Description", $"Dragons are born strong and start at a higher level.");
+            //var extraXPFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature", bp =>
+            //{
+            //    bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature.Name", $"{BloodlineName} Dragon Extra XP");
+            //    bp.m_Description = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}ExtraXPFeature.Description", $"Dragons are born strong and start at a higher level.");
 
-                bp.AddComponent<MinimumXPComponent>(c =>
-                {
-                    c.MinimumXP = this.MinimumXP;
-                });
-            });
+            //    bp.AddComponent<MinimumXPComponent>(c =>
+            //    {
+            //        c.MinimumXP = this.MinimumXP;
+            //    });
+            //});
 
             var startingStatsFeature = Helpers.CreateBlueprint<BlueprintFeature>(DragonModContext, $"DragonBloodline{BloodlineName}StartingStatsFeature", bp =>
             {
@@ -131,6 +135,41 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     c.Value = BaseNaturalArmorBonus;
                 });
 
+                bp.AddComponent<AddStatBonus>(c => {
+                    c.Descriptor = ModifierDescriptor.Racial;
+                    c.Stat = StatType.Strength;
+                    c.Value = 4;
+                });
+                bp.AddComponent<AddStatBonus>(c => {
+                    c.Descriptor = ModifierDescriptor.Racial;
+                    c.Stat = StatType.Constitution;
+                    c.Value = 2;
+                });
+                bp.AddComponent<AddStatBonus>(c => {
+                    c.Descriptor = ModifierDescriptor.Racial;
+                    c.Stat = StatType.Intelligence;
+                    c.Value = 2;
+                });
+                //bp.AddComponent<AddStatBonus>(c => {
+                //    c.Descriptor = ModifierDescriptor.Racial;
+                //    c.Stat = StatType.Wisdom;
+                //    c.Value = 2;
+                //});
+                bp.AddComponent<AddStatBonus>(c => {
+                    c.Descriptor = ModifierDescriptor.Racial;
+                    c.Stat = StatType.Charisma;
+                    c.Value = 2;
+                });
+
+                // Natural weapons
+                bp.AddComponent<AddFacts>(c => {
+                    c.m_Facts = new BlueprintUnitFactReference[]
+                    {
+                        new BlueprintUnitFactReference { deserializedGuid = DragonNaturalWeapons.GetReference().Guid }
+                    };
+                });
+
+                // Dragon Tye features
                 bp.AddComponent<AddFacts>(c =>
                 {
                     c.m_Facts = new BlueprintUnitFactReference[]
@@ -165,7 +204,7 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 };
                 bp.AddFeatures = new LevelEntry[30]
                 {
-                    Helpers.CreateLevelEntry(1, DragonLegendaryHeroFeature.GetReference<BlueprintFeatureReference>(), dragonWings, energyImmunity, startingStatsFeature),
+                    Helpers.CreateLevelEntry(1, dragonWings, energyImmunity, startingStatsFeature),
                     Helpers.CreateLevelEntry(2, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(3, new BlueprintFeature[0]),
                     Helpers.CreateLevelEntry(4, new BlueprintFeature[0]),
@@ -467,6 +506,9 @@ namespace DragonMod.Content.Dragon.Bloodlines
             var ageName = age.Name.Replace(" ", "");
             var mythicDragonFormAbility = BlueprintTools.GetBlueprint<BlueprintAbility>("a0273cfaafe84f0b89a70b3580568ebc");
 
+            // will hold a delegate to add size-specific weapon override to buff
+            Action<BlueprintBuff> addSizeSpecificBuffComponent = null;
+
             var buff = Helpers.CreateBlueprint<BlueprintBuff>(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff", bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Buff.Name", $"{BloodlineName} Dragon Form ({ageName})");
@@ -485,6 +527,15 @@ namespace DragonMod.Content.Dragon.Bloodlines
 
                 bp.m_Icon = mythicDragonFormAbility.m_Icon;
 
+                // Dragon claws make it hard to hold weapons, wear gloves or shoes, etc
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Gloves;
+                });
+                bp.AddComponent<LockEquipmentSlot>(c =>
+                {
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Boots;
+                });
                 bp.AddComponent<LockEquipmentSlot>(c =>
                 {
                     c.m_SlotType = LockEquipmentSlot.SlotType.MainHand;
@@ -493,10 +544,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     c.m_SlotType = LockEquipmentSlot.SlotType.OffHand;
                 });
-                //bp.AddComponent<LockEquipmentSlot>(c =>
-                //{
-                //    c.m_SlotType = LockEquipmentSlot.SlotType.Armor;
-                //});
                 bp.AddComponent<LockEquipmentSlot>(c =>
                 {
                     c.m_SlotType = LockEquipmentSlot.SlotType.Weapon1;
@@ -529,17 +576,27 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     c.m_SlotType = LockEquipmentSlot.SlotType.Weapon8;
                 });
-                bp.AddComponent<AddFacts>(c =>
+
+                // Can dragons wear barding?
+                // I'm inclined to think "no".
+                bp.AddComponent<LockEquipmentSlot>(c =>
                 {
-                    c.m_Facts = new BlueprintUnitFactReference[]
-                    {
-                        // Barding proficiency
-                        new BlueprintUnitFactReference
-                        {
-                            deserializedGuid = BlueprintGuid.Parse("c62ba548b1a34b94b9802925b35737c2")
-                        }
-                    };
+                    c.m_SlotType = LockEquipmentSlot.SlotType.Armor;
                 });
+                //bp.AddComponent<AddFacts>(c =>
+                //{
+                //    c.m_Facts = new BlueprintUnitFactReference[]
+                //    {
+                //        // Barding proficiency
+                //        new BlueprintUnitFactReference
+                //        {
+                //            deserializedGuid = BlueprintGuid.Parse("c62ba548b1a34b94b9802925b35737c2")
+                //        }
+                //    };
+                //});
+
+                bp.AddComponent<UnequipUnsupportedItemsComponent>();
+
                 bp.AddComponent<Polymorph>(c =>
                 {
                     c.m_Race = null;
@@ -577,25 +634,25 @@ namespace DragonMod.Content.Dragon.Bloodlines
                         case Size.Diminutive:
                             throw new InvalidOperationException("Unsupported size: " +  c.Size);
                         case Size.Tiny:
-                            ApplyTinyFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplyTinyFormPolymorphSettings(c);
                             break;
                         case Size.Small:
-                            ApplySmallFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplySmallFormPolymorphSettings(c);
                             break;
                         case Size.Medium:
-                            ApplyMediumFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplyMediumFormPolymorphSettings(c);
                             break;
                         case Size.Large:
-                            ApplyLargeFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplyLargeFormPolymorphSettings(c);
                             break;
                         case Size.Huge:
-                            ApplyHugeFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplyHugeFormPolymorphSettings(c);
                             break;
                         case Size.Gargantuan:
-                            ApplyGargantuanFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplyGargantuanFormPolymorphSettings(c);
                             break;
                         case Size.Colossal:
-                            ApplyCollossalFormPolymorphSettings(c);
+                            addSizeSpecificBuffComponent = ApplyCollossalFormPolymorphSettings(c);
                             break;
                     }
 
@@ -656,6 +713,45 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     c.Size = age.Size;
                 });
 
+
+                bp.AddComponent<AddFactContextActions>(c =>
+                {
+                    c.Activated = ActionFlow.DoSingle<ContextActionRemoveBuff>(r =>
+                    {
+                        r.m_Buff = DragonNaturalWeapons.GetReference();
+                    });
+                    c.Deactivated = ActionFlow.DoSingle<ContextActionApplyBuff>(r =>
+                    {
+                        r.m_Buff = DragonNaturalWeapons.GetReference();
+                        r.Permanent = true;
+                    });
+                });
+
+                // Remove kitsune bite
+                bp.AddComponent<AddFactContextActions>(c =>
+                {
+                    c.Activated = ActionFlow.DoSingle<ContextActionRemoveBuff>(r =>
+                    {
+                        // Kitsune bite
+                        r.m_Buff = BlueprintTools.GetBlueprintReference<BlueprintBuffReference>("08ce3d993d3a69e43a7b77425f93e964");
+                    });
+                    c.Deactivated = ActionFlow.DoSingle<Conditional>(c =>
+                    {
+                        c.ConditionsChecker = ActionFlow.IfSingle<ContextConditionHasFact>(c =>
+                        {
+                            // Kitsune change shape
+                            c.m_Fact = BlueprintTools.GetBlueprintReference<BlueprintUnitFactReference>("88063b0ec1cbc8b499e313cde36a8519");
+                        });
+                        c.IfTrue = ActionFlow.DoSingle<ContextActionApplyBuff>(r =>
+                        {
+                            // Kitsune bite
+                            r.m_Buff = BlueprintTools.GetBlueprintReference<BlueprintBuffReference>("08ce3d993d3a69e43a7b77425f93e964");
+                            r.Permanent = true;
+                        });
+                        c.IfFalse = ActionFlow.DoNothing();
+                    });
+                });
+
                 if (age.DamageResistance > 0)
                 {
                     bp.AddComponent<AddDamageResistancePhysical>(c =>
@@ -679,7 +775,12 @@ namespace DragonMod.Content.Dragon.Bloodlines
                         };
                     });
                 }
+
             });
+
+            // execute deferred size-specific buff component addition
+            addSizeSpecificBuffComponent?.Invoke(buff);
+
             var ability = Helpers.CreateBlueprint<BlueprintAbility>(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability", bp =>
             {
                 bp.m_DisplayName = Helpers.CreateString(DragonModContext, $"DragonBloodline{BloodlineName}Form{ageName}Ability.Name", $"Dragon Form ({ageName})");
@@ -818,10 +919,10 @@ namespace DragonMod.Content.Dragon.Bloodlines
             return feature;
         }
 
-        private void ApplyTinyFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplyTinyFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormMediumId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -841,24 +942,23 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("35dfad6517f401145af54111be04d6cf")
                 },
-                // Claw 1d3
-                new BlueprintItemWeaponReference
+            };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
                 {
-                    deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
-                },
-                        
-                // Claw 1d3
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("800092a2b9a743b48ae8aeeb5d243dcc")
-                }
+                    // Claw 1d3
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("800092a2b9a743b48ae8aeeb5d243dcc");
+                });
             };
         }
 
-        private void ApplySmallFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplySmallFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormMediumId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -878,24 +978,23 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("a000716f88c969c499a535dadcf09286")
                 },
-                // Claw 1d4
-                new BlueprintItemWeaponReference
+            };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
                 {
-                    deserializedGuid = BlueprintGuid.Parse("118fdd03e569a66459ab01a20af6811a")
-                },
-                        
-                // Claw 1d4
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("118fdd03e569a66459ab01a20af6811a")
-                }
+                    // Claw 1d4
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("118fdd03e569a66459ab01a20af6811a");
+                });
             };
         }
 
-        private void ApplyMediumFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplyMediumFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormMediumId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -915,17 +1014,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("61bc14eca5f8c1040900215000cfc218")
                 },
-                // Claw 1d6
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("65eb73689b94d894080d33a768cdf645")
-                },
-                        
-                // Claw 1d6
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("65eb73689b94d894080d33a768cdf645")
-                }
             };
             c.m_SecondaryAdditionalLimbs = new[]
             {
@@ -940,12 +1028,22 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     deserializedGuid = BlueprintGuid.Parse("864e29d3e07ad4a4f96d576b366b4a86")
                 }
             };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
+                {
+                    // Claw 1d6
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("65eb73689b94d894080d33a768cdf645");
+                });
+            };
         }
 
-        private void ApplyLargeFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplyLargeFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormLargeId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -965,17 +1063,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
                 },
-                // Claw 1d8
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("13a4ac62fe603fc4c99f9ed5e5d0b9d6")
-                },
-                        
-                // Claw 1d8
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("13a4ac62fe603fc4c99f9ed5e5d0b9d6")
-                }
             };
             c.m_SecondaryAdditionalLimbs = new[]
             {
@@ -995,12 +1082,22 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
                 }
             };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
+                {
+                    // Claw 1d8
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("13a4ac62fe603fc4c99f9ed5e5d0b9d6");
+                });
+            };
         }
 
-        private void ApplyHugeFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplyHugeFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormHugeId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -1020,17 +1117,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
                 },
-                // Claw 2d6
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("d498b2af675bd3447a0ab65ccc34d952")
-                },
-                        
-                // Claw 2d6
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("d498b2af675bd3447a0ab65ccc34d952")
-                }
             };
             c.m_SecondaryAdditionalLimbs = new[]
             {
@@ -1050,12 +1136,22 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
                 }
             };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
+                {
+                    // Claw 2d6
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("d498b2af675bd3447a0ab65ccc34d952");
+                });
+            };
         }
 
-        private void ApplyGargantuanFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplyGargantuanFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormHugeId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -1075,17 +1171,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
                 },
-                // Claw 2d8
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
-                },
-                        
-                // Claw 2d8
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
-                }
             };
             c.m_SecondaryAdditionalLimbs = new[]
             {
@@ -1105,12 +1190,22 @@ namespace DragonMod.Content.Dragon.Bloodlines
                     deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
                 }
             };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
+                {
+                    // Claw 2d8
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("bd440fff6bfc3954aac8b6e59a9d7489");
+                });
+            };
         }
 
-        private void ApplyCollossalFormPolymorphSettings(Polymorph c)
+        private Action<BlueprintBuff> ApplyCollossalFormPolymorphSettings(Polymorph c)
         {
             var shifterFormBuff = BlueprintTools.GetBlueprint<BlueprintBuff>(ShifterFormHugeId);
-            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(c => c is Polymorph));
+            var shifterFormBuffPolymorph = (Polymorph)(shifterFormBuff.Components.Single(cmp => cmp is Polymorph));
 
             c.m_Prefab = shifterFormBuffPolymorph.m_Prefab;
             c.m_PrefabFemale = shifterFormBuffPolymorph.m_PrefabFemale;
@@ -1130,17 +1225,6 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("2abc1dc6172759c42971bd04b8c115cb")
                 },
-                // Claw 2d8 // Todo: upgrade to 4d6
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
-                },
-                        
-                // Claw 2d8 // Todo: upgrade to 4d6
-                new BlueprintItemWeaponReference
-                {
-                    deserializedGuid = BlueprintGuid.Parse("bd440fff6bfc3954aac8b6e59a9d7489")
-                }
             };
             c.m_SecondaryAdditionalLimbs = new[]
             {
@@ -1159,6 +1243,16 @@ namespace DragonMod.Content.Dragon.Bloodlines
                 {
                     deserializedGuid = BlueprintGuid.Parse("29e50b018da8468c8dcb411148ba6413")
                 }
+            };
+
+            return (buff) =>
+            {
+                // Because slots are kept but weapons are locked
+                buff.AddComponent<EmptyHandWeaponOverride>(cmp =>
+                {
+                    // Claw 2d8 // Todo: upgrade to 4d6
+                    cmp.m_Weapon = BlueprintTools.GetBlueprintReference<BlueprintItemWeaponReference>("bd440fff6bfc3954aac8b6e59a9d7489");
+                });
             };
         }
 
